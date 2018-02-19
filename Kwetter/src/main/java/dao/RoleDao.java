@@ -5,6 +5,7 @@
  */
 package dao;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -14,6 +15,7 @@ import javax.persistence.PersistenceContext;
  * @email
  * @version 0.0.1
  */
+@Stateless
 public class RoleDao {
 
     @PersistenceContext

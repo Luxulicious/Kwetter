@@ -29,6 +29,7 @@ public class Post {
     private String content;
     private User poster;
     private Date date;
+    
 
     public Post() {
     }
@@ -64,6 +65,5 @@ public class Post {
     public void setDate(Date date) {
         this.date = date;
     }
-    
-    
+        
 }
