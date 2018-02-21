@@ -7,9 +7,15 @@ package domain;
 
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -23,11 +29,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Size(min = 1, max = 140)
     private String content;
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private User poster;
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
     
 

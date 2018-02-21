@@ -5,7 +5,10 @@
  */
 package domain;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,10 +23,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @XmlRootElement
-public class Role {
+public class Role implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -31,6 +34,7 @@ public class Role {
     private List<String> rights;
 
     public Role() {
+        rights = new ArrayList<>();
     }
 
     public Long getId() {

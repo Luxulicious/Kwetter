@@ -5,11 +5,18 @@
  */
 package domain;
 
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -23,19 +30,31 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Size(min = 1, max =32)
+    @Column(unique = true)
     private String name;
+    @Size(min = 1, max = 32)
     private String password;
+    @Size(min = 1, max = 255)
     private String bio;
+    @Size(min = 1, max = 255)
     private String location;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<User> follows;
+    @Size(min = 1, max = 32)
+    @Column(unique = true)
     private String website;
     //TODO Maybe change to file/pic variable or whatever
-    private String icon;
+    @Lob
+    private byte[] icon;
+    @ManyToOne(optional = true)
+    private Role role;
 
     public User() {
+        follows = new ArrayList<>();
     }
 
     public Long getId() {
@@ -94,12 +113,20 @@ public class User {
         this.website = website;
     }
 
-    public String getIcon() {
+    public byte[] getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(byte[] icon) {
         this.icon = icon;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
 }
