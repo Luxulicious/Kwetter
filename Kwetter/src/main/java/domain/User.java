@@ -33,7 +33,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 1, max =32)
+    @Size(min = 1, max = 32)
     @Column(unique = true)
     private String name;
     @Size(min = 1, max = 32)
@@ -129,4 +129,15 @@ public class User {
         this.role = role;
     }
 
+    public void follow(User user) {
+        if (!follows.contains(user)) {
+            follows.add(user);
+        }
+    }
+
+    public void unfollow(User user) {
+        if (follows.contains(user)) {
+            follows.remove(user);
+        }
+    }
 }
