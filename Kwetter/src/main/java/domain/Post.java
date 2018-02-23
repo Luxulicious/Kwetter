@@ -5,18 +5,11 @@
  */
 package domain;
 
+import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -25,9 +18,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @version 0.0.1
  */
 @Entity
-@XmlRootElement
-public class Post {
+public class Post implements Serializable {
 
+    //<editor-fold defaultstate="collapsed" desc="Non-navigational fields">
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,46 +28,15 @@ public class Post {
     @NotNull
     @Size(min = 1, max = 140)
     private String content;
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-    private User poster;
+
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+    //</editor-fold>
     
+    @ManyToOne()
+    private User poster;
 
     public Post() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public User getPoster() {
-        return poster;
-    }
-
-    public void setPoster(User poster) {
-        this.poster = poster;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-        
+    }        
 }

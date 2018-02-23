@@ -5,19 +5,10 @@
  */
 package domain;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -26,118 +17,65 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @version 0.0.1
  */
 @Entity
-@XmlRootElement
-public class User {
+public class User implements Serializable {
 
+    //<editor-fold defaultstate="collapsed" desc="Fields">
+    //<editor-fold defaultstate="collapsed" desc="Non-navigational fields">
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private long id;
 
-    @Size(min = 1, max = 32)
     @Column(unique = true)
-    private String name;
+    @Size(min = 1, max = 32)
+    private String username;
+
     @Size(min = 1, max = 32)
     private String password;
+
     @Size(min = 1, max = 255)
     private String bio;
+
     @Size(min = 1, max = 255)
     private String location;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<User> follows;
+
     @Size(min = 1, max = 32)
-    @Column(unique = true)
     private String website;
-    //TODO Maybe change to file/pic variable or whatever
-    @Lob
-    private byte[] icon;
-    @ManyToOne(optional = true)
+
+    @Size(min = 1, max = 255)
+    private String icon;
+    //</editor-fold>   
+    //<editor-fold defaultstate="collapsed" desc="Navigational fields">
+    @ManyToOne()
     private Role role;
 
+    @OneToMany(mappedBy = "poster")
+    private List<Post> posts;
+
+    @ManyToMany(/*cascade = CascadeType.ALL*/)
+    private List<User> following;
+
+    @ManyToMany(mappedBy = "following"/*, cascade = CascadeType.ALL*/)
+    private List<User> followers;
+    //</editor-fold>
+    //</editor-fold> 
+
     public User() {
-        follows = new ArrayList<>();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public List<User> getFollows() {
-        return follows;
-    }
-
-    public void setFollows(List<User> follows) {
-        this.follows = follows;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public byte[] getIcon() {
-        return icon;
-    }
-
-    public void setIcon(byte[] icon) {
-        this.icon = icon;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
     public void follow(User user) {
-        if (!follows.contains(user)) {
-            follows.add(user);
+        if (!following.contains(user)) {
+            following.add(user);
+        }
+        if (!user.followers.contains(this)) {
+            user.followers.add(this);
         }
     }
 
     public void unfollow(User user) {
-        if (follows.contains(user)) {
-            follows.remove(user);
+        if (following.contains(user)) {
+            following.remove(user);
         }
+        if(user.followers.contains(this))
+            following.remove(this);
     }
 }
