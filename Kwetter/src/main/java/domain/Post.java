@@ -20,7 +20,6 @@ import javax.validation.constraints.Size;
 @Entity
 public class Post implements Serializable {
 
-    //<editor-fold defaultstate="collapsed" desc="Non-navigational fields">
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,11 +31,44 @@ public class Post implements Serializable {
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
-    //</editor-fold>
-    
+
     @ManyToOne()
     private User poster;
 
     public Post() {
-    }        
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public User getPoster() {
+        return poster;
+    }
+
+    public void setPoster(User poster) {
+        this.poster = poster;
+    }
+    
+    
 }

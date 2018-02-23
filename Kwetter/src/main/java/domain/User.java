@@ -19,8 +19,6 @@ import javax.validation.constraints.Size;
 @Entity
 public class User implements Serializable {
 
-    //<editor-fold defaultstate="collapsed" desc="Fields">
-    //<editor-fold defaultstate="collapsed" desc="Non-navigational fields">
     @Id
     @GeneratedValue
     private long id;
@@ -43,8 +41,7 @@ public class User implements Serializable {
 
     @Size(min = 1, max = 255)
     private String icon;
-    //</editor-fold>   
-    //<editor-fold defaultstate="collapsed" desc="Navigational fields">
+
     @ManyToOne()
     private Role role;
 
@@ -56,12 +53,100 @@ public class User implements Serializable {
 
     @ManyToMany(mappedBy = "following"/*, cascade = CascadeType.ALL*/)
     private List<User> followers;
-    //</editor-fold>
-    //</editor-fold> 
 
     public User() {
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    public List<User> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<User> following) {
+        this.following = following;
+    }
+
+    public List<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
+    }
+
+    
+    
     public void follow(User user) {
         if (!following.contains(user)) {
             following.add(user);
@@ -75,7 +160,8 @@ public class User implements Serializable {
         if (following.contains(user)) {
             following.remove(user);
         }
-        if(user.followers.contains(this))
+        if (user.followers.contains(this)) {
             following.remove(this);
+        }
     }
 }

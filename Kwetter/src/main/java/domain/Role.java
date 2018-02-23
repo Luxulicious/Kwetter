@@ -29,6 +29,24 @@ public class Role implements Serializable {
 
     public Role() {
     }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public List<User> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(List<User> userRoles) {
+        this.userRoles = userRoles;
+    }
+    
+    
     
     public String getName() {
         return roleName;
