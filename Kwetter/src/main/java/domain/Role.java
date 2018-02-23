@@ -46,8 +46,6 @@ public class Role implements Serializable {
         this.userRoles = userRoles;
     }
     
-    
-    
     public String getName() {
         return roleName;
     }
