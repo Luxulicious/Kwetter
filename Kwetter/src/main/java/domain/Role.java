@@ -6,13 +6,8 @@
 package domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -21,45 +16,25 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @email
  * @version 0.0.1
  */
+
 @Entity
 @XmlRootElement
 public class Role implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String name;
-    //TODO Maybe change this to a seperate class/enum
-    private List<String> rights;
+    private String roleName;
+    
+    @OneToMany()
+    private List<User> userRoles;
 
     public Role() {
-        rights = new ArrayList<>();
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    
     public String getName() {
-        return name;
+        return roleName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.roleName = name;
     }
-
-    public List<String> getRights() {
-        return rights;
-    }
-
-    public void setRights(List<String> rights) {
-        this.rights = rights;
-    }
-    
-    
 }
