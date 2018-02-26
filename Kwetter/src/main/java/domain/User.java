@@ -6,9 +6,12 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import service.UserService;
 
 /**
  *
@@ -17,6 +20,7 @@ import javax.validation.constraints.Size;
  * @version 0.0.1
  */
 @Entity
+@Table(name = "KwetterUser")
 public class User implements Serializable {
 
     @Id
@@ -27,6 +31,7 @@ public class User implements Serializable {
     @Size(min = 1, max = 32)
     private String username;
 
+    @NotNull
     @Size(min = 1, max = 32)
     private String password;
 
@@ -46,15 +51,21 @@ public class User implements Serializable {
     private Role role;
 
     @OneToMany(mappedBy = "poster")
-    private List<Post> posts;
+    private List<Post> posts  = new ArrayList<>();
 
     @ManyToMany(/*cascade = CascadeType.ALL*/)
-    private List<User> following;
+    private List<User> following  = new ArrayList<>();
 
     @ManyToMany(mappedBy = "following"/*, cascade = CascadeType.ALL*/)
-    private List<User> followers;
+    private List<User> followers  = new ArrayList<>();
 
     public User() {
+    }
+
+    public User(long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
     }
 
     public long getId() {
@@ -117,8 +128,10 @@ public class User implements Serializable {
         return role;
     }
 
-    public void setRole(Role role) {
+    public Role setRole(Role role) {
         this.role = role;
+        this.role.addUserRoles(this);
+        return this.role;
     }
 
     public List<Post> getPosts() {
@@ -145,14 +158,14 @@ public class User implements Serializable {
         this.followers = followers;
     }
 
-    
-    
     public void follow(User user) {
-        if (!following.contains(user)) {
-            following.add(user);
-        }
-        if (!user.followers.contains(this)) {
-            user.followers.add(this);
+        if (!user.equals(this)) {
+            if (!following.contains(user)) {
+                following.add(user);
+            }
+            if (!user.followers.contains(this)) {
+                user.followers.add(this);
+            }
         }
     }
 
@@ -164,4 +177,19 @@ public class User implements Serializable {
             following.remove(this);
         }
     }
+
+    public Post post(Post post) {
+        if (!this.posts.contains(post)) {
+            post.setPoster(this);
+            this.posts.add(post);
+        }
+        return post;
+    }
+
+    public void removePost(Post post) {
+        if (this.posts.contains(post)) {
+            this.posts.remove(post);
+        }
+    }
+    
 }

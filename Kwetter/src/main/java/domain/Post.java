@@ -18,11 +18,12 @@ import javax.validation.constraints.Size;
  * @version 0.0.1
  */
 @Entity
+@Table(name = "KwetterPost")
 public class Post implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @NotNull
     @Size(min = 1, max = 140)
@@ -38,11 +39,18 @@ public class Post implements Serializable {
     public Post() {
     }
 
-    public Long getId() {
+    public Post(long id, String content, Date date, User poster) {
+        this.id = id;
+        this.content = content;
+        this.date = date;
+        this.poster = poster;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
