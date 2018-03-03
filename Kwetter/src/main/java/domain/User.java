@@ -18,12 +18,14 @@ import javax.validation.constraints.Size;
  * @email
  * @version 0.0.1
  */
+
 @Entity
 @Table(name = "KwetterUser")
+@NamedQuery(name = "User.getAllUsers", query = "SELECT u FROM User u")
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(unique = true)
