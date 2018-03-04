@@ -19,15 +19,15 @@ import javax.validation.constraints.Size;
  * @version 0.0.1
  */
 
-@Entity
+@Entity 
 @Table(name = "KwetterUser")
 @NamedQuery(name = "User.getAllUsers", query = "SELECT u FROM User u")
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+ 
     @Column(unique = true)
     @Size(min = 1, max = 32)
     private String username;
@@ -48,16 +48,16 @@ public class User implements Serializable {
     @Size(min = 1, max = 255)
     private String icon;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     private Role role;
 
-    @OneToMany(mappedBy = "poster")
+    @OneToMany(mappedBy = "poster", cascade = CascadeType.ALL)
     private List<Post> posts  = new ArrayList<>();
 
-    @ManyToMany(/*cascade = CascadeType.ALL*/)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<User> following  = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "following"/*, cascade = CascadeType.ALL*/)
+    @ManyToMany(mappedBy = "following", cascade = CascadeType.ALL)
     private List<User> followers  = new ArrayList<>();
 
     public User() {
