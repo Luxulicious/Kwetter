@@ -8,15 +8,9 @@ package util;
 import domain.Post;
 import domain.Role;
 import domain.User;
-import java.io.Console;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import jdk.nashorn.internal.runtime.Debug;
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
-
 /**
  *
  * @author Tom
