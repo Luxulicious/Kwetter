@@ -32,12 +32,20 @@ public class UserDao {
 
     public void createUser(User user) {
         em.persist(user);
-        System.out.println("test"); 
     }
 
-    public User getUser(int userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public User getUser(long userId) {
+        return em.find(User.class, userId);
     }
+
+    public void follow(long userIdFollower, long userIdFollowing) {
+        User follower = getUser(userIdFollower);
+        User following = getUser(userIdFollowing);
+        follower.follow(following);
+        em.merge(follower);
+        em.merge(following);
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    } 
 
     public List<User> getFollowers(int userId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

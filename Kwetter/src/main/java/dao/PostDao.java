@@ -6,8 +6,11 @@
 package dao;
 
 import domain.Post;
+import domain.User;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -23,6 +26,9 @@ public class PostDao {
     @PersistenceContext
     EntityManager em;
 
+    @Inject
+    UserDao userDao;
+    
     public List<Post> getPostsByPoster(int userId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -41,5 +47,11 @@ public class PostDao {
 
     public List<Post> getTimeline(int userId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void createPost(long userId, String content) {
+        User user = userDao.getUser(userId);
+        Post post = user.post(new Post(userId, content, new Date()));
+        em.merge(post);
     }
 }

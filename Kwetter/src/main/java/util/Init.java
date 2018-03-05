@@ -8,6 +8,8 @@ package util;
 import dao.PostDao;
 import dao.RoleDao;
 import dao.UserDao;
+import domain.User;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -30,22 +32,45 @@ public class Init {
     @Inject
     PostDao postDao;
 
+    DummyData dummyData;
+
     @PostConstruct
     public void init() {
         System.out.println("Initializing...");
-        createUsers();
+        dummyData = new DummyData();
+        createUsersAndRoles();
+        followEachother();
+        createPosts();
         System.out.println("Done initializing");
     }
 
-    private void createUsers() {
+    private void createUsersAndRoles() {
         //TODO Convert this to for loop
-        DummyData dummyData = new DummyData();
+
         for (int i = 0; i < dummyData.users.size(); i++) {
             dummyData.users.get(i).setFollowers(null);
             dummyData.users.get(i).setFollowing(null);
             dummyData.users.get(i).setPosts(null);
             dummyData.users.get(i).getRole().setUserRoles(null);
             userDao.createUser(dummyData.users.get(i));
+        }
+    }
+
+    private void followEachother() {
+        List<User> users = userDao.getAllUsers();
+        for (int i = 0; i < users.size(); i++) {
+            for (int j = 0; j < users.size(); j++) {
+                if (!users.get(i).equals(users.get(j))) {
+                    userDao.follow(users.get(i).getId(), users.get(j).getId());
+                }
+            }
+        }
+    }
+
+    private void createPosts() {
+        List<User> users = userDao.getAllUsers();
+        for (int i = 0; i < users.size(); i++) {
+            postDao.createPost(users.get(i).getId(), "PSA " + users.get(i).getUsername());
         }
     }
 }
