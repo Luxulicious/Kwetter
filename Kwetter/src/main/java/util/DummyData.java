@@ -29,15 +29,14 @@ public class DummyData {
         followEachother();
         giveRoles();
         createPosts();
-        System.out.println(users.size() + " " + posts.size() + " " + roles.size());
-    }
+    } 
 
     private void createPosts() {
-        for (int i = 0; i < 10; i++) {
-            posts.add(users.get(0).post(new Post(0, "PSA " + users.get(0).getUsername(), new Timestamp(2018, 2, 26, 13, 22, 19 + i, 0), users.get(0))));
+        for (int i = 0; i < users.size(); i++) { 
+            posts.add(users.get(i).post(new Post(i, "PSA " + users.get(i).getUsername(), new Timestamp(2018, 2, 26, 13, 22, 19 + i, 0), users.get(i))));
         }
-    }
-
+    } 
+ 
     private void giveRoles() {
         roles.set(0, users.get(0).setRole(roles.get(0)));
         roles.set(1, users.get(1).setRole(roles.get(1)));
