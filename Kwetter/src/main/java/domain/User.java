@@ -18,14 +18,13 @@ import javax.validation.constraints.Size;
  * @email
  * @version 0.0.1
  */
-
 @Entity
 @Table(name = "KwetterUser")
 @NamedQuery(name = "User.getAllUsers", query = "SELECT u FROM User u")
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(unique = true)
@@ -48,19 +47,21 @@ public class User implements Serializable {
     @Size(min = 1, max = 255)
     private String icon;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     private Role role;
 
-    @OneToMany(mappedBy = "poster")
-    private List<Post> posts  = new ArrayList<>();
+    @OneToMany(mappedBy = "poster", cascade = CascadeType.ALL)
+    private List<Post> posts = new ArrayList<>();
 
-    @ManyToMany(/*cascade = CascadeType.ALL*/)
-    private List<User> following  = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "follow")
+    private List<User> following = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "following"/*, cascade = CascadeType.ALL*/)
-    private List<User> followers  = new ArrayList<>();
+    @ManyToMany(mappedBy = "following", cascade = CascadeType.ALL)
+    @JoinTable(name = "follow") 
+    private List<User> followers = new ArrayList<>();
 
-    public User() {
+    public User() { 
     }
 
     public User(long id, String username, String password) {
@@ -192,5 +193,5 @@ public class User implements Serializable {
             this.posts.remove(post);
         }
     }
-    
+
 }

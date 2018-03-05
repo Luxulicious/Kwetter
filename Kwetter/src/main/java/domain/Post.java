@@ -33,12 +33,18 @@ public class Post implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    @ManyToOne()
-    private User poster;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User poster; 
 
     public Post() {
     }
 
+    public Post(long id, String content, Date date) {
+        this.id = id;
+        this.content = content;
+        this.date = date;
+    }
+    
     public Post(long id, String content, Date date, User poster) {
         this.id = id;
         this.content = content;
@@ -48,7 +54,7 @@ public class Post implements Serializable {
 
     public long getId() {
         return id;
-    }
+    } 
 
     public void setId(long id) {
         this.id = id;

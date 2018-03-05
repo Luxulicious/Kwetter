@@ -5,7 +5,10 @@
  */
 package dao;
 
+import domain.Post;
+import domain.Role;
 import domain.User;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,36 +22,45 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class UserDao {
-    
+
     @PersistenceContext
     EntityManager em;
-    
+
     public List<User> getAllUsers() {
         return em.createNamedQuery("User.getAllUsers").getResultList();
     }
-    
+
     public void createUser(User user) {
         em.persist(user);
     }
-    
-    public User getUser(int userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+    public User getUser(long userId) {
+        return em.find(User.class, userId);
     }
-    
+
+    public void follow(long userIdFollower, long userIdFollowing) {
+        User follower = getUser(userIdFollower);
+        User following = getUser(userIdFollowing);
+        follower.follow(following);
+        em.merge(follower);
+        em.merge(following);
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    } 
+
     public List<User> getFollowers(int userId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public List<User> getFollowing(int userId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public long getFollowingCount(int userId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public long getFollowerCount(int userId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
