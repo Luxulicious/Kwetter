@@ -19,6 +19,24 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "KwetterPost")
+@NamedQueries({
+    @NamedQuery(name = "Post.getPostsByPoster",
+            query = "SELECT p FROM Post p WHERE p.poster_id = :poster_id")
+    ,
+@NamedQuery(name = "Post.getPostCountByPoster",
+            query = "SELECT COUNT(p) FROM Post p WHERE p.poster_id = :poster_id")
+    ,
+@NamedQuery(name = "Post.getRecentPostsByPoster",
+            query = "SELECT p FROM Post p WHERE p.poster_id = :poster_id ORDER BY p.date DESC LIMIT :limit")
+    ,
+@NamedQuery(name = "Post.getAllPosts",
+            query = "SELECT p FROM Post")
+    ,
+@NamedQuery(name = "Post.getTimeline",
+            query = "SELECT p FROM Post p "
+            + "INNER JOIN Follow f ON f.following_id = p.poster_id "
+            + "WHERE f.followers_id = :follower")
+})
 public class Post implements Serializable {
 
     @Id
@@ -34,7 +52,7 @@ public class Post implements Serializable {
     private Date date;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private User poster; 
+    private User poster;
 
     public Post() {
     }
@@ -44,7 +62,7 @@ public class Post implements Serializable {
         this.content = content;
         this.date = date;
     }
-    
+
     public Post(long id, String content, Date date, User poster) {
         this.id = id;
         this.content = content;
@@ -54,7 +72,7 @@ public class Post implements Serializable {
 
     public long getId() {
         return id;
-    } 
+    }
 
     public void setId(long id) {
         this.id = id;
@@ -83,6 +101,5 @@ public class Post implements Serializable {
     public void setPoster(User poster) {
         this.poster = poster;
     }
-    
-    
+
 }

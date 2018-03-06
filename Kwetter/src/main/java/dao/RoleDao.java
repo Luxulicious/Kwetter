@@ -5,7 +5,11 @@
  */
 package dao;
 
+import domain.Role;
+import domain.User;
+import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -20,4 +24,17 @@ public class RoleDao {
 
     @PersistenceContext
     EntityManager em;
+    
+    @Inject
+    UserDao userDao;
+
+    public List<Role> getAllRoles() {
+        return em.createNamedQuery("Role.getAllRoles").getResultList();
+    }
+
+    public void setUserRole (String roleName, long userId) {
+        User user = userDao.getUser(userId);
+        user.setRole(new Role(roleName));
+        em.merge(user);
+    }
 }
