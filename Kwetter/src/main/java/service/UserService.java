@@ -12,6 +12,7 @@ import domain.User;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import service.exceptions.ExceptionHandler;
 
 /**
  *
@@ -25,38 +26,35 @@ public class UserService {
     @Inject
     UserDao userDao;
 
-    private void NonExistingUserCheck(long userId) throws NonExistingUserException {
-        if (userDao.getUser(userId) == null) {
-            throw new NonExistingUserException();
-        }
-    }
-
+    @Inject
+    ExceptionHandler exh;
+    
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
 
     public User getUser(long userId) throws NonExistingUserException {
-        NonExistingUserCheck(userId);
+        exh.NonExistingUserCheck(userId);
         return userDao.getUser(userId);
     }
 
     public List<User> getFollowers(long userId) throws NonExistingUserException, NonExistingUserException, NonExistingUserException, NonExistingUserException {
-        NonExistingUserCheck(userId);
+        exh.NonExistingUserCheck(userId);
         return userDao.getFollowers(userId);
     }
 
     public long getFollowerCount(long userId) throws NonExistingUserException {
-        NonExistingUserCheck(userId);
+        exh.NonExistingUserCheck(userId);
         return userDao.getFollowerCount(userId);
     }
 
     public List<User> getFollowing(long userId) throws NonExistingUserException, NonExistingUserException, NonExistingUserException, NonExistingUserException {
-        NonExistingUserCheck(userId);
+        exh.NonExistingUserCheck(userId);
         return userDao.getFollowing(userId);
     }
 
     public long getFollowingCount(long userId) throws NonExistingUserException {
-        NonExistingUserCheck(userId);
+        exh.NonExistingUserCheck(userId);
         return userDao.getFollowingCount(userId);
     }
 
@@ -67,18 +65,17 @@ public class UserService {
     }
 
     public void updateUser(User user) throws NonExistingUserException {
-        NonExistingUserCheck(user.getId());
+        exh.NonExistingUserCheck(user.getId());
         userDao.updateUser(user);
     }
 
     public void deleteUser(long userId) throws NonExistingUserException {
-        NonExistingUserCheck(userId);
+        exh.NonExistingUserCheck(userId);
         userDao.deleteUser(userId);
     }
 
     public void follow(long userIdFollower, long userIdFollowing) throws NonExistingUserException {
-        NonExistingUserCheck(userIdFollower);
-        NonExistingUserCheck(userIdFollowing);
+        exh.NonExistingUserCheck(userIdFollower); 
+        exh.NonExistingUserCheck(userIdFollowing);
     }
-
 }

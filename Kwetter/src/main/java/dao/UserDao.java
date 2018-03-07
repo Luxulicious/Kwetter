@@ -30,7 +30,7 @@ public class UserDao {
     public UserDao(EntityManager em) {
         this.em = em;
     }
-    
+
     public List<User> getAllUsers() {
         return em.createNamedQuery("User.getAllUsers").getResultList();
     }
@@ -40,7 +40,6 @@ public class UserDao {
     }
 
     public void updateUser(User user) {
-
         em.merge(user);
     }
 
@@ -85,5 +84,4 @@ public class UserDao {
         query.setParameter("following", userId);
         return query.getFirstResult();
     }
-
 }
