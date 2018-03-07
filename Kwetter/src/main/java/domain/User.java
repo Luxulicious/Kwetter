@@ -20,7 +20,34 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "KwetterUser")
-@NamedQuery(name = "User.getAllUsers", query = "SELECT u FROM User u")
+@NamedQueries({
+    @NamedQuery(name = "User.getAllUsers",
+            query = "SELECT u FROM User u")
+    ,
+@NamedQuery(name = "User.getFollowers", query
+            = "SELECT u "
+            + "FROM User u "
+            + "INNER JOIN u.followers f "
+            + "WHERE u.following = :following")
+    ,
+@NamedQuery(name = "Üser.getFollowing",
+            query = "SELECT u "
+            + "FROM User u "
+            + "INNER JOIN u.following f "
+            + "WHERE u.followers = :follower")
+    ,
+@NamedQuery(name = "User.getFollowerCount",
+            query = "SELECT COUNT(u.id) "
+            + "FROM User u "
+            + "INNER JOIN u.followers f "
+            + "WHERE u.following = :following")
+    ,
+@NamedQuery(name = "Üser.getFollowingCount",
+            query = "SELECT COUNT(u.id) "
+            + "FROM User u "
+            + "INNER JOIN u.following f "
+            + "WHERE u.followers = :follower")
+})
 public class User implements Serializable {
 
     @Id
@@ -58,10 +85,10 @@ public class User implements Serializable {
     private List<User> following = new ArrayList<>();
 
     @ManyToMany(mappedBy = "following", cascade = CascadeType.ALL)
-    @JoinTable(name = "follow") 
+    @JoinTable(name = "follow")
     private List<User> followers = new ArrayList<>();
 
-    public User() { 
+    public User() {
     }
 
     public User(long id, String username, String password) {
