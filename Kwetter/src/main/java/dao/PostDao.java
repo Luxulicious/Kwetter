@@ -44,20 +44,21 @@ public class PostDao {
         return query.setParameter("poster_id", userId).getFirstResult();
     }
 
-    public List<Post> getRecentPostsByPoster(long userId, long limit) {
+    public List<Post> getRecentPostsByPoster(long userId, int limit) {
         Query query = em.createNamedQuery("Post.getRecentPostsByPoster");
-        query.setParameter("limit", limit);
         query.setParameter("poster_id", userId);
+        query.setMaxResults(limit);
         return query.getResultList();
     }
 
     public List<Post> getPostByQuery(String query) {
-        return em.createNamedQuery("Post.getPostByQuery").getResultList();
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //return em.createNamedQuery("Post.getPostByQuery").getResultList();
     }
 
     public List<Post> getTimeline(long userId) {
         Query query = em.createNamedQuery("Post.getTimeline");
-        query.setParameter("follower", userId);
+        query.setParameter("user_id", userId);
         return query.getResultList();
     }
 

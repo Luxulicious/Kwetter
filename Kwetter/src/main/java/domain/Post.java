@@ -21,21 +21,35 @@ import javax.validation.constraints.Size;
 @Table(name = "KwetterPost")
 @NamedQueries({
     @NamedQuery(name = "Post.getPostsByPoster",
-            query = "SELECT p FROM Post p WHERE p.poster_id = :poster_id")
+            query
+            = "SELECT p "
+            + "FROM Post p "
+            + "WHERE p.poster = :poster_id "
+            + "ORDER BY p.date DESC")
     ,
 @NamedQuery(name = "Post.getPostCountByPoster",
-            query = "SELECT COUNT(p) FROM Post p WHERE p.poster_id = :poster_id")
+            query
+            = "SELECT COUNT(p.id) "
+            + "FROM Post p "
+            + "WHERE p.poster = :poster_id "
+            + "ORDER BY p.date DESC")
     ,
 @NamedQuery(name = "Post.getRecentPostsByPoster",
-            query = "SELECT p FROM Post p WHERE p.poster_id = :poster_id ORDER BY p.date DESC LIMIT :limit")
-    ,
+            query
+            = "SELECT p "
+            + "FROM Post p "
+            + "WHERE p.poster = :poster_id "
+            + "ORDER BY p.date DESC")
+    , 
 @NamedQuery(name = "Post.getAllPosts",
-            query = "SELECT p FROM Post")
+            query
+            = "SELECT p "
+            + "FROM Post p "
+            + "ORDER BY p.date DESC")
     ,
-@NamedQuery(name = "Post.getTimeline",
-            query = "SELECT p FROM Post p "
-            + "INNER JOIN Follow f ON f.following_id = p.poster_id "
-            + "WHERE f.followers_id = :follower")
+@NamedQuery(name = "Post.getTimeLine",
+            query
+            = "SELECT p FROM Post p, User u WHERE p.poster = :user_id OR (p.poster = u.followers AND u.following = :user_id)  ORDER BY p.date DESC")
 })
 public class Post implements Serializable {
 
