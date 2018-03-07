@@ -24,7 +24,7 @@ public class RoleDao {
 
     @PersistenceContext
     EntityManager em;
-    
+
     @Inject
     UserDao userDao;
 
@@ -32,7 +32,7 @@ public class RoleDao {
         return em.createNamedQuery("Role.getAllRoles").getResultList();
     }
 
-    public void setUserRole (String roleName, long userId) {
+    public void setUserRole(String roleName, long userId) {
         User user = userDao.getUser(userId);
         user.setRole(new Role(roleName));
         em.merge(user);

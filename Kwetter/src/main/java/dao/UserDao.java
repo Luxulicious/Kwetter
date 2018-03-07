@@ -32,6 +32,16 @@ public class UserDao {
         em.persist(user);
     }
 
+    public void updateUser(User user) {
+
+        em.merge(user);
+    }
+
+    public void deleteUser(long userId) {
+        User user = getUser(userId);
+        em.detach(user);
+    }
+
     public User getUser(long userId) {
         return em.find(User.class, userId);
     }
