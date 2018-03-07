@@ -24,6 +24,13 @@ public class UserDao {
     @PersistenceContext
     EntityManager em;
 
+    public UserDao() {
+    }
+
+    public UserDao(EntityManager em) {
+        this.em = em;
+    }
+    
     public List<User> getAllUsers() {
         return em.createNamedQuery("User.getAllUsers").getResultList();
     }

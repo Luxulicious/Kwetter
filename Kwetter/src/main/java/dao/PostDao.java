@@ -29,19 +29,19 @@ public class PostDao {
 
     @Inject
     UserDao userDao;
-    
-    public List<Post> getAllPosts(){
+
+    public List<Post> getAllPosts() {
         return em.createNamedQuery("Post.getAllPosts").getResultList();
     }
-    
+
     public List<Post> getPostsByPoster(long userId) {
-         Query query = em.createNamedQuery("Post.getPostsByPoster");
-         return query.setParameter("poster_id", userId).getResultList();        
+        Query query = em.createNamedQuery("Post.getPostsByPoster");
+        return query.setParameter("poster_id", userId).getResultList();
     }
 
     public long getPostCountByPoster(long userId) {
-       Query query = em.createNamedQuery("Post.getPostCountByPoster");
-       return query.setParameter("poster_id", userId).getFirstResult();
+        Query query = em.createNamedQuery("Post.getPostCountByPoster");
+        return query.setParameter("poster_id", userId).getFirstResult();
     }
 
     public List<Post> getRecentPostsByPoster(long userId, long limit) {
