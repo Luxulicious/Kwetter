@@ -63,7 +63,7 @@ public class Init {
                 if (!users.get(i).equals(users.get(j))) {
                     userDao.follow(users.get(i).getId(), users.get(j).getId());
                 }
-            }
+            } 
         }
     }
 

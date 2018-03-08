@@ -3,15 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-package com.mycompany.testtraci4j;
+package service.exceptions;
 
 /**
  *
  * @author Tom
- * @email 
+ * @email
  * @version 0.0.1
  */
-public class testclass {
+public class NonExistingUserException extends Exception {
 
+    public NonExistingUserException() {
+
+    }
 }

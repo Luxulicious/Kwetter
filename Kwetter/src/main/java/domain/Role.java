@@ -18,6 +18,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "KwetterRole")
+@NamedQueries({
+    @NamedQuery(name = "Role.getAllRoles",
+            query = "SELECT r FROM Role r")
+})
 public class Role implements Serializable {
 
     @Id

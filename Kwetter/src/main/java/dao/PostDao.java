@@ -13,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,25 +29,37 @@ public class PostDao {
 
     @Inject
     UserDao userDao;
-    
-    public List<Post> getPostsByPoster(int userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+    public List<Post> getAllPosts() {
+        return em.createNamedQuery("Post.getAllPosts").getResultList();
     }
 
-    public long getPostCountByPoster(int userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Post> getPostsByPoster(long userId) {
+        Query query = em.createNamedQuery("Post.getPostsByPoster");
+        return query.setParameter("poster_id", userId).getResultList();
     }
 
-    public List<Post> getRecentPostsByPoster(int userId, int limit) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public long getPostCountByPoster(long userId) {
+        Query query = em.createNamedQuery("Post.getPostCountByPoster");
+        return query.setParameter("poster_id", userId).getFirstResult();
+    }
+
+    public List<Post> getRecentPostsByPoster(long userId, int limit) {
+        Query query = em.createNamedQuery("Post.getRecentPostsByPoster");
+        query.setParameter("poster_id", userId);
+        query.setMaxResults(limit);
+        return query.getResultList();
     }
 
     public List<Post> getPostByQuery(String query) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //return em.createNamedQuery("Post.getPostByQuery").getResultList();
     }
 
-    public List<Post> getTimeline(int userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Post> getTimeline(long userId) {
+        Query query = em.createNamedQuery("Post.getTimeline");
+        query.setParameter("user_id", userId);
+        return query.getResultList();
     }
 
     public void createPost(long userId, String content) {
