@@ -28,9 +28,9 @@ public class UserService {
 
     @Inject
     ExceptionHandler exh;
-    
+
     public List<User> getAllUsers() {
-        return userDao.getAllUsers();
+        return userDao.getAllUsers(); 
     }
 
     public User getUser(long userId) throws NonExistingUserException {
@@ -38,7 +38,7 @@ public class UserService {
         return userDao.getUser(userId);
     }
 
-    public List<User> getFollowers(long userId) throws NonExistingUserException, NonExistingUserException, NonExistingUserException, NonExistingUserException {
+    public List<User> getFollowers(long userId) throws NonExistingUserException {
         exh.NonExistingUserCheck(userId);
         return userDao.getFollowers(userId);
     }
@@ -48,7 +48,7 @@ public class UserService {
         return userDao.getFollowerCount(userId);
     }
 
-    public List<User> getFollowing(long userId) throws NonExistingUserException, NonExistingUserException, NonExistingUserException, NonExistingUserException {
+    public List<User> getFollowing(long userId) throws NonExistingUserException {
         exh.NonExistingUserCheck(userId);
         return userDao.getFollowing(userId);
     }
@@ -75,7 +75,7 @@ public class UserService {
     }
 
     public void follow(long userIdFollower, long userIdFollowing) throws NonExistingUserException {
-        exh.NonExistingUserCheck(userIdFollower); 
+        exh.NonExistingUserCheck(userIdFollower);
         exh.NonExistingUserCheck(userIdFollowing);
     }
 }
