@@ -2,7 +2,10 @@ package boundary.rest;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
 import service.UserService;
 
 /*
@@ -20,6 +23,15 @@ import service.UserService;
 @Stateless
 public class UserResource {
 
+    @Context
+    UriInfo uriInfo;
+    
     @Inject
     UserService userService;
+    
+    @GET
+    @Path("GetAll")
+    public void getAllUsers() {
+        
+    }
 }
