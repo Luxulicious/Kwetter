@@ -30,7 +30,7 @@ import javax.validation.constraints.Size;
             + "INNER JOIN u.followers f "
             + "WHERE u.following = :following")
     ,
-@NamedQuery(name = "Üser.getFollowing",
+@NamedQuery(name = "User.getFollowing",
             query = "SELECT u "
             + "FROM User u "
             + "INNER JOIN u.following f "
@@ -42,7 +42,7 @@ import javax.validation.constraints.Size;
             + "INNER JOIN u.followers f "
             + "WHERE u.following = :following")
     ,
-@NamedQuery(name = "Üser.getFollowingCount",
+@NamedQuery(name = "User.getFollowingCount",
             query = "SELECT COUNT(u.id) "
             + "FROM User u "
             + "INNER JOIN u.following f "
