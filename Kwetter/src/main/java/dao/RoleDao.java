@@ -37,4 +37,9 @@ public class RoleDao {
         user.setRole(new Role(roleName));
         em.merge(user);
     }
+    
+    public Role getRole(String roleName)
+    {
+        return em.find(Role.class, roleName);
+    }
 }

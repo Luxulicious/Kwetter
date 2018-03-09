@@ -58,7 +58,14 @@ public class UserDao {
         follower.follow(following);
         em.merge(follower);
         em.merge(following);
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void unfollow(long userIdFollower, long userIdFollowing) {
+        User follower = getUser(userIdFollower);
+        User following = getUser(userIdFollowing);
+        follower.unfollow(following);
+        em.merge(follower);
+        em.merge(following);
     }
 
     public List<User> getFollowers(long userId) {
