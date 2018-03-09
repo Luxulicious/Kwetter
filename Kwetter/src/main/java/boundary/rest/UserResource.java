@@ -6,8 +6,6 @@ import boundary.rest.response.GetMultipleResponse;
 import boundary.rest.response.GetSingleResponse;
 import boundary.rest.response.UpdateResponse;
 import domain.User;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -26,7 +24,7 @@ import service.exceptions.NonExistingUserException;
  * @email
  * @version 0.0.1
  */
-@Path("user")
+@Path("User")
 @Stateless
 public class UserResource {
 
