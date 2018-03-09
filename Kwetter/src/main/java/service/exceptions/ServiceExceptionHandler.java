@@ -5,6 +5,7 @@
  */
 package service.exceptions;
 
+import dao.RoleDao;
 import dao.UserDao;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -19,11 +20,19 @@ import javax.inject.Inject;
 public class ServiceExceptionHandler {
 
     @Inject
-    UserDao userDao;
+    private UserDao userDao;
+    
+    @Inject
+    private RoleDao roleDao;
 
     public void NonExistingUserCheck(long userId) throws NonExistingUserException {
         if (userDao.getUser(userId) == null) {
             throw new NonExistingUserException();
         }
+    }
+    
+    public void NonExistingRoleCheck(String roleName) throws NonExistingRoleException {
+        if(roleDao.getRole(roleName) == null)
+            throw new NonExistingRoleException();
     }
 }
