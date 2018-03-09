@@ -1,5 +1,5 @@
+package boundary.rest.response;
 
-import boundary.rest.response.ResponseBase;
 import java.util.List;
 
 public class GetMultipleResponse<T> extends ResponseBase {
