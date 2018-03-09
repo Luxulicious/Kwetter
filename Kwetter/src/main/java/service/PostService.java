@@ -6,12 +6,11 @@
 package service;
 
 import dao.PostDao;
-import dao.UserDao;
 import domain.Post;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import service.exceptions.ExceptionHandler;
+import service.exceptions.ServiceExceptionHandler;
 import service.exceptions.NonExistingUserException;
 
 /**
@@ -27,7 +26,7 @@ public class PostService {
     PostDao postDao;
     
     @Inject
-    ExceptionHandler exh;
+    ServiceExceptionHandler exh;
     
     public List<Post> getAllPosts() {
         return postDao.getAllPosts();
@@ -38,6 +37,8 @@ public class PostService {
         return postDao.getPostsByPoster(userId);
     }
     
+    //TODO Add max-min limit
+    //TODO Make limit a long
     public List<Post> getRecentPostsByPoster(long userId, int limit) throws NonExistingUserException {
         exh.NonExistingUserCheck(userId);
         return postDao.getRecentPostsByPoster(userId, limit);
@@ -48,9 +49,10 @@ public class PostService {
         return postDao.getPostCountByPoster(userId);
     }
     
-    public List<Post> getPostByQuery(String query) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        //return postDao.getPostByQuery(query);
+    public List<Post> getPostsByQuery(String query) {
+        return null;
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //return postDao.getPostsByQuery(query);
     }
     
     public List<Post> getTimeline(long userId) throws NonExistingUserException {

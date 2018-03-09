@@ -24,7 +24,7 @@ import service.exceptions.NonExistingUserException;
  * @email
  * @version 0.0.1
  */
-@Path("User")
+@Path("user")
 @Stateless
 public class UserResource {
 

@@ -16,7 +16,7 @@ import javax.inject.Inject;
  * @version 0.0.1
  */
 @Stateless
-public class ExceptionHandler {
+public class ServiceExceptionHandler {
 
     @Inject
     UserDao userDao;

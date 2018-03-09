@@ -12,7 +12,7 @@ import domain.User;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import service.exceptions.ExceptionHandler;
+import service.exceptions.ServiceExceptionHandler;
 
 /**
  *
@@ -27,7 +27,7 @@ public class UserService {
     UserDao userDao;
 
     @Inject
-    ExceptionHandler exh;
+    ServiceExceptionHandler exh;
 
     public List<User> getAllUsers() {
         return userDao.getAllUsers(); 
@@ -58,6 +58,7 @@ public class UserService {
         return userDao.getFollowingCount(userId);
     }
 
+    //TODO Add unique check
     public void createUser(User user) {
         user.setFollowers(null);
         user.setFollowing(null);
