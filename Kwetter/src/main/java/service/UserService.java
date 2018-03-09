@@ -76,6 +76,13 @@ public class UserService {
 
     public void follow(long userIdFollower, long userIdFollowing) throws NonExistingUserException {
         exh.NonExistingUserCheck(userIdFollower);
-        exh.NonExistingUserCheck(userIdFollowing);
+        exh.NonExistingUserCheck(userIdFollowing);   
+        userDao.follow(userIdFollower, userIdFollowing);
+    }
+    
+    public void unfollow(long userIdFollower, long userIdFollowing) throws NonExistingUserException {
+        exh.NonExistingUserCheck(userIdFollower);
+        exh.NonExistingUserCheck(userIdFollowing);   
+        userDao.unfollow(userIdFollower, userIdFollowing);
     }
 }

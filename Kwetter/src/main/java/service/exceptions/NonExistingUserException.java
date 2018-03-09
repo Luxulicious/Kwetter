@@ -11,6 +11,7 @@ package service.exceptions;
  * @email
  * @version 0.0.1
  */
+//TODO Add message and default message
 public class NonExistingUserException extends Exception {
 
     public NonExistingUserException() {
