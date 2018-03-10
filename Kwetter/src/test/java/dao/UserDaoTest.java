@@ -92,4 +92,16 @@ public class UserDaoTest {
         assertEquals(result.get(1), user2);
     }
 
+    @Test
+    public void createUserTest() {
+        User user1 = new User(0, "Tom", "Tom");
+        User user2 = new User(1, "Jeff", "Jeff");
+        tx.begin();
+        userDao.createUser(user1);
+        tx.commit();
+        tx.begin();
+        userDao.createUser(user2);
+        tx.commit();
+    }
+
 }
