@@ -12,6 +12,7 @@ import javax.ws.rs.core.Application;
  *
  * @author 878550
  */
+//TODO Make api have it's own Dtos
 @ApplicationPath("api")
 public class JAXRSConfig extends Application{
     
