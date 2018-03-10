@@ -12,7 +12,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import service.exceptions.NonExistingUserException;
-import service.exceptions.ServiceExceptionHandler;
 
 /**
  *
@@ -22,20 +21,28 @@ import service.exceptions.ServiceExceptionHandler;
  */
 @Stateless
 public class RoleService {
-    
+
     @Inject
     RoleDao roleDao;
-    
+
     @Inject
     ServiceExceptionHandler exh;
-    
+
     public List<Role> getAllRoles() {
         return roleDao.getAllRoles();
     }
-    
+
     public void setUserRole(String roleName, long userId) throws NonExistingRoleException, NonExistingUserException {
         exh.NonExistingRoleCheck(roleName);
         exh.NonExistingUserCheck(userId);
-        roleDao.setUserRole(roleName, userId);     
+        roleDao.setUserRole(roleName, userId);
+    }
+
+    void setUserDao(RoleDao roleDao) {
+        this.roleDao = roleDao;
+    }
+
+    void setExceptionHandler(ServiceExceptionHandler exh) {
+        this.exh = exh;
     }
 }

@@ -13,7 +13,7 @@ import javax.ws.rs.PathParam;
 import service.PostService;
 import service.UserService;
 import service.exceptions.NonExistingUserException;
-import service.exceptions.ServiceExceptionHandler;
+import service.ServiceExceptionHandler;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
