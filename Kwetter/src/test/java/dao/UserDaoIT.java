@@ -29,24 +29,14 @@ import util.Init;
  *
  * @author Tom
  */
-public class UserDaoTestIT {
+public class UserDaoIT {
 
     private EntityManagerFactory emf;
     private EntityManager em;
     private EntityTransaction tx;
     private UserDao userDao;
 
-    public UserDaoTestIT() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-
+    public UserDaoIT() {
     }
 
     @Before
