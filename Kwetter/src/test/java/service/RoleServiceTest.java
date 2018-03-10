@@ -28,7 +28,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import service.exceptions.ServiceExceptionHandler;
 
 /**
  *
@@ -38,8 +37,12 @@ import service.exceptions.ServiceExceptionHandler;
 public class RoleServiceTest {
 
     @Mock
-    private RoleDao roleDao;
+    private RoleDao roleDaoService;
     @Mock
+    private UserDao userDaoExh;
+    @Mock
+    private RoleDao roleDaoExh;
+    @InjectMocks
     private ServiceExceptionHandler exh;
     @InjectMocks
     private RoleService roleService;
@@ -53,8 +56,11 @@ public class RoleServiceTest {
     @Before
     public void setUp() {
         roleService = new RoleService();
-        roleService.setUserDao(roleDao);
+        roleService.setUserDao(roleDaoService);
+        exh.setUserDao(userDaoExh);
+        exh.setRoleDao(roleDaoExh);
         roleService.setExceptionHandler(exh);
+
         users = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             users.add(new User(i, "User " + i, "password"));
@@ -71,7 +77,7 @@ public class RoleServiceTest {
      */
     @Test
     public void getAllRolesTest() throws Exception {
-        when(roleDao.getAllRoles()).thenReturn(roles);
+        when(roleDaoService.getAllRoles()).thenReturn(roles);
         boolean result = roleService.getAllRoles().isEmpty();
         assertFalse(result);
     }
@@ -80,9 +86,14 @@ public class RoleServiceTest {
      * Test of setUserRole method, of class RoleService.
      */
     @Test
-    public void setUserRoleTest() throws Exception {
-        doNothing().when(roleDao).setUserRole(roles.get(1).getRoleName(), users.get(1).getId());
-        roleService.setUserRole(roles.get(1).getRoleName(), users.get(1).getId());
+    public void setUserRoleTest() throws Exception {       
+        User userSubject = users.get(1);
+        when(userDaoExh.getUser(userSubject.getId())).thenReturn(userSubject);
+        Role roleSubject = roles.get(1);
+        when(roleDaoExh.getRole(roleSubject.getName())).thenReturn(roleSubject);
+        
+        doNothing().when(roleDaoService).setUserRole(roleSubject.getRoleName(), userSubject.getId());
+        roleService.setUserRole(roleSubject.getRoleName(), userSubject.getId());
     }
 
 }

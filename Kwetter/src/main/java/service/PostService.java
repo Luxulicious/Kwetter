@@ -10,7 +10,6 @@ import domain.Post;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import service.exceptions.ServiceExceptionHandler;
 import service.exceptions.NonExistingUserException;
 
 /**
