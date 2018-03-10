@@ -204,7 +204,8 @@ public class UserDaoTestIT {
         tx.commit();
         user2.unfollow(user1);
         user1.unfollow(user2);
-        //TODO Fix this unfollow bug, it is prob caused by persistence problems
+        //TODO Fix this unfollow bug
+        //It is prob caused by persistence entities not being the same instance
         user2.setFollowers(new ArrayList<User>());
         
         assertSame(user1, userDao.getUser(user1.getId()));
