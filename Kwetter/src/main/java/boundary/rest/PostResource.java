@@ -13,7 +13,7 @@ import javax.ws.rs.PathParam;
 import service.PostService;
 import service.UserService;
 import service.exceptions.NonExistingUserException;
-import service.exceptions.ServiceExceptionHandler;
+import service.ServiceExceptionHandler;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -79,10 +79,10 @@ public class PostResource {
         return response;
     }
 
-    @Path("getPostsByQuery/{query}")
-    public GetMultipleResponse<Post> getPostsByQuery(@PathParam("query") String query) {
+    @Path("searchPost/{input}")
+    public GetMultipleResponse<Post> getPostsByQuery(@PathParam("input") String input) {
         GetMultipleResponse<Post> response = new GetMultipleResponse<>();
-        response.setRecords(postService.getPostsByQuery(query));
+        response.setRecords(postService.searchPost(input));
         return response;
     }
 

@@ -12,7 +12,6 @@ import domain.User;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import service.exceptions.ServiceExceptionHandler;
 
 /**
  *
@@ -30,7 +29,7 @@ public class UserService {
     ServiceExceptionHandler exh;
 
     public List<User> getAllUsers() {
-        return userDao.getAllUsers(); 
+        return userDao.getAllUsers();
     }
 
     public User getUser(long userId) throws NonExistingUserException {
@@ -77,13 +76,21 @@ public class UserService {
 
     public void follow(long userIdFollower, long userIdFollowing) throws NonExistingUserException {
         exh.NonExistingUserCheck(userIdFollower);
-        exh.NonExistingUserCheck(userIdFollowing);   
+        exh.NonExistingUserCheck(userIdFollowing);
         userDao.follow(userIdFollower, userIdFollowing);
     }
-    
+
     public void unfollow(long userIdFollower, long userIdFollowing) throws NonExistingUserException {
         exh.NonExistingUserCheck(userIdFollower);
-        exh.NonExistingUserCheck(userIdFollowing);   
+        exh.NonExistingUserCheck(userIdFollowing);
         userDao.unfollow(userIdFollower, userIdFollowing);
+    }
+
+    void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    void setExceptionHandler(ServiceExceptionHandler exh) {
+        this.exh = exh;
     }
 }
