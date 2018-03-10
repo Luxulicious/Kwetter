@@ -51,9 +51,10 @@ public class PostDao {
         return query.getResultList();
     }
 
-    public List<Post> getPostByQuery(String query) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        //return em.createNamedQuery("Post.getPostByQuery").getResultList();
+    public List<Post> searchPost(String input) {
+        Query query =  em.createNamedQuery("Post.searchPost"); 
+        query.setParameter("input", input);
+        return query.getResultList();
     }
 
     public List<Post> getTimeline(long userId) {

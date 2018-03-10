@@ -49,7 +49,9 @@ import javax.validation.constraints.Size;
     ,
 @NamedQuery(name = "Post.getTimeLine",
             query
-            = "SELECT p FROM Post p, User u WHERE p.poster = :user_id OR (p.poster = u.followers AND u.following = :user_id)  ORDER BY p.date DESC")
+            = "SELECT p FROM Post p, User u WHERE p.poster = :user_id OR (p.poster = u.followers AND u.following = :user_id)  ORDER BY p.date DESC"),
+@NamedQuery(name = "Post.searchPost",
+        query = "SELECT DISTINCT(p.id) FROM Post p, User u WHERE p.content LIKE :input OR (u.id = p.poster AND u.username LIKE :input)")
 })
 public class Post implements Serializable {
 
