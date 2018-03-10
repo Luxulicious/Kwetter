@@ -16,12 +16,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import service.exceptions.NonExistingRoleException;
 import service.exceptions.NonExistingUserException;
 import service.exceptions.ServiceExceptionHandler;
 
@@ -36,7 +38,6 @@ public class UserServiceTest {
     private UserDao userDao;
     @Mock
     private ServiceExceptionHandler exh;
-
     @InjectMocks
     private UserService userService;
 
@@ -58,10 +59,11 @@ public class UserServiceTest {
         userService = new UserService();
         userService.setUserDao(userDao);
         userService.setExceptionHandler(exh);
+        
         users = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             users.add(new User(i, "User " + i, "password"));
-        }
+        }        
     }
 
     @After
@@ -69,10 +71,10 @@ public class UserServiceTest {
     }
 
     @Test
-    public void getAllUsersTest() {
+    public void getAllUsersTest() { 
         when(userDao.getAllUsers()).thenReturn(users);
-        boolean result = !userService.getAllUsers().isEmpty();
-        assertTrue(result);
+        boolean result = userService.getAllUsers().isEmpty();
+        assertFalse(result);
     }
 
     @Test
@@ -135,7 +137,6 @@ public class UserServiceTest {
     @Test
     public void createUserTest() throws Exception {
         User userToAdd = new User(31478941, "Tom", "asfhosahfgdsga");
-        doNothing().when(userDao).createUser(userToAdd);
         userService.createUser(userToAdd);
     }
 
@@ -145,7 +146,6 @@ public class UserServiceTest {
     @Test
     public void updateUserTest() throws Exception {
         User userToUpdate = new User(0, "Jeff", "asdasrfdgd");
-        doNothing().when(userDao).updateUser(users.get(0));
         userService.updateUser(userToUpdate);
     }
 
@@ -178,5 +178,4 @@ public class UserServiceTest {
         doNothing().when(userDao).unfollow(users.get(0).getId(), users.get(1).getId());
         userService.unfollow(users.get(0).getId(), users.get(1).getId());
     }
-
 }
