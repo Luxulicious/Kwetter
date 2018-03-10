@@ -37,9 +37,6 @@ import service.exceptions.NonExistingUserException;
 @Stateless
 public class UserResource {
 
-    @Context
-    UriInfo uriInfo;
-
     @Inject
     UserService userService;
 
