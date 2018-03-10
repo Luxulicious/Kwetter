@@ -50,7 +50,7 @@ public class UserDaoTest {
 
     @Before
     public void setUp() {
-        emf = Persistence.createEntityManagerFactory("TestPU");
+        emf = Persistence.createEntityManagerFactory("KwetterTestPU");
 
         em = emf.createEntityManager();
         tx = em.getTransaction();
