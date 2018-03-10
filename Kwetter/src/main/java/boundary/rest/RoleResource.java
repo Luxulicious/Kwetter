@@ -10,11 +10,14 @@ import boundary.rest.response.UpdateResponse;
 import domain.Role;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import service.RoleService;
 import service.exceptions.NonExistingRoleException;
 import service.exceptions.NonExistingUserException;
+
 
 /**
  *
@@ -29,6 +32,7 @@ public class RoleResource {
     @Inject
     RoleService roleService;
 
+    @GET
     @Path("getAllRoles")
     public GetMultipleResponse<Role> getAllRoles() {
         GetMultipleResponse<Role> response = new GetMultipleResponse<>();
@@ -37,6 +41,7 @@ public class RoleResource {
         return response;
     }
 
+    @PUT
     @Path("setUserRole/{roleName}/{userId}")
     public UpdateResponse<Role> setUserRole(@PathParam("roleName") String roleName, @PathParam("userId") Long userId) {
         UpdateResponse<Role> response = new UpdateResponse<>();

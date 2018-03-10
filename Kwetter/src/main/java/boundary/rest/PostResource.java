@@ -1,19 +1,18 @@
 package boundary.rest;
 
+import boundary.rest.response.CreateResponse;
 import boundary.rest.response.GetMultipleResponse;
 import boundary.rest.response.GetSingleResponse;
 import domain.Post;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import service.PostService;
-import service.UserService;
 import service.exceptions.NonExistingUserException;
-import service.ServiceExceptionHandler;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -33,6 +32,7 @@ public class PostResource {
     @Inject
     PostService postService;
 
+    @GET
     @Path("getAllPosts")
     public GetMultipleResponse<Post> getAllPosts() {
         GetMultipleResponse<Post> response = new GetMultipleResponse<>();
@@ -41,6 +41,7 @@ public class PostResource {
         return response;
     }
 
+    @GET
     @Path("getPostsByPoster/{userId}")
     public GetMultipleResponse<Post> getPostsByPoster(@PathParam("userId") long userId) {
         GetMultipleResponse<Post> response = new GetMultipleResponse<>();
@@ -53,6 +54,7 @@ public class PostResource {
         return response;
     }
 
+    @GET
     @Path("getRecentPostsByPoster/{userId}/{limit}")
     public GetMultipleResponse<Post> getRecentPostsByPoster(
             @PathParam("userId") long userId,
@@ -67,6 +69,7 @@ public class PostResource {
         return response;
     }
 
+    @GET
     @Path("getPostCountByPoster/{userId}")
     public GetSingleResponse<Long> getPostCountByPoster(@PathParam("userId") long userId) {
         GetSingleResponse<Long> response = new GetSingleResponse<>();
@@ -79,6 +82,7 @@ public class PostResource {
         return response;
     }
 
+    @GET
     @Path("searchPost/{input}")
     public GetMultipleResponse<Post> getPostsByQuery(@PathParam("input") String input) {
         GetMultipleResponse<Post> response = new GetMultipleResponse<>();
@@ -86,6 +90,7 @@ public class PostResource {
         return response;
     }
 
+    @GET
     @Path("getTimeLine/{userId}")
     public GetMultipleResponse<Post> getTimeline(@PathParam("userId") long userId) {
         GetMultipleResponse<Post> response = new GetMultipleResponse<>();
@@ -96,6 +101,19 @@ public class PostResource {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
         return response;
+    }
+
+    @POST
+    @Path("createPost/{userId}/{content}")
+    public CreateResponse<Post> createPost(@PathParam("userId") long userId, @PathParam("content") String content) {
+        CreateResponse<Post> response = new CreateResponse<>();
+        try {
+            postService.createPost(userId, content);
+            response.setSucces(true);
+        } catch (NonExistingUserException ex) {
+            response.addMessage("Deze gebruiker bestaat niet.");
+        }
+        return response; 
     }
 
 }
