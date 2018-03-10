@@ -18,6 +18,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -33,6 +34,7 @@ import service.exceptions.ServiceExceptionHandler;
  *
  * @author Tom
  */
+@RunWith(MockitoJUnitRunner.class)
 public class RoleServiceTest {
 
     @Mock
@@ -46,14 +48,6 @@ public class RoleServiceTest {
     private List<Role> roles;
 
     public RoleServiceTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
     }
 
     @Before
@@ -72,15 +66,11 @@ public class RoleServiceTest {
 
     }
 
-    @After
-    public void tearDown() {
-    }
-
     /**
      * Test of getAllRoles method, of class RoleService.
      */
     @Test
-    public void testGetAllRoles() throws Exception {
+    public void getAllRolesTest() throws Exception {
         when(roleDao.getAllRoles()).thenReturn(roles);
         boolean result = roleService.getAllRoles().isEmpty();
         assertFalse(result);
@@ -90,7 +80,7 @@ public class RoleServiceTest {
      * Test of setUserRole method, of class RoleService.
      */
     @Test
-    public void testSetUserRole() throws Exception {
+    public void setUserRoleTest() throws Exception {
         doNothing().when(roleDao).setUserRole(roles.get(1).getRoleName(), users.get(1).getId());
         roleService.setUserRole(roles.get(1).getRoleName(), users.get(1).getId());
     }

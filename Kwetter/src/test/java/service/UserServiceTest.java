@@ -46,32 +46,20 @@ public class UserServiceTest {
     public UserServiceTest() {
     }
 
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
     @Before
     public void setUp() {
         userService = new UserService();
         userService.setUserDao(userDao);
         userService.setExceptionHandler(exh);
-        
+
         users = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             users.add(new User(i, "User " + i, "password"));
-        }        
-    }
-
-    @After
-    public void tearDown() {
+        }
     }
 
     @Test
-    public void getAllUsersTest() { 
+    public void getAllUsersTest() {
         when(userDao.getAllUsers()).thenReturn(users);
         boolean result = userService.getAllUsers().isEmpty();
         assertFalse(result);
@@ -79,29 +67,27 @@ public class UserServiceTest {
 
     @Test
     public void getUserTest() throws NonExistingUserException {
-        when(userDao.getUser(users.get(0).getId())).thenReturn(users.get(0));
-        User result = userService.getUser(users.get(0).getId());
         User expected = users.get(0);
+        when(userDao.getUser(users.get(0).getId())).thenReturn(expected);
+        User result = userService.getUser(users.get(0).getId());
         assertSame(result, expected);
     }
 
     @Test
     public void getFollowersTest() throws NonExistingUserException {
         users.get(0).follow(users.get(1));
-        List<User> followers = users.get(1).getFollowers();
-        when(userDao.getFollowers(users.get(1).getId())).thenReturn(followers);
-        List<User> result = userService.getFollowers(users.get(1).getId());
         List<User> expected = users.get(1).getFollowers();
+        when(userDao.getFollowers(users.get(1).getId())).thenReturn(expected);
+        List<User> result = userService.getFollowers(users.get(1).getId());
         assertSame(result, expected);
     }
 
     @Test
     public void getFollowerCountTest() throws Exception {
         users.get(0).follow(users.get(1));
-        List<User> followers = users.get(1).getFollowers();
-        when(userDao.getFollowerCount(users.get(1).getId())).thenReturn(new Long(followers.size()));
-        Long result = userService.getFollowerCount(users.get(1).getId());
         Long expected = Long.valueOf(users.get(1).getFollowers().size());
+        when(userDao.getFollowerCount(users.get(1).getId())).thenReturn(expected);
+        Long result = userService.getFollowerCount(users.get(1).getId());
         assertSame(result, expected);
     }
 
@@ -111,10 +97,9 @@ public class UserServiceTest {
     @Test
     public void getFollowingTest() throws Exception {
         users.get(0).follow(users.get(1));
-        List<User> following = users.get(0).getFollowing();
-        when(userDao.getFollowing(users.get(0).getId())).thenReturn(following);
-        List<User> result = userService.getFollowing(users.get(0).getId());
         List<User> expected = users.get(0).getFollowing();
+        when(userDao.getFollowing(users.get(0).getId())).thenReturn(expected);
+        List<User> result = userService.getFollowing(users.get(0).getId());
         assertSame(result, expected);
     }
 
@@ -124,10 +109,9 @@ public class UserServiceTest {
     @Test
     public void getFollowingCountTest() throws Exception {
         users.get(0).follow(users.get(1));
-        List<User> following = users.get(0).getFollowing();
-        when(userDao.getFollowingCount(users.get(0).getId())).thenReturn(new Long(following.size()));
-        Long result = userService.getFollowingCount(users.get(0).getId());
         Long expected = Long.valueOf(users.get(0).getFollowing().size());
+        when(userDao.getFollowingCount(users.get(0).getId())).thenReturn(expected);
+        Long result = userService.getFollowingCount(users.get(0).getId());
         assertSame(result, expected);
     }
 
