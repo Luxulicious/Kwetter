@@ -70,7 +70,7 @@ public class Init {
     private void createPosts() {
         List<User> users = userDao.getAllUsers();
         for (int i = 0; i < users.size(); i++) {
-            postDao.createPost(users.get(i).getId(), "PSA " + users.get(i).getUsername());
+            postDao.createNewPost(users.get(i).getId(), "PSA " + users.get(i).getUsername());
         }
     }
 }

@@ -27,25 +27,25 @@ import javax.validation.constraints.Size;
 @NamedQuery(name = "User.getFollowers", query
             = "SELECT u "
             + "FROM User u "
-            + "INNER JOIN u.followers f "
+            + "LEFT JOIN u.followers f "
             + "WHERE u.following = :following")
     ,
 @NamedQuery(name = "User.getFollowing",
             query = "SELECT u "
             + "FROM User u "
-            + "INNER JOIN u.following f "
+            + "LEFT JOIN u.following f "
             + "WHERE u.followers = :follower")
     ,
 @NamedQuery(name = "User.getFollowerCount",
             query = "SELECT COUNT(u.id) "
             + "FROM User u "
-            + "INNER JOIN u.followers f "
+            + "LEFT JOIN u.followers f "
             + "WHERE u.following = :following")
     ,
 @NamedQuery(name = "User.getFollowingCount",
             query = "SELECT COUNT(u.id) "
             + "FROM User u "
-            + "INNER JOIN u.following f "
+            + "LEFT JOIN u.following f "
             + "WHERE u.followers = :follower")
 })
 public class User implements Serializable {
@@ -203,7 +203,7 @@ public class User implements Serializable {
             following.remove(user);
         }
         if (user.followers.contains(this)) {
-            following.remove(this);
+            followers.remove(this);
         }
     }
 

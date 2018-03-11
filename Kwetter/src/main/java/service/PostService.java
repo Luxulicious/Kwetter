@@ -51,14 +51,14 @@ public class PostService {
         return postDao.searchPost(input);
     }
 
-    public List<Post> getTimeline(long userId) throws NonExistingUserException {
+    public List<Post> getTimeline(long userId, int limit) throws NonExistingUserException {
         exh.NonExistingUserCheck(userId);
-        return postDao.getTimeline(userId);
+        return postDao.getTimeline(userId, limit);
     }
 
-    public void createPost(long userId, String content) throws NonExistingUserException {
+    public void createNewPost(long userId, String content) throws NonExistingUserException {
         exh.NonExistingUserCheck(userId);
-        postDao.createPost(userId, content);
+        postDao.createNewPost(userId, content);
     }
 
     void setExceptionHandler(ServiceExceptionHandler exh) {

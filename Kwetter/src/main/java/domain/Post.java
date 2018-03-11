@@ -47,11 +47,28 @@ import javax.validation.constraints.Size;
             + "FROM Post p "
             + "ORDER BY p.date DESC")
     ,
-@NamedQuery(name = "Post.getTimeLine",
+@NamedQuery(name = "Post.getTimeline",
             query
-            = "SELECT p FROM Post p, User u WHERE p.poster = :user_id OR (p.poster = u.followers AND u.following = :user_id)  ORDER BY p.date DESC"),
+            = "SELECT DISTINCT(p.id) "
+            + "FROM Post p, User u "
+            + "WHERE  u.followers = :user_id "
+            + "OR p.poster = :user_id "
+            + "ORDER BY p.date DESC")
+//            = "SELECT p, u FROM Post p, User u "
+//            + "WHERE p.poster = u.followers "
+//            + "AND (p.poster = :user_id "
+//            + "OR u.following = :user_id) "
+//            + "ORDER BY p.date DESC")
+    ,
 @NamedQuery(name = "Post.searchPost",
-        query = "SELECT DISTINCT(p.id) FROM Post p, User u WHERE p.content LIKE :input OR (u.id = p.poster AND u.username LIKE :input)")
+            query = "SELECT DISTINCT(p.id) "
+                    + "FROM Post p "
+                    + "WHERE p.content LIKE :input "
+                    + "OR p.poster.username LIKE :input")
+//            = "SELECT DISTINCT(p.id) "
+//            + "FROM Post p "
+//            + "WHERE p.content LIKE :input "
+//            + "OR   LIKE :input)")
 })
 public class Post implements Serializable {
 
@@ -77,6 +94,12 @@ public class Post implements Serializable {
         this.id = id;
         this.content = content;
         this.date = date;
+    }
+
+    public Post(String content, Date date, User poster) {
+        this.content = content;
+        this.date = date;
+        this.poster = poster;
     }
 
     public Post(long id, String content, Date date, User poster) {
