@@ -8,19 +8,19 @@ import boundary.rest.response.UpdateResponse;
 import domain.User;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 import service.UserService;
 import service.exceptions.NonExistingUserException;
-
-
-
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -41,6 +41,7 @@ public class UserResource {
     UserService userService;
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getAllUsers")
     public GetMultipleResponse<User> getAllUsers() {
         GetMultipleResponse<User> response = new GetMultipleResponse<>();
@@ -50,6 +51,7 @@ public class UserResource {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getUser/{userId}")
     public GetSingleResponse<User> getUser(@PathParam("userId") long userId) {
         GetSingleResponse<User> response = new GetSingleResponse<>();
@@ -63,6 +65,7 @@ public class UserResource {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowers/{userId}")
     public GetMultipleResponse<User> getFollowers(@PathParam("userId") long userId) {
         GetMultipleResponse<User> response = new GetMultipleResponse<>();
@@ -76,6 +79,7 @@ public class UserResource {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowerCount/{userId}")
     public GetSingleResponse<Long> getFollowerCount(@PathParam("userId") long userId) {
         GetSingleResponse<Long> response = new GetSingleResponse<>();
@@ -89,6 +93,7 @@ public class UserResource {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowing/{userId}")
     public GetMultipleResponse<User> getFollowing(@PathParam("userId") long userId) {
         GetMultipleResponse<User> response = new GetMultipleResponse<>();
@@ -102,6 +107,7 @@ public class UserResource {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowingCount/{userId}")
     public GetSingleResponse<Long> getFollowingCount(@PathParam("userId") long userId) {
         GetSingleResponse<Long> response = new GetSingleResponse<>();
@@ -115,8 +121,10 @@ public class UserResource {
     }
 
     @POST
-    @Path("createUser/{user}")
-    public CreateResponse<User> createUser(@PathParam("user") User user) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("createUser")
+    public CreateResponse<User> createUser(User user) {
         CreateResponse<User> response = new CreateResponse<>();
         userService.createUser(user);
         response.setSucces(true);
@@ -124,8 +132,10 @@ public class UserResource {
     }
 
     @PUT
-    @Path("updateUser/{user}")
-    public UpdateResponse<User> updateUser(@PathParam("user") User user) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("updateUser")
+    public UpdateResponse<User> updateUser(User user) {
         UpdateResponse<User> response = new UpdateResponse<>();
         try {
             userService.updateUser(user);
@@ -137,6 +147,7 @@ public class UserResource {
     }
 
     @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("deleteResponse/{userId}")
     public DeleteResponse<User> deleteResponse(@PathParam("userId") long userId) {
         DeleteResponse<User> response = new DeleteResponse<>();
@@ -150,6 +161,7 @@ public class UserResource {
     }
 
     @PUT
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("follow/{userIdFollower}/{userIdFollowing}")
     public UpdateResponse<User> follow(
             @PathParam("userIdFollower") long userIdFollower,
@@ -165,6 +177,7 @@ public class UserResource {
     }
 
     @PUT
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("unfollow/{userIdFollower}/{userIdFollowing}")
     public UpdateResponse<User> unfollow(
             @PathParam("userIdFollower") long userIdFollower,

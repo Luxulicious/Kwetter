@@ -10,6 +10,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import service.PostService;
 import service.exceptions.NonExistingUserException;
 
@@ -33,6 +35,7 @@ public class PostResource {
     PostService postService;
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getAllPosts")
     public GetMultipleResponse<Post> getAllPosts() {
         GetMultipleResponse<Post> response = new GetMultipleResponse<>();
@@ -42,6 +45,7 @@ public class PostResource {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getPostsByPoster/{userId}")
     public GetMultipleResponse<Post> getPostsByPoster(@PathParam("userId") long userId) {
         GetMultipleResponse<Post> response = new GetMultipleResponse<>();
@@ -55,6 +59,7 @@ public class PostResource {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getRecentPostsByPoster/{userId}/{limit}")
     public GetMultipleResponse<Post> getRecentPostsByPoster(
             @PathParam("userId") long userId,
@@ -70,6 +75,7 @@ public class PostResource {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getPostCountByPoster/{userId}")
     public GetSingleResponse<Long> getPostCountByPoster(@PathParam("userId") long userId) {
         GetSingleResponse<Long> response = new GetSingleResponse<>();
@@ -83,6 +89,7 @@ public class PostResource {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("searchPost/{input}")
     public GetMultipleResponse<Post> getPostsByQuery(@PathParam("input") String input) {
         GetMultipleResponse<Post> response = new GetMultipleResponse<>();
@@ -91,6 +98,7 @@ public class PostResource {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getTimeLine/{userId}/{limit}")
     public GetMultipleResponse<Post> getTimeline(@PathParam("userId") long userId, @PathParam("limit") int limit) {
         GetMultipleResponse<Post> response = new GetMultipleResponse<>();
@@ -104,6 +112,7 @@ public class PostResource {
     }
 
     @POST
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("createNewPost/{userId}/{content}")
     public CreateResponse<Post> createNewPost(@PathParam("userId") long userId, @PathParam("content") String content) {
         CreateResponse<Post> response = new CreateResponse<>();
