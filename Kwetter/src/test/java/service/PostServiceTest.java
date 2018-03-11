@@ -152,13 +152,13 @@ public class PostServiceTest {
         userSubject1.follow(userSubject2);
         List<Post> expected = userSubject1.getPosts();
         expected.addAll(userSubject2.getPosts());
-        when(postDaoService.getTimeline(userSubject1.getId())).thenReturn(expected);
-        List<Post> result = postService.getTimeline(userSubject1.getId());
+        when(postDaoService.getTimeline(userSubject1.getId(), 1)).thenReturn(expected);
+        List<Post> result = postService.getTimeline(userSubject1.getId(), 1);
         assertSame(result, expected);
     }
 
     /**
-     * Test of createPost method, of class PostService.
+     * Test of createNewPost method, of class PostService.
      */
     @Test
     public void createPostTest() throws Exception {
@@ -166,7 +166,7 @@ public class PostServiceTest {
         when(userDaoExh.getUser(userSubject.getId())).thenReturn(userSubject);
 
         Post postToAdd = new Post(31478941, "Some message to add.", new Date());
-        doNothing().when(postDaoService).createPost(userSubject.getId(), postToAdd.getContent());
-        postService.createPost(userSubject.getId(), postToAdd.getContent());
+        doNothing().when(postDaoService).createNewPost(userSubject.getId(), postToAdd.getContent());
+        postService.createNewPost(userSubject.getId(), postToAdd.getContent());
     }
 }

@@ -42,7 +42,6 @@ public class UserDaoIT {
     @Before
     public void setUp() {
         emf = Persistence.createEntityManagerFactory("KwetterTestPU");
-
         em = emf.createEntityManager();
         tx = em.getTransaction();
         userDao = new UserDao(em);

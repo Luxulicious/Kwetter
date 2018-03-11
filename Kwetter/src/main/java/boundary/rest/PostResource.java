@@ -91,11 +91,11 @@ public class PostResource {
     }
 
     @GET
-    @Path("getTimeLine/{userId}")
-    public GetMultipleResponse<Post> getTimeline(@PathParam("userId") long userId) {
+    @Path("getTimeLine/{userId}/{limit}")
+    public GetMultipleResponse<Post> getTimeline(@PathParam("userId") long userId, @PathParam("limit") int limit) {
         GetMultipleResponse<Post> response = new GetMultipleResponse<>();
         try {
-            response.setRecords(postService.getTimeline(userId));
+            response.setRecords(postService.getTimeline(userId, limit));
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
@@ -104,16 +104,16 @@ public class PostResource {
     }
 
     @POST
-    @Path("createPost/{userId}/{content}")
-    public CreateResponse<Post> createPost(@PathParam("userId") long userId, @PathParam("content") String content) {
+    @Path("createNewPost/{userId}/{content}")
+    public CreateResponse<Post> createNewPost(@PathParam("userId") long userId, @PathParam("content") String content) {
         CreateResponse<Post> response = new CreateResponse<>();
         try {
-            postService.createPost(userId, content);
+            postService.createNewPost(userId, content);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response; 
+        return response;
     }
 
 }

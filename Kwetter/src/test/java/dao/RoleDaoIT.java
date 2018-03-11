@@ -42,7 +42,6 @@ public class RoleDaoIT {
     @Before
     public void setUp() {
         emf = Persistence.createEntityManagerFactory("KwetterTestPU");
-
         em = emf.createEntityManager();
         tx = em.getTransaction();
         roleDao = new RoleDao(em);
