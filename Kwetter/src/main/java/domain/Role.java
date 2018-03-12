@@ -57,14 +57,6 @@ public class Role implements Serializable {
         this.userRoles = userRoles;
     }
 
-    public String getName() {
-        return roleName;
-    }
-
-    public void setName(String name) {
-        this.roleName = name;
-    }
-
     public void addUserRoles(User user) {
         if (!userRoles.contains(user)) {
             userRoles.add(user);
