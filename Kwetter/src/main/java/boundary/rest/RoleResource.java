@@ -5,11 +5,16 @@
  */
 package boundary.rest;
 
+import boundary.rest.dto.RoleDTO;
+import boundary.rest.dto.UserDTO;
 import boundary.rest.response.GetMultipleResponse;
 import boundary.rest.response.UpdateResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import domain.Role;
+import domain.User;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -39,19 +44,22 @@ public class RoleResource {
     @Path("getAllRoles")
     @Produces(MediaType.APPLICATION_JSON)
     public String getAllRoles() {
-        GetMultipleResponse<Role> response = new GetMultipleResponse<>();
-        response.setRecords(roleService.getAllRoles());
+        GetMultipleResponse<RoleDTO> response = new GetMultipleResponse<>();
+        List<RoleDTO> records = new ArrayList<>();
+        List<Role> roles = roleService.getAllRoles();
+        for (int i = 0; i < roles.size(); i++) {
+            records.add(new RoleDTO(roles.get(i)));
+        }
+        response.setRecords(records);
         response.setSucces(true);
-        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
-        return gson.create().toJson(response);
-
+        return new Gson().toJson(response);
     }
 
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Path("setUserRole/{roleName}/{userId}")
     public String setUserRole(@PathParam("roleName") String roleName, @PathParam("userId") Long userId) {
-        UpdateResponse<Role> response = new UpdateResponse<>();
+        UpdateResponse<RoleDTO> response = new UpdateResponse<>();
         try {
             roleService.setUserRole(roleName, userId);
             response.setSucces(true);
@@ -60,8 +68,6 @@ public class RoleResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
-        return gson.create().toJson(response);
-
+        return new Gson().toJson(response);
     }
 }
