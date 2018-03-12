@@ -5,9 +5,11 @@
  */
 package domain;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -50,40 +52,52 @@ import javax.validation.constraints.Size;
 })
 public class User implements Serializable {
 
+    @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Expose
     @Column(unique = true)
     @Size(min = 1, max = 32)
     private String username;
 
+    @Expose
     @NotNull
     @Size(min = 1, max = 32)
     private String password;
 
+    @Expose
     @Size(min = 1, max = 255)
     private String bio;
 
+    @Expose
     @Size(min = 1, max = 255)
     private String location;
 
+    @Expose
     @Size(min = 1, max = 32)
     private String website;
 
+    @Expose
     @Size(min = 1, max = 255)
     private String icon;
 
+    @Expose
     @ManyToOne(cascade = CascadeType.ALL)
     private Role role;
 
+    @Expose
+    @JsonbTransient
     @OneToMany(mappedBy = "poster", cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
 
+    @JsonbTransient
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "follow")
     private List<User> following = new ArrayList<>();
 
+    @JsonbTransient
     @ManyToMany(mappedBy = "following", cascade = CascadeType.ALL)
     @JoinTable(name = "follow")
     private List<User> followers = new ArrayList<>();

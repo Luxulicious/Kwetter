@@ -5,6 +5,8 @@ import boundary.rest.response.DeleteResponse;
 import boundary.rest.response.GetMultipleResponse;
 import boundary.rest.response.GetSingleResponse;
 import boundary.rest.response.UpdateResponse;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import domain.User;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -43,17 +45,18 @@ public class UserResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getAllUsers")
-    public GetMultipleResponse<User> getAllUsers() {
+    public String getAllUsers() {
         GetMultipleResponse<User> response = new GetMultipleResponse<>();
         response.setRecords(userService.getAllUsers());
         response.setSucces(true);
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getUser/{userId}")
-    public GetSingleResponse<User> getUser(@PathParam("userId") long userId) {
+    public String getUser(@PathParam("userId") long userId) {
         GetSingleResponse<User> response = new GetSingleResponse<>();
         try {
             response.setRecord(userService.getUser(userId));
@@ -61,13 +64,15 @@ public class UserResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowers/{userId}")
-    public GetMultipleResponse<User> getFollowers(@PathParam("userId") long userId) {
+    public String getFollowers(@PathParam("userId") long userId) {
         GetMultipleResponse<User> response = new GetMultipleResponse<>();
         try {
             response.setRecords(userService.getFollowers(userId));
@@ -75,13 +80,15 @@ public class UserResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowerCount/{userId}")
-    public GetSingleResponse<Long> getFollowerCount(@PathParam("userId") long userId) {
+    public String getFollowerCount(@PathParam("userId") long userId) {
         GetSingleResponse<Long> response = new GetSingleResponse<>();
         try {
             response.setRecord(userService.getFollowerCount(userId));
@@ -89,13 +96,15 @@ public class UserResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowing/{userId}")
-    public GetMultipleResponse<User> getFollowing(@PathParam("userId") long userId) {
+    public String getFollowing(@PathParam("userId") long userId) {
         GetMultipleResponse<User> response = new GetMultipleResponse<>();
         try {
             response.setRecords(userService.getFollowing(userId));
@@ -103,13 +112,15 @@ public class UserResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowingCount/{userId}")
-    public GetSingleResponse<Long> getFollowingCount(@PathParam("userId") long userId) {
+    public String getFollowingCount(@PathParam("userId") long userId) {
         GetSingleResponse<Long> response = new GetSingleResponse<>();
         try {
             response.setRecord(userService.getFollowingCount(userId));
@@ -117,25 +128,29 @@ public class UserResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("createUser")
-    public CreateResponse<User> createUser(User user) {
+    public String createUser(User user) {
         CreateResponse<User> response = new CreateResponse<>();
         userService.createUser(user);
         response.setSucces(true);
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("updateUser")
-    public UpdateResponse<User> updateUser(User user) {
+    public String updateUser(User user) {
         UpdateResponse<User> response = new UpdateResponse<>();
         try {
             userService.updateUser(user);
@@ -143,13 +158,15 @@ public class UserResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Path("deleteResponse/{userId}")
-    public DeleteResponse<User> deleteResponse(@PathParam("userId") long userId) {
+    public String deleteResponse(@PathParam("userId") long userId) {
         DeleteResponse<User> response = new DeleteResponse<>();
         try {
             userService.deleteUser(userId);
@@ -157,13 +174,15 @@ public class UserResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Path("follow/{userIdFollower}/{userIdFollowing}")
-    public UpdateResponse<User> follow(
+    public String follow(
             @PathParam("userIdFollower") long userIdFollower,
             @PathParam("userIdFollowing") long userIdFollowing) {
         UpdateResponse<User> response = new UpdateResponse<>();
@@ -173,13 +192,15 @@ public class UserResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker(s) bestaat(/n) niet.");
         }
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Path("unfollow/{userIdFollower}/{userIdFollowing}")
-    public UpdateResponse<User> unfollow(
+    public String unfollow(
             @PathParam("userIdFollower") long userIdFollower,
             @PathParam("userIdFollowing") long userIdFollowing) {
         UpdateResponse<User> response = new UpdateResponse<>();
@@ -189,6 +210,8 @@ public class UserResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker(s) bestaat(/n) niet.");
         }
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 }

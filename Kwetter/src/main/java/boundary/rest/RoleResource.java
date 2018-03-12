@@ -7,6 +7,8 @@ package boundary.rest;
 
 import boundary.rest.response.GetMultipleResponse;
 import boundary.rest.response.UpdateResponse;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import domain.Role;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -36,17 +38,19 @@ public class RoleResource {
     @GET
     @Path("getAllRoles")
     @Produces(MediaType.APPLICATION_JSON)
-    public GetMultipleResponse<Role> getAllRoles() {
+    public String getAllRoles() {
         GetMultipleResponse<Role> response = new GetMultipleResponse<>();
         response.setRecords(roleService.getAllRoles());
         response.setSucces(true);
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Path("setUserRole/{roleName}/{userId}")
-    public UpdateResponse<Role> setUserRole(@PathParam("roleName") String roleName, @PathParam("userId") Long userId) {
+    public String setUserRole(@PathParam("roleName") String roleName, @PathParam("userId") Long userId) {
         UpdateResponse<Role> response = new UpdateResponse<>();
         try {
             roleService.setUserRole(roleName, userId);
@@ -56,6 +60,8 @@ public class RoleResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 }

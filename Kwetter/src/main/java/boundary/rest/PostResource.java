@@ -3,6 +3,8 @@ package boundary.rest;
 import boundary.rest.response.CreateResponse;
 import boundary.rest.response.GetMultipleResponse;
 import boundary.rest.response.GetSingleResponse;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import domain.Post;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -37,17 +39,19 @@ public class PostResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getAllPosts")
-    public GetMultipleResponse<Post> getAllPosts() {
+    public String getAllPosts() {
         GetMultipleResponse<Post> response = new GetMultipleResponse<>();
         response.setRecords(postService.getAllPosts());
         response.setSucces(true);
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getPostsByPoster/{userId}")
-    public GetMultipleResponse<Post> getPostsByPoster(@PathParam("userId") long userId) {
+    public String getPostsByPoster(@PathParam("userId") long userId) {
         GetMultipleResponse<Post> response = new GetMultipleResponse<>();
         try {
             response.setRecords(postService.getPostsByPoster(userId));
@@ -55,13 +59,15 @@ public class PostResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getRecentPostsByPoster/{userId}/{limit}")
-    public GetMultipleResponse<Post> getRecentPostsByPoster(
+    public String getRecentPostsByPoster(
             @PathParam("userId") long userId,
             @PathParam("limit") int limit) {
         GetMultipleResponse<Post> response = new GetMultipleResponse<>();
@@ -71,13 +77,15 @@ public class PostResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getPostCountByPoster/{userId}")
-    public GetSingleResponse<Long> getPostCountByPoster(@PathParam("userId") long userId) {
+    public String getPostCountByPoster(@PathParam("userId") long userId) {
         GetSingleResponse<Long> response = new GetSingleResponse<>();
         try {
             response.setRecord(postService.getPostCountByPoster(userId));
@@ -85,22 +93,26 @@ public class PostResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("searchPost/{input}")
-    public GetMultipleResponse<Post> getPostsByQuery(@PathParam("input") String input) {
+    public String getPostsByQuery(@PathParam("input") String input) {
         GetMultipleResponse<Post> response = new GetMultipleResponse<>();
         response.setRecords(postService.searchPost(input));
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getTimeLine/{userId}/{limit}")
-    public GetMultipleResponse<Post> getTimeline(@PathParam("userId") long userId, @PathParam("limit") int limit) {
+    public String getTimeline(@PathParam("userId") long userId, @PathParam("limit") int limit) {
         GetMultipleResponse<Post> response = new GetMultipleResponse<>();
         try {
             response.setRecords(postService.getTimeline(userId, limit));
@@ -108,13 +120,15 @@ public class PostResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("createNewPost/{userId}/{content}")
-    public CreateResponse<Post> createNewPost(@PathParam("userId") long userId, @PathParam("content") String content) {
+    public String createNewPost(@PathParam("userId") long userId, @PathParam("content") String content) {
         CreateResponse<Post> response = new CreateResponse<>();
         try {
             postService.createNewPost(userId, content);
@@ -122,7 +136,9 @@ public class PostResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
+        return gson.create().toJson(response);
+
     }
 
 }
