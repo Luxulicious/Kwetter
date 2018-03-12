@@ -64,22 +64,22 @@ import javax.validation.constraints.Size;
 })
 public class Post implements Serializable {
 
-    @Expose
+    @Expose(serialize = true)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Expose
+    @Expose(serialize = true)
     @NotNull
     @Size(min = 1, max = 140)
     private String content;
 
-    @Expose
+    @Expose(serialize = true)
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    @Expose
+    @Expose(serialize = true)
     @ManyToOne(cascade = CascadeType.ALL)
     private User poster;
 

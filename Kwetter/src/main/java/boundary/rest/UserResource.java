@@ -8,6 +8,8 @@ import boundary.rest.response.UpdateResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import domain.User;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -59,6 +61,9 @@ public class UserResource {
     public String getUser(@PathParam("userId") long userId) {
         GetSingleResponse<User> response = new GetSingleResponse<>();
         try {
+            User record = userService.getUser(userId);
+            Logger.getAnonymousLogger().log(Level.FINE, record.getUsername());
+            System.out.println(record.getUsername());
             response.setRecord(userService.getUser(userId));
             response.setSucces(true);
         } catch (NonExistingUserException ex) {

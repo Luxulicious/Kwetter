@@ -26,7 +26,7 @@ import javax.persistence.*;
 })
 public class Role implements Serializable {
 
-    @Expose
+    @Expose(serialize = true)
     @Id
     private String roleName;
 

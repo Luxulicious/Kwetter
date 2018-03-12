@@ -52,42 +52,41 @@ import javax.validation.constraints.Size;
 })
 public class User implements Serializable {
 
-    @Expose
+    @Expose(serialize = true)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Expose
+    @Expose(serialize = true)
     @Column(unique = true)
     @Size(min = 1, max = 32)
     private String username;
 
-    @Expose
+    @Expose(serialize = true)
     @NotNull
     @Size(min = 1, max = 32)
     private String password;
 
-    @Expose
+    @Expose(serialize = true)
     @Size(min = 1, max = 255)
     private String bio;
 
-    @Expose
+    @Expose(serialize = true)
     @Size(min = 1, max = 255)
     private String location;
 
-    @Expose
+    @Expose(serialize = true)
     @Size(min = 1, max = 32)
     private String website;
 
-    @Expose
+    @Expose(serialize = true)
     @Size(min = 1, max = 255)
     private String icon;
 
-    @Expose
+    @Expose(serialize = true)
     @ManyToOne(cascade = CascadeType.ALL)
     private Role role;
 
-    @Expose
     @JsonbTransient
     @OneToMany(mappedBy = "poster", cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
