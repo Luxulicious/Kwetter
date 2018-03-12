@@ -1,5 +1,6 @@
 package boundary.rest;
 
+import boundary.rest.dto.UserDTO;
 import boundary.rest.response.CreateResponse;
 import boundary.rest.response.DeleteResponse;
 import boundary.rest.response.GetMultipleResponse;
@@ -8,6 +9,8 @@ import boundary.rest.response.UpdateResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import domain.User;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -48,30 +51,29 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getAllUsers")
     public String getAllUsers() {
-        GetMultipleResponse<User> response = new GetMultipleResponse<>();
-        response.setRecords(userService.getAllUsers());
+        GetMultipleResponse<UserDTO> response = new GetMultipleResponse<>();
+        List<UserDTO> records = new ArrayList<>();
+        List<User> users = userService.getAllUsers();
+        for (int i = 0; i < users.size(); i++) {
+            records.add(new UserDTO(users.get(i)));
+        }
+        response.setRecords(records);
         response.setSucces(true);
-        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
-        return gson.create().toJson(response);
+        return new Gson().toJson(response);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getUser/{userId}")
     public String getUser(@PathParam("userId") long userId) {
-        GetSingleResponse<User> response = new GetSingleResponse<>();
+        GetSingleResponse<UserDTO> response = new GetSingleResponse<>();
         try {
-            User record = userService.getUser(userId);
-            Logger.getAnonymousLogger().log(Level.FINE, record.getUsername());
-            System.out.println(record.getUsername());
-            response.setRecord(userService.getUser(userId));
+            response.setRecord(new UserDTO(userService.getUser(userId)));
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting();
-        return gson.create().toJson(response);
-
+        return new Gson().toJson(response);
     }
 
     @GET
