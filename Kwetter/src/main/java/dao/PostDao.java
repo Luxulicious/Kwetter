@@ -6,7 +6,6 @@
 package dao;
 
 import domain.Post;
-import domain.User;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;

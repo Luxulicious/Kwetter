@@ -14,10 +14,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import service.RoleService;
 import service.exceptions.NonExistingRoleException;
 import service.exceptions.NonExistingUserException;
-
 
 /**
  *
@@ -34,6 +35,7 @@ public class RoleResource {
 
     @GET
     @Path("getAllRoles")
+    @Produces(MediaType.APPLICATION_JSON)
     public GetMultipleResponse<Role> getAllRoles() {
         GetMultipleResponse<Role> response = new GetMultipleResponse<>();
         response.setRecords(roleService.getAllRoles());
@@ -42,6 +44,7 @@ public class RoleResource {
     }
 
     @PUT
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("setUserRole/{roleName}/{userId}")
     public UpdateResponse<Role> setUserRole(@PathParam("roleName") String roleName, @PathParam("userId") Long userId) {
         UpdateResponse<Role> response = new UpdateResponse<>();

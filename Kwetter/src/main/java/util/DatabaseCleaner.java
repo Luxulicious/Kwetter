@@ -17,8 +17,8 @@ public class DatabaseCleaner {
 
     private static final Class<?>[] ENTITY_TYPES = {
         Post.class,
-        Role.class,
-        User.class};
+        User.class,
+        Role.class};
 
     private final EntityManager em;
 
