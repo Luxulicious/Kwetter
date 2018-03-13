@@ -5,8 +5,11 @@
  */
 package service;
 
+import service.exceptions.ExistingUserException;
+import dto.UserDTO;
 import dao.RoleDao;
 import dao.UserDao;
+import dto.RegistrationDTO;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import service.exceptions.NonExistingRoleException;
@@ -53,6 +56,12 @@ public class ServiceExceptionHandler {
 
     void setRoleDao(RoleDao roleDao) {
         this.roleDao = roleDao;
+    }
+
+    void CheckExisingUser(RegistrationDTO reg) throws ExistingUserException {
+        if (this.userDao.getUserByUsername(reg.username) != null) {
+            throw new ExistingUserException();
+        }
     }
 
 }

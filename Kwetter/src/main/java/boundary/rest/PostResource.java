@@ -1,6 +1,6 @@
 package boundary.rest;
 
-import boundary.rest.dto.PostDTO;
+import dto.PostDTO;
 import boundary.rest.response.CreateResponse;
 import boundary.rest.response.GetMultipleResponse;
 import boundary.rest.response.GetSingleResponse;

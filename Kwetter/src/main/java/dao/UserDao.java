@@ -95,4 +95,10 @@ public class UserDao {
 //        query.setParameter("following",  getUser(userId));
 //        return query.getFirstResult();
     }
+
+    public User getUserByUsername(String username) {
+        Query query = em.createNamedQuery("User.getUserByUsername");
+        query.setParameter("username", username);
+        return (User) query.getSingleResult();
+    }
 }
