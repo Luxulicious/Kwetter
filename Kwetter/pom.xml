@@ -63,10 +63,51 @@
             <version>2.6.2</version>
             <type>jar</type>
         </dependency>
+        <!--<dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-jersey-jaxrs</artifactId>
+            <version>1.5.0</version>
+        </dependency>-->
     </dependencies>
     
     <build>
-        <plugins>     
+        <plugins> 
+            <!--<plugin>
+                <groupId>com.sebastian-daschner</groupId>
+                <artifactId>jaxrs-analyzer-maven-plugin</artifactId>
+                <version>0.15</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>analyze-jaxrs</goal>
+                        </goals>
+                        <configuration>
+                            <backend>swagger</backend>
+                            <deployedDomain>example.com</deployedDomain>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>  
+            -->
+            <!--<plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>3.1.6</version>
+                <configuration>
+                    <apiSources>
+                        <apiSource>
+                            <locations>
+                                <location>boundary.rest</location>
+                                <info>
+                                    <title>Kwetter API</title>
+                                    <description>API for Kwetter</description>
+                                    <version>1.0.0</version>                                
+                                </info>
+                            </locations>
+                        </apiSource>
+                    </apiSources>
+                </configuration>
+            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
