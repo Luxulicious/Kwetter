@@ -67,21 +67,21 @@ public class RoleDaoIT {
 
         assertEquals(0, roleDao.getAllRoles().size());
         tx.begin();
-        roleDao.addRole(role1.getName());
+        roleDao.addRole(role1.getRoleName());
         tx.commit();
         assertEquals(1, roleDao.getAllRoles().size());
         tx.begin();
-        roleDao.addRole(role2.getName());
+        roleDao.addRole(role2.getRoleName());
         tx.commit();
         tx.begin();
         assertEquals(2, roleDao.getAllRoles().size());
-        roleDao.addRole(role3.getName());
+        roleDao.addRole(role3.getRoleName());
         tx.commit();
         assertEquals(3, roleDao.getAllRoles().size());
 
-        assertNotNull(roleDao.getRole(role1.getName()));
-        assertNotNull(roleDao.getRole(role2.getName()));
-        assertNotNull(roleDao.getRole(role3.getName()));
+        assertNotNull(roleDao.getRole(role1.getRoleName()));
+        assertNotNull(roleDao.getRole(role2.getRoleName()));
+        assertNotNull(roleDao.getRole(role3.getRoleName()));
     }
 
     @Test
@@ -93,9 +93,9 @@ public class RoleDaoIT {
         User user2 = new User(1, "Jeff", "Jeff");
 
         tx.begin();
-        roleDao.addRole(role1.getName());
-        roleDao.addRole(role2.getName());
-        roleDao.addRole(role3.getName());
+        roleDao.addRole(role1.getRoleName());
+        roleDao.addRole(role2.getRoleName());
+        roleDao.addRole(role3.getRoleName());
         tx.commit();
 
         tx.begin();
@@ -107,12 +107,12 @@ public class RoleDaoIT {
         user2.setRole(role3);
 
         tx.begin();
-        roleDao.setUserRole(role1.getName(), user1.getId());
-        roleDao.setUserRole(role3.getName(), user2.getId());
+        roleDao.setUserRole(role1.getRoleName(), user1.getId());
+        roleDao.setUserRole(role3.getRoleName(), user2.getId());
         tx.commit();
 
-        assertEquals(user1.getRole().getName(), userDao.getUser(user1.getId()).getRole().getName());
-        assertEquals(user2.getRole().getName(), userDao.getUser(user2.getId()).getRole().getName());
+        assertEquals(user1.getRole().getRoleName(), userDao.getUser(user1.getId()).getRole().getRoleName());
+        assertEquals(user2.getRole().getRoleName(), userDao.getUser(user2.getId()).getRole().getRoleName());
 
     }
 }

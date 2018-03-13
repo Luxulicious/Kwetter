@@ -5,9 +5,11 @@
  */
 package domain;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 
 /**
@@ -24,9 +26,11 @@ import javax.persistence.*;
 })
 public class Role implements Serializable {
 
+    @Expose(serialize = true)
     @Id
     private String roleName;
 
+    @JsonbTransient
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     private List<User> userRoles = new ArrayList<>();
 
@@ -51,14 +55,6 @@ public class Role implements Serializable {
 
     public void setUserRoles(List<User> userRoles) {
         this.userRoles = userRoles;
-    }
-
-    public String getName() {
-        return roleName;
-    }
-
-    public void setName(String name) {
-        this.roleName = name;
     }
 
     public void addUserRoles(User user) {
