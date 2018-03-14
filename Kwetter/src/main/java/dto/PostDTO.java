@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package boundary.rest.dto;
+package dto;
 
 import com.google.gson.annotations.Expose;
 import domain.Post;
@@ -27,10 +27,10 @@ import javax.validation.constraints.Size;
  */
 public class PostDTO {
     
-    private long id;
-    private String content;
-    private Date date;
-    private UserDTO poster;
+    public long id;
+    public String content;
+    public Date date;
+    public UserDTO poster;
     
     public PostDTO(Post post) {
         this.id = post.getId();

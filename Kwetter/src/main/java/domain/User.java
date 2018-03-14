@@ -49,6 +49,11 @@ import javax.validation.constraints.Size;
             + "FROM User u "
             + "LEFT JOIN u.following f "
             + "WHERE u.followers = :follower")
+    ,
+@NamedQuery(name = "User.getUserByUsername",
+            query = "SELECT u "
+            + "FROM User u "
+            + "WHERE u.username = :username")
 })
 public class User implements Serializable {
 
@@ -102,6 +107,11 @@ public class User implements Serializable {
     private List<User> followers = new ArrayList<>();
 
     public User() {
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public User(long id, String username, String password) {

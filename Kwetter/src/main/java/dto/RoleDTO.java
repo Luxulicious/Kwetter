@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package boundary.rest.dto;
+package dto;
 
 import domain.Role;
 
@@ -15,7 +15,7 @@ import domain.Role;
  */
 public class RoleDTO {
 
-    private String roleName;
+    public String roleName;
 
     public RoleDTO(Role role) {
         this.roleName = role.getRoleName();

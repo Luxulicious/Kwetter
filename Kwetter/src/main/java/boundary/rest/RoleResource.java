@@ -5,8 +5,8 @@
  */
 package boundary.rest;
 
-import boundary.rest.dto.RoleDTO;
-import boundary.rest.dto.UserDTO;
+import dto.RoleDTO;
+import dto.UserDTO;
 import boundary.rest.response.GetMultipleResponse;
 import boundary.rest.response.UpdateResponse;
 import com.google.gson.Gson;

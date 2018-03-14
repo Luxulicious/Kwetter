@@ -7,7 +7,9 @@ package service;
 
 import dao.RoleDao;
 import dao.UserDao;
+import domain.Role;
 import domain.User;
+import dto.RegistrationDTO;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
@@ -37,6 +39,8 @@ public class UserServiceTest {
     @Mock
     private UserDao userDaoService;
     @Mock
+    private RoleDao roleDaoService;
+    @Mock
     private UserDao userDaoExh;
     @Mock
     private RoleDao roleDaoExh;
@@ -54,6 +58,7 @@ public class UserServiceTest {
     public void setUp() {
         userService = new UserService();
         userService.setUserDao(userDaoService);
+        userService.setRoleDao(roleDaoService);
         exh.setUserDao(userDaoExh);
         exh.setRoleDao(roleDaoExh);
         userService.setExceptionHandler(exh);
@@ -141,12 +146,14 @@ public class UserServiceTest {
     }
 
     /**
-     * Test of createUser method, of class UserService.
+     * Test of registerUser method, of class UserService.
      */
     @Test
     public void createUserTest() throws Exception {
-        User userToAdd = new User(31478941, "Tom", "asfhosahfgdsga");
-        userService.createUser(userToAdd);
+        //User userToAdd = new User(31478941, "Tom", "asfhosahfgdsga");
+        RegistrationDTO reg = new RegistrationDTO("Jan Klaassen", "W8woord");
+        when(roleDaoService.getRole("client")).thenReturn(new Role("client"));
+        userService.registerUser(reg);
     }
 
     /**

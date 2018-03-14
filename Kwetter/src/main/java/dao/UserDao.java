@@ -83,16 +83,26 @@ public class UserDao {
     //TODO Fix this named query
     public long getFollowingCount(long userId) {
         return getFollowing(userId).size();
+//<editor-fold defaultstate="collapsed" desc="comment">
 //        Query query = em.createNamedQuery("User.getFollowingCount");
 //        query.setParameter("follower",  getUser(userId));
 //        return query.getFirstResult();
+//</editor-fold>
     }
 
     //TODO Fix this named query
     public long getFollowerCount(long userId) {
         return getFollowers(userId).size();
+//<editor-fold defaultstate="collapsed" desc="comment">
 //        Query query = em.createNamedQuery("User.getFollowerCount");
 //        query.setParameter("following",  getUser(userId));
 //        return query.getFirstResult();
+//</editor-fold>
+    }
+
+    public User getUserByUsername(String username) {
+        Query query = em.createNamedQuery("User.getUserByUsername");
+        query.setParameter("username", username);
+        return (User) query.getSingleResult();
     }
 }

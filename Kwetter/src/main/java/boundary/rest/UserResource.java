@@ -1,6 +1,6 @@
 package boundary.rest;
 
-import boundary.rest.dto.UserDTO;
+import dto.UserDTO;
 import boundary.rest.response.CreateResponse;
 import boundary.rest.response.DeleteResponse;
 import boundary.rest.response.GetMultipleResponse;
@@ -8,8 +8,11 @@ import boundary.rest.response.GetSingleResponse;
 import boundary.rest.response.UpdateResponse;
 import com.google.gson.Gson;
 import domain.User;
+import dto.RegistrationDTO;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -22,7 +25,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import service.UserService;
+import service.exceptions.ExistingUserException;
 import service.exceptions.NonExistingUserException;
+import service.exceptions.UnknownRoleError;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -142,11 +147,19 @@ public class UserResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("createUser")
-    public String createUser(User user) {
-        CreateResponse<UserDTO> response = new CreateResponse<>();
-        userService.createUser(user);
-        response.setSucces(true);
+    @Path("registerUser")
+    public String registerUser(RegistrationDTO reg) {
+        CreateResponse<RegistrationDTO> response = new CreateResponse<>();
+        try {
+            userService.registerUser(reg);
+            response.setSucces(true);
+
+        } catch (ExistingUserException ex) {
+            response.addMessage("Een gebruiker met deze naam bestaat al.");
+        } catch (UnknownRoleError ex) {
+            response.addMessage("Er treden een onbekende fout probeer het later nogmaals.");
+            Logger.getLogger(UserResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return new Gson().toJson(response);
     }
 
