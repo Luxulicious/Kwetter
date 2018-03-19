@@ -10,7 +10,7 @@ public class ResponseBase {
 
     public ResponseBase() {
         this.succes = false;
-        this.messages = new ArrayList<String>();
+        this.messages = new ArrayList<>();
     }
 
     public void addMessage(String message) {
