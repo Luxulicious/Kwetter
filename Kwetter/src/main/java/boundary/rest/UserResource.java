@@ -1,17 +1,33 @@
 package boundary.rest;
 
+import dto.UserDTO;
 import boundary.rest.response.CreateResponse;
 import boundary.rest.response.DeleteResponse;
 import boundary.rest.response.GetMultipleResponse;
 import boundary.rest.response.GetSingleResponse;
 import boundary.rest.response.UpdateResponse;
+import com.google.gson.Gson;
 import domain.User;
+import dto.RegistrationDTO;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import service.UserService;
+import service.exceptions.ExistingUserException;
 import service.exceptions.NonExistingUserException;
+import service.exceptions.UnknownRoleError;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,50 +44,62 @@ import service.exceptions.NonExistingUserException;
 @Stateless
 public class UserResource {
 
-    @Context
-    UriInfo uriInfo;
-
     @Inject
     UserService userService;
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getAllUsers")
-    public GetMultipleResponse<User> getAllUsers() {
-        GetMultipleResponse<User> response = new GetMultipleResponse<>();
-        response.setRecords(userService.getAllUsers());
+    public String getAllUsers() {
+        GetMultipleResponse<UserDTO> response = new GetMultipleResponse<>();
+        List<UserDTO> records = new ArrayList<>();
+        List<User> users = userService.getAllUsers();
+        for (int i = 0; i < users.size(); i++) {
+            records.add(new UserDTO(users.get(i)));
+        }
+        response.setRecords(records);
         response.setSucces(true);
-        return response;
+        return new Gson().toJson(response);
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getUser/{userId}")
-    public GetSingleResponse<User> getUser(@PathParam("userId") long userId) {
-        GetSingleResponse<User> response = new GetSingleResponse<>();
+    public String getUser(@PathParam("userId") long userId) {
+        GetSingleResponse<UserDTO> response = new GetSingleResponse<>();
         try {
-            response.setRecord(userService.getUser(userId));
+            response.setRecord(new UserDTO(userService.getUser(userId)));
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        return new Gson().toJson(response);
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowers/{userId}")
-    public GetMultipleResponse<User> getFollowers(@PathParam("userId") long userId) {
-        GetMultipleResponse<User> response = new GetMultipleResponse<>();
+    public String getFollowers(@PathParam("userId") long userId) {
+        GetMultipleResponse<UserDTO> response = new GetMultipleResponse<>();
         try {
-            response.setRecords(userService.getFollowers(userId));
+            List<UserDTO> records = new ArrayList<>();
+            List<User> users = userService.getFollowers(userId);
+            for (int i = 0; i < users.size(); i++) {
+                records.add(new UserDTO(users.get(i)));
+            }
+            response.setRecords(records);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        return new Gson().toJson(response);
+
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowerCount/{userId}")
-    public GetSingleResponse<Long> getFollowerCount(@PathParam("userId") long userId) {
+    public String getFollowerCount(@PathParam("userId") long userId) {
         GetSingleResponse<Long> response = new GetSingleResponse<>();
         try {
             response.setRecord(userService.getFollowerCount(userId));
@@ -79,25 +107,33 @@ public class UserResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        return new Gson().toJson(response);
+
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowing/{userId}")
-    public GetMultipleResponse<User> getFollowing(@PathParam("userId") long userId) {
+    public String getFollowing(@PathParam("userId") long userId) {
         GetMultipleResponse<User> response = new GetMultipleResponse<>();
         try {
-            response.setRecords(userService.getFollowing(userId));
+            List<UserDTO> records = new ArrayList<>();
+            List<User> users = userService.getFollowing(userId);
+            for (int i = 0; i < users.size(); i++) {
+                records.add(new UserDTO(users.get(i)));
+            }
+            response.setRecords(users);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        return new Gson().toJson(response);
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowingCount/{userId}")
-    public GetSingleResponse<Long> getFollowingCount(@PathParam("userId") long userId) {
+    public String getFollowingCount(@PathParam("userId") long userId) {
         GetSingleResponse<Long> response = new GetSingleResponse<>();
         try {
             response.setRecord(userService.getFollowingCount(userId));
@@ -105,62 +141,79 @@ public class UserResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        return new Gson().toJson(response);
     }
 
     @POST
-    @Path("createUser/{user}")
-    public CreateResponse<User> createUser(@PathParam("user") User user) {
-        CreateResponse<User> response = new CreateResponse<>();
-        userService.createUser(user);
-        response.setSucces(true);
-        return response;
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("registerUser")
+    public String registerUser(RegistrationDTO reg) {
+        CreateResponse<RegistrationDTO> response = new CreateResponse<>();
+        try {
+            userService.registerUser(reg);
+            response.setSucces(true);
+
+        } catch (ExistingUserException ex) {
+            response.addMessage("Een gebruiker met deze naam bestaat al.");
+        } catch (UnknownRoleError ex) {
+            response.addMessage("Er treden een onbekende fout probeer het later nogmaals.");
+            Logger.getLogger(UserResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new Gson().toJson(response);
     }
 
     @PUT
-    @Path("updateUser/{user}")
-    public UpdateResponse<User> updateUser(@PathParam("user") User user) {
-        UpdateResponse<User> response = new UpdateResponse<>();
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("updateUser")
+    public String updateUser(User user) {
+        UpdateResponse<UserDTO> response = new UpdateResponse<>();
         try {
             userService.updateUser(user);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        return new Gson().toJson(response);
+
     }
 
     @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("deleteResponse/{userId}")
-    public DeleteResponse<User> deleteResponse(@PathParam("userId") long userId) {
-        DeleteResponse<User> response = new DeleteResponse<>();
+    public String deleteResponse(@PathParam("userId") long userId) {
+        DeleteResponse<UserDTO> response = new DeleteResponse<>();
         try {
             userService.deleteUser(userId);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
         }
-        return response;
+        return new Gson().toJson(response);
     }
 
     @PUT
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("follow/{userIdFollower}/{userIdFollowing}")
-    public UpdateResponse<User> follow(
+    public String follow(
             @PathParam("userIdFollower") long userIdFollower,
             @PathParam("userIdFollowing") long userIdFollowing) {
-        UpdateResponse<User> response = new UpdateResponse<>();
+        UpdateResponse<UserDTO> response = new UpdateResponse<>();
         try {
             userService.follow(userIdFollower, userIdFollowing);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker(s) bestaat(/n) niet.");
         }
-        return response;
+        return new Gson().toJson(response);
+
     }
 
     @PUT
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("unfollow/{userIdFollower}/{userIdFollowing}")
-    public UpdateResponse<User> unfollow(
+    public String unfollow(
             @PathParam("userIdFollower") long userIdFollower,
             @PathParam("userIdFollowing") long userIdFollowing) {
         UpdateResponse<User> response = new UpdateResponse<>();
@@ -170,6 +223,6 @@ public class UserResource {
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker(s) bestaat(/n) niet.");
         }
-        return response;
+        return new Gson().toJson(response);
     }
 }

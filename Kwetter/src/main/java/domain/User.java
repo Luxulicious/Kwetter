@@ -5,9 +5,11 @@
  */
 package domain;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -27,68 +29,89 @@ import javax.validation.constraints.Size;
 @NamedQuery(name = "User.getFollowers", query
             = "SELECT u "
             + "FROM User u "
-            + "INNER JOIN u.followers f "
+            + "LEFT JOIN u.followers f "
             + "WHERE u.following = :following")
     ,
 @NamedQuery(name = "User.getFollowing",
             query = "SELECT u "
             + "FROM User u "
-            + "INNER JOIN u.following f "
+            + "LEFT JOIN u.following f "
             + "WHERE u.followers = :follower")
     ,
 @NamedQuery(name = "User.getFollowerCount",
             query = "SELECT COUNT(u.id) "
             + "FROM User u "
-            + "INNER JOIN u.followers f "
+            + "LEFT JOIN u.followers f "
             + "WHERE u.following = :following")
     ,
 @NamedQuery(name = "User.getFollowingCount",
             query = "SELECT COUNT(u.id) "
             + "FROM User u "
-            + "INNER JOIN u.following f "
+            + "LEFT JOIN u.following f "
             + "WHERE u.followers = :follower")
+    ,
+@NamedQuery(name = "User.getUserByUsername",
+            query = "SELECT u "
+            + "FROM User u "
+            + "WHERE u.username = :username")
 })
 public class User implements Serializable {
 
+    @Expose(serialize = true)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Expose(serialize = true)
     @Column(unique = true)
     @Size(min = 1, max = 32)
     private String username;
 
+    @Expose(serialize = true)
     @NotNull
     @Size(min = 1, max = 32)
     private String password;
 
+    @Expose(serialize = true)
     @Size(min = 1, max = 255)
     private String bio;
 
+    @Expose(serialize = true)
     @Size(min = 1, max = 255)
     private String location;
 
+    @Expose(serialize = true)
     @Size(min = 1, max = 32)
     private String website;
 
+    @Expose(serialize = true)
     @Size(min = 1, max = 255)
     private String icon;
 
+    @Expose(serialize = true)
     @ManyToOne(cascade = CascadeType.ALL)
     private Role role;
 
+    @JsonbTransient
     @OneToMany(mappedBy = "poster", cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
 
+    @JsonbTransient
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "follow")
     private List<User> following = new ArrayList<>();
 
+    @JsonbTransient
     @ManyToMany(mappedBy = "following", cascade = CascadeType.ALL)
     @JoinTable(name = "follow")
     private List<User> followers = new ArrayList<>();
 
     public User() {
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public User(long id, String username, String password) {
@@ -203,7 +226,7 @@ public class User implements Serializable {
             following.remove(user);
         }
         if (user.followers.contains(this)) {
-            following.remove(this);
+            followers.remove(this);
         }
     }
 

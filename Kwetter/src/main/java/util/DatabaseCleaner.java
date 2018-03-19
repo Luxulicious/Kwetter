@@ -9,20 +9,17 @@ package util;
  *
  * @author Riccardo
  */
-
 import domain.*;
 import java.sql.SQLException;
 import javax.persistence.EntityManager;
 
-
 public class DatabaseCleaner {
 
     private static final Class<?>[] ENTITY_TYPES = {
+        Post.class,
         User.class,
-        Role.class,
-        Post.class
-    };
-    
+        Role.class};
+
     private final EntityManager em;
 
     public DatabaseCleaner(EntityManager entityManager) {

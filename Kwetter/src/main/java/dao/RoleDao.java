@@ -28,18 +28,32 @@ public class RoleDao {
     @Inject
     UserDao userDao;
 
+    public RoleDao() {
+    }
+
+    RoleDao(EntityManager em) {
+        this.em = em;
+    }
+
     public List<Role> getAllRoles() {
         return em.createNamedQuery("Role.getAllRoles").getResultList();
     }
 
     public void setUserRole(String roleName, long userId) {
         User user = userDao.getUser(userId);
-        user.setRole(new Role(roleName));
+        user.setRole(getRole(roleName));
         em.merge(user);
     }
-    
-    public Role getRole(String roleName)
-    {
+
+    public Role getRole(String roleName) {
         return em.find(Role.class, roleName);
+    }
+    
+    public void addRole(String roleName) {
+        em.persist(new Role(roleName));
+    }
+
+    void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 }

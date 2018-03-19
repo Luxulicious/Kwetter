@@ -47,20 +47,18 @@ public class PostService {
         return postDao.getPostCountByPoster(userId);
     }
 
-    public List<Post> getPostsByQuery(String query) {
-        return null;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        //return postDao.getPostsByQuery(query);
+    public List<Post> searchPost(String input) {
+        return postDao.searchPost(input);
     }
 
-    public List<Post> getTimeline(long userId) throws NonExistingUserException {
+    public List<Post> getTimeline(long userId, int limit) throws NonExistingUserException {
         exh.NonExistingUserCheck(userId);
-        return postDao.getTimeline(userId);
+        return postDao.getTimeline(userId, limit);
     }
 
-    public void createPost(long userId, String content) throws NonExistingUserException {
+    public void createNewPost(long userId, String content) throws NonExistingUserException {
         exh.NonExistingUserCheck(userId);
-        postDao.createPost(userId, content);
+        postDao.createNewPost(userId, content);
     }
 
     void setExceptionHandler(ServiceExceptionHandler exh) {

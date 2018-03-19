@@ -90,7 +90,7 @@ public class RoleServiceTest {
         User userSubject = users.get(1);
         when(userDaoExh.getUser(userSubject.getId())).thenReturn(userSubject);
         Role roleSubject = roles.get(1);
-        when(roleDaoExh.getRole(roleSubject.getName())).thenReturn(roleSubject);
+        when(roleDaoExh.getRole(roleSubject.getRoleName())).thenReturn(roleSubject);
         
         doNothing().when(roleDaoService).setUserRole(roleSubject.getRoleName(), userSubject.getId());
         roleService.setUserRole(roleSubject.getRoleName(), userSubject.getId());

@@ -23,6 +23,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.doNothing;
@@ -37,7 +38,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class PostServiceTest {
 
     @Mock
-    private PostDao postDaoDaoService;
+    private PostDao postDaoService;
     @Mock
     private UserDao userDaoExh;
     @Mock
@@ -53,18 +54,10 @@ public class PostServiceTest {
     public PostServiceTest() {
     }
 
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
     @Before
     public void setUp() {
         postService = new PostService();
-        postService.setPostDao(postDaoDaoService);
+        postService.setPostDao(postDaoService);
         exh.setUserDao(userDaoExh);
         exh.setRoleDao(roleDaoExh);
         postService.setExceptionHandler(exh);
@@ -85,7 +78,7 @@ public class PostServiceTest {
      */
     @Test
     public void getAllPostsTest() throws Exception {
-        when(postDaoDaoService.getAllPosts()).thenReturn(posts);
+        when(postDaoService.getAllPosts()).thenReturn(posts);
         boolean result = postService.getAllPosts().isEmpty();
         assertFalse(result);
     }
@@ -99,7 +92,7 @@ public class PostServiceTest {
         when(userDaoExh.getUser(userSubject.getId())).thenReturn(userSubject);
 
         List<Post> expected = userSubject.getPosts();
-        when(postDaoDaoService.getPostsByPoster(userSubject.getId())).thenReturn(userSubject.getPosts());
+        when(postDaoService.getPostsByPoster(userSubject.getId())).thenReturn(userSubject.getPosts());
         List<Post> result = postService.getPostsByPoster(userSubject.getId());
         assertSame(result, expected);
     }
@@ -114,7 +107,7 @@ public class PostServiceTest {
 
         int limit = 10;
         List<Post> expected = userSubject.getPosts();
-        when(postDaoDaoService.getRecentPostsByPoster(userSubject.getId(), limit)).thenReturn(expected);
+        when(postDaoService.getRecentPostsByPoster(userSubject.getId(), limit)).thenReturn(expected);
         List<Post> result = postService.getRecentPostsByPoster(userSubject.getId(), limit);
         assertSame(result, expected);
     }
@@ -128,7 +121,7 @@ public class PostServiceTest {
         when(userDaoExh.getUser(userSubject.getId())).thenReturn(userSubject);
 
         Long expected = Long.valueOf(userSubject.getPosts().size());
-        when(postDaoDaoService.getPostCountByPoster(userSubject.getId())).thenReturn(expected);
+        when(postDaoService.getPostCountByPoster(userSubject.getId())).thenReturn(expected);
         Long result = postService.getPostCountByPoster(userSubject.getId());
         assertSame(result, expected);
     }
@@ -137,8 +130,12 @@ public class PostServiceTest {
      * Test of getPostsByQuery method, of class PostService.
      */
     @Test
-    public void getPostsByQueryTest() throws Exception {
-        fail("Yet to be implemented.");
+    public void searchPostTest() throws Exception {
+        String input = "test";
+        List<Post> expected = posts;
+        when(postDaoService.searchPost(input)).thenReturn(expected);
+        List<Post> result = postService.searchPost(input);
+        assertSame(result, expected); 
     }
 
     /**
@@ -147,29 +144,29 @@ public class PostServiceTest {
     @Test
     public void getTimelineTest() throws Exception {
         User userSubject1 = users.get(0);
-        when(userDaoExh.getUser(userSubject1.getId())).thenReturn(userSubject1);
+        //when(userDaoExh.getUser(userSubject1.getId())).thenReturn(userSubject1);
         User userSubject2 = users.get(1);
-        when(userDaoExh.getUser(userSubject2.getId())).thenReturn(userSubject2);
+        //when(userDaoExh.getUser(userSubject2.getId())).thenReturn(userSubject2);
+        when(userDaoExh.getUser(any(Long.class))).thenReturn(userSubject2);
 
         userSubject1.follow(userSubject2);
         List<Post> expected = userSubject1.getPosts();
         expected.addAll(userSubject2.getPosts());
-        when(postDaoDaoService.getTimeline(userSubject1.getId())).thenReturn(expected);
-        List<Post> result = postService.getTimeline(userSubject1.getId());
+        when(postDaoService.getTimeline(userSubject1.getId(), 1)).thenReturn(expected);
+        List<Post> result = postService.getTimeline(userSubject1.getId(), 1);
         assertSame(result, expected);
     }
 
     /**
-     * Test of createPost method, of class PostService.
+     * Test of createNewPost method, of class PostService.
      */
     @Test
     public void createPostTest() throws Exception {
         User userSubject = users.get(0);
         when(userDaoExh.getUser(userSubject.getId())).thenReturn(userSubject);
-        
-        Post postToAdd = new Post(31478941, "Some message to add.", new Date());
-        doNothing().when(postDaoDaoService).createPost(userSubject.getId(), postToAdd.getContent());
-        postService.createPost(userSubject.getId(), postToAdd.getContent());
-    }
 
+        Post postToAdd = new Post(31478941, "Some message to add.", new Date());
+        doNothing().when(postDaoService).createNewPost(userSubject.getId(), postToAdd.getContent());
+        postService.createNewPost(userSubject.getId(), postToAdd.getContent());
+    }
 }

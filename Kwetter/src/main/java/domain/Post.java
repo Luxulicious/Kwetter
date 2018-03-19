@@ -5,6 +5,7 @@
  */
 package domain;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
@@ -47,24 +48,38 @@ import javax.validation.constraints.Size;
             + "FROM Post p "
             + "ORDER BY p.date DESC")
     ,
-@NamedQuery(name = "Post.getTimeLine",
+@NamedQuery(name = "Post.getTimeline",
             query
-            = "SELECT p FROM Post p, User u WHERE p.poster = :user_id OR (p.poster = u.followers AND u.following = :user_id)  ORDER BY p.date DESC")
+            = "SELECT DISTINCT(p.id) "
+            + "FROM Post p, User u "
+            + "WHERE  u.followers = :user_id "
+            + "OR p.poster = :user_id "
+            + "ORDER BY p.date DESC")
+    ,
+@NamedQuery(name = "Post.searchPost",
+            query = "SELECT DISTINCT(p.id) "
+            + "FROM Post p "
+            + "WHERE p.content LIKE :input "
+            + "OR p.poster.username LIKE :input")
 })
 public class Post implements Serializable {
 
+    @Expose(serialize = true)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Expose(serialize = true)
     @NotNull
     @Size(min = 1, max = 140)
     private String content;
 
+    @Expose(serialize = true)
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
+    @Expose(serialize = true)
     @ManyToOne(cascade = CascadeType.ALL)
     private User poster;
 
@@ -75,6 +90,12 @@ public class Post implements Serializable {
         this.id = id;
         this.content = content;
         this.date = date;
+    }
+
+    public Post(String content, Date date, User poster) {
+        this.content = content;
+        this.date = date;
+        this.poster = poster;
     }
 
     public Post(long id, String content, Date date, User poster) {

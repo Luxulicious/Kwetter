@@ -5,13 +5,18 @@
  */
 package service;
 
+import service.exceptions.UnknownRoleError;
+import dao.RoleDao;
+import dto.UserDTO;
 import service.exceptions.NonExistingUserException;
 import dao.UserDao;
 import domain.Role;
 import domain.User;
+import dto.RegistrationDTO;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import service.exceptions.ExistingUserException;
 
 /**
  *
@@ -24,6 +29,9 @@ public class UserService {
 
     @Inject
     UserDao userDao;
+
+    @Inject
+    RoleDao roleDao;
 
     @Inject
     ServiceExceptionHandler exh;
@@ -58,10 +66,21 @@ public class UserService {
     }
 
     //TODO Add unique check
-    public void createUser(User user) {
-        user.setFollowers(null);
-        user.setFollowing(null);
-        user.setRole(new Role("cient"));
+    public void registerUser(RegistrationDTO reg) throws ExistingUserException, UnknownRoleError {
+        exh.CheckExisingUser(reg);
+        User user = new User(reg.username, reg.password);
+        String client = "client";
+        Role role = roleDao.getRole(client);
+        if (role == null) {
+            roleDao.addRole(client);
+            role = roleDao.getRole(client);
+            if (role == null) {
+                throw new UnknownRoleError("The role " + client + " could not be added or acquired.");
+            }
+        }
+        user.setRole(role);
+        userDao.createUser(user);
+
     }
 
     public void updateUser(User user) throws NonExistingUserException {
@@ -88,6 +107,10 @@ public class UserService {
 
     void setUserDao(UserDao userDao) {
         this.userDao = userDao;
+    }
+
+    void setRoleDao(RoleDao roleDao) {
+        this.roleDao = roleDao;
     }
 
     void setExceptionHandler(ServiceExceptionHandler exh) {

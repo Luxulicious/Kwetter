@@ -45,7 +45,7 @@ public class UserDao {
 
     public void deleteUser(long userId) {
         User user = getUser(userId);
-        em.detach(user);
+        em.remove(user);
     }
 
     public User getUser(long userId) {
@@ -70,25 +70,39 @@ public class UserDao {
 
     public List<User> getFollowers(long userId) {
         Query query = em.createNamedQuery("User.getFollowers");
-        query.setParameter("following", userId);
+        query.setParameter("following", getUser(userId));
         return query.getResultList();
     }
 
     public List<User> getFollowing(long userId) {
         Query query = em.createNamedQuery("User.getFollowing");
-        query.setParameter("follower", userId);
+        query.setParameter("follower", getUser(userId));
         return query.getResultList();
     }
 
+    //TODO Fix this named query
     public long getFollowingCount(long userId) {
-        Query query = em.createNamedQuery("User.getFollowingCount");
-        query.setParameter("follower", userId);
-        return query.getFirstResult();
+        return getFollowing(userId).size();
+//<editor-fold defaultstate="collapsed" desc="comment">
+//        Query query = em.createNamedQuery("User.getFollowingCount");
+//        query.setParameter("follower",  getUser(userId));
+//        return query.getFirstResult();
+//</editor-fold>
     }
 
+    //TODO Fix this named query
     public long getFollowerCount(long userId) {
-        Query query = em.createNamedQuery("User.getFollowerCount");
-        query.setParameter("following", userId);
-        return query.getFirstResult();
+        return getFollowers(userId).size();
+//<editor-fold defaultstate="collapsed" desc="comment">
+//        Query query = em.createNamedQuery("User.getFollowerCount");
+//        query.setParameter("following",  getUser(userId));
+//        return query.getFirstResult();
+//</editor-fold>
+    }
+
+    public User getUserByUsername(String username) {
+        Query query = em.createNamedQuery("User.getUserByUsername");
+        query.setParameter("username", username);
+        return (User) query.getSingleResult();
     }
 }
