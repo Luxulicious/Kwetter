@@ -6,6 +6,7 @@
 package boundary.controllers;
 
 import domain.Post;
+import domain.Role;
 import domain.User;
 import java.io.Serializable;
 import java.util.Collection;
@@ -17,8 +18,11 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import service.PostService;
+import service.RoleService;
 import service.UserService;
 import service.exceptions.NonExistingPostException;
+import service.exceptions.NonExistingRoleException;
+import service.exceptions.NonExistingUserException;
 
 /**
  *
@@ -36,9 +40,14 @@ public class AdminController implements Serializable {
     @Inject
     private PostService postService;
 
+    @Inject
+    private RoleService roleService;
+
     private Collection<User> users;
 
     private Collection<Post> posts;
+
+    private Collection<Role> roles;
 
     private String searchCriteria;
 
@@ -49,6 +58,7 @@ public class AdminController implements Serializable {
     public void init() {
         users = userService.getAllUsers();
         posts = postService.getAllPosts();
+        roles = roleService.getAllRoles();
     }
 
     public void searchPosts() {
@@ -68,6 +78,19 @@ public class AdminController implements Serializable {
                 }
             }
         } catch (NonExistingPostException ex) {
+            //Do nothing
+        }
+    }
+
+    //TODO fix this assigning
+    public void assignRole(long userId, String roleName) {
+        try {
+            System.out.println("TODO fix this assigning");
+            System.out.println("Role assigning...");
+            roleService.setUserRole(roleName, userId);
+            roleService.getAllRoles();
+            System.out.println("Done assigning role");
+        } catch (NonExistingRoleException | NonExistingUserException ex) {
             //Do nothing
         }
     }
@@ -94,6 +117,14 @@ public class AdminController implements Serializable {
 
     public void setPosts(Collection<Post> posts) {
         this.posts = posts;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 
 }
