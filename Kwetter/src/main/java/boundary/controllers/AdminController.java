@@ -62,9 +62,13 @@ public class AdminController implements Serializable {
     public void deletePost(long postId) {
         try {
             postService.deletePost(postId);
-            searchPosts();
+            for (int i = 0; i < posts.size(); i++) {
+                if (((List<Post>) posts).get(i).getId() == postId) {
+                    ((List<Post>) posts).remove(i);
+                }
+            }
         } catch (NonExistingPostException ex) {
-            System.out.println("Post could not be found..."); 
+            //Do nothing
         }
     }
 
