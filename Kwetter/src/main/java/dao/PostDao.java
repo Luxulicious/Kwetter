@@ -83,4 +83,13 @@ public class PostDao {
     void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
+
+    public Post getPost(long postId) {
+        return em.find(Post.class, postId);
+    }
+
+    public void deletePost(long postId) {
+        Post post = getPost(postId);
+        em.remove(post);
+    }
 }

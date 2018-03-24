@@ -34,6 +34,9 @@
                 <p:column headerText="Date">
                     <h:outputText value="#{post.date}" />
                 </p:column>
+                <p:column headerText="Delete">
+                    <p:commandButton value="Delete" id="ajax" update="posts" actionListener="#{adminController.deletePost(post.id)}" styleClass="ui-priority-primary" />
+                </p:column>
             </p:dataTable>
             <br/>
 

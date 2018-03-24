@@ -10,12 +10,15 @@ import domain.User;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import service.PostService;
 import service.UserService;
+import service.exceptions.NonExistingPostException;
 
 /**
  *
@@ -53,6 +56,15 @@ public class AdminController implements Serializable {
             posts = postService.searchPosts(searchCriteria);
         } else {
             posts = postService.getAllPosts();
+        }
+    }
+
+    public void deletePost(long postId) {
+        try {
+            postService.deletePost(postId);
+            searchPosts();
+        } catch (NonExistingPostException ex) {
+            System.out.println("Post could not be found..."); 
         }
     }
 
