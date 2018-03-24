@@ -111,7 +111,7 @@ public class PostResource {
     public String searchPost(@PathParam("input") String input) {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         List<PostDTO> records = new ArrayList<>();
-        List<Post> posts = postService.searchPost(input);
+        List<Post> posts = postService.searchPosts(input);
         for (int i = 0; i < posts.size(); i++) {
             records.add(new PostDTO(posts.get(i)));
         }

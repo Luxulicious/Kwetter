@@ -57,8 +57,8 @@ public class PostDao {
         return query.getResultList();
     }
 
-    public List<Post> searchPost(String input) {
-        Query query = em.createNamedQuery("Post.searchPost");
+    public List<Post> searchPosts(String input) {
+        Query query = em.createNamedQuery("Post.searchPosts");
         query.setParameter("input", "%" + input + "%");
         return query.getResultList();
     }

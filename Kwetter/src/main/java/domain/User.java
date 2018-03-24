@@ -5,11 +5,9 @@
  */
 package domain;
 
-import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -57,51 +55,40 @@ import javax.validation.constraints.Size;
 })
 public class User implements Serializable {
 
-    @Expose(serialize = true)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Expose(serialize = true)
     @Column(unique = true)
     @Size(min = 1, max = 32)
     private String username;
 
-    @Expose(serialize = true)
     @NotNull
     @Size(min = 1, max = 32)
     private String password;
 
-    @Expose(serialize = true)
     @Size(min = 1, max = 255)
     private String bio;
 
-    @Expose(serialize = true)
     @Size(min = 1, max = 255)
     private String location;
 
-    @Expose(serialize = true)
     @Size(min = 1, max = 32)
     private String website;
 
-    @Expose(serialize = true)
     @Size(min = 1, max = 255)
     private String icon;
 
-    @Expose(serialize = true)
     @ManyToOne(cascade = CascadeType.ALL)
     private Role role;
 
-    @JsonbTransient
-    @OneToMany(mappedBy = "poster", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "poster")
     private List<Post> posts = new ArrayList<>();
 
-    @JsonbTransient
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "follow")
     private List<User> following = new ArrayList<>();
 
-    @JsonbTransient
     @ManyToMany(mappedBy = "following", cascade = CascadeType.ALL)
     @JoinTable(name = "follow")
     private List<User> followers = new ArrayList<>();
@@ -242,6 +229,11 @@ public class User implements Serializable {
         if (this.posts.contains(post)) {
             this.posts.remove(post);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", bio=" + bio + ", location=" + location + ", website=" + website + ", icon=" + icon + ", role=" + role + '}';
     }
 
 }

@@ -47,8 +47,8 @@ public class PostService {
         return postDao.getPostCountByPoster(userId);
     }
 
-    public List<Post> searchPost(String input) {
-        return postDao.searchPost(input);
+    public List<Post> searchPosts(String input) {
+        return postDao.searchPosts(input);
     }
 
     public List<Post> getTimeline(long userId, int limit) throws NonExistingUserException {
