@@ -133,8 +133,8 @@ public class PostServiceTest {
     public void searchPostTest() throws Exception {
         String input = "test";
         List<Post> expected = posts;
-        when(postDaoService.searchPost(input)).thenReturn(expected);
-        List<Post> result = postService.searchPost(input);
+        when(postDaoService.searchPosts(input)).thenReturn(expected);
+        List<Post> result = postService.searchPosts(input);
         assertSame(result, expected); 
     }
 

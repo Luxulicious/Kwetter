@@ -5,6 +5,8 @@
  */
 package service;
 
+import service.exceptions.NonExistingPostException;
+import dao.PostDao;
 import service.exceptions.ExistingUserException;
 import dto.UserDTO;
 import dao.RoleDao;
@@ -30,6 +32,9 @@ public class ServiceExceptionHandler {
     @Inject
     RoleDao roleDao;
 
+    @Inject
+    PostDao postDao;
+
     public void NonExistingUserCheck(long userId) throws NonExistingUserException {
         if (userDao.getUser(userId) == null) {
             throw new NonExistingUserException();
@@ -39,6 +44,18 @@ public class ServiceExceptionHandler {
     public void NonExistingRoleCheck(String roleName) throws NonExistingRoleException {
         if (roleDao.getRole(roleName) == null) {
             throw new NonExistingRoleException();
+        }
+    }
+
+    public void CheckExisingUser(RegistrationDTO reg) throws ExistingUserException {
+        if (userDao.getUserByUsername(reg.username) != null) {
+            throw new ExistingUserException();
+        }
+    }
+
+    public void NonExistingPostCheck(long postId) throws NonExistingPostException {
+        if (postDao.getPost(postId) == null) {
+            throw new NonExistingPostException();
         }
     }
 
@@ -57,11 +74,4 @@ public class ServiceExceptionHandler {
     void setRoleDao(RoleDao roleDao) {
         this.roleDao = roleDao;
     }
-
-    void CheckExisingUser(RegistrationDTO reg) throws ExistingUserException {
-        if (this.userDao.getUserByUsername(reg.username) != null) {
-            throw new ExistingUserException();
-        }
-    }
-
 }

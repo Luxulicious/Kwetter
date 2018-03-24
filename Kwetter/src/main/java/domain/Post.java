@@ -5,7 +5,6 @@
  */
 package domain;
 
-import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
@@ -56,31 +55,27 @@ import javax.validation.constraints.Size;
             + "OR p.poster = :user_id "
             + "ORDER BY p.date DESC")
     ,
-@NamedQuery(name = "Post.searchPost",
-            query = "SELECT DISTINCT(p.id) "
+@NamedQuery(name = "Post.searchPosts",
+            query = "SELECT DISTINCT(p) "
             + "FROM Post p "
             + "WHERE p.content LIKE :input "
             + "OR p.poster.username LIKE :input")
 })
 public class Post implements Serializable {
 
-    @Expose(serialize = true)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Expose(serialize = true)
     @NotNull
     @Size(min = 1, max = 140)
     private String content;
 
-    @Expose(serialize = true)
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    @Expose(serialize = true)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private User poster;
 
     public Post() {
@@ -137,4 +132,8 @@ public class Post implements Serializable {
         this.poster = poster;
     }
 
+    @Override
+    public String toString() {
+        return "Post{" + "id=" + id + ", content=" + content + ", date=" + date + ", poster.id=" + poster + '}';
+    }
 }

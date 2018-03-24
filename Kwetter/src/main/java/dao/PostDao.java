@@ -57,8 +57,8 @@ public class PostDao {
         return query.getResultList();
     }
 
-    public List<Post> searchPost(String input) {
-        Query query = em.createNamedQuery("Post.searchPost");
+    public List<Post> searchPosts(String input) {
+        Query query = em.createNamedQuery("Post.searchPosts");
         query.setParameter("input", "%" + input + "%");
         return query.getResultList();
     }
@@ -82,5 +82,14 @@ public class PostDao {
 
     void setUserDao(UserDao userDao) {
         this.userDao = userDao;
+    }
+
+    public Post getPost(long postId) {
+        return em.find(Post.class, postId);
+    }
+
+    public void deletePost(long postId) {
+        Post post = getPost(postId);
+        em.remove(post);
     }
 }

@@ -192,10 +192,10 @@ public class PostDaoIT {
         postDao.createNewPost(user2.getId(), "qwqweqe");
         tx.commit();
         
-        List<Post> result = postDao.searchPost("b");
+        List<Post> result = postDao.searchPosts("b");
         assertEquals(result.size(), 1);
         
-        result = postDao.searchPost("ef");
+        result = postDao.searchPosts("ef");
         assertEquals(result.size(), 2);
     }
 }
