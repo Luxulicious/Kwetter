@@ -12,10 +12,13 @@ import dao.UserDao;
 import domain.Group;
 import domain.User;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 
 /**
  *
@@ -45,7 +48,7 @@ public class Init {
         createUsersAndRoles();
         followEachother();
         createPosts();
-               createGroups();
+        createGroups();
         System.out.println("Done initializing");
     }
 
@@ -77,7 +80,10 @@ public class Init {
         }
     }
 
-      private void createGroups() {
-          groupDao.createGroup(new Group("regulars"));
-      }
+    private void createGroups() {
+        userDao.createUser(new User(10, "steve",
+                "f148389d080cfe85952998a8a367e2f7"
+                + "eaf35f2d72d2599a5b0412fe4094d65c"));
+        groupDao.createGroup(new Group("regulars"));
+    }
 }

@@ -71,7 +71,9 @@ public class DummyData {
         users.add(new User(7, "Daan", "password"));
         users.add(new User(8, "Donald", "password"));
         users.add(new User(9, "Maria", "password"));
-        users.add(new User(10, "steve", "f148389d080cfe85952998a8a367e2f7eaf35f2d72d2599a5b0412fe4094d65c"));
+        users.add(new User(10, "steve",
+                "f148389d080cfe85952998a8a367e2f7"
+                + "eaf35f2d72d2599a5b0412fe4094d65c"));
     }
 
     public List<User> getUsers() {
