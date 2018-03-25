@@ -5,9 +5,11 @@
  */
 package util;
 
+import dao.GroupDao;
 import dao.PostDao;
 import dao.RoleDao;
 import dao.UserDao;
+import domain.Group;
 import domain.User;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -31,8 +33,10 @@ public class Init {
     RoleDao roleDao;
     @Inject
     PostDao postDao;
+    @Inject
+    GroupDao groupDao;
 
-    DummyData dummyData;
+    private DummyData dummyData;
 
     @PostConstruct
     public void init() {
@@ -41,12 +45,11 @@ public class Init {
         createUsersAndRoles();
         followEachother();
         createPosts();
+               createGroups();
         System.out.println("Done initializing");
     }
 
     private void createUsersAndRoles() {
-        //TODO Convert this to for loop
-
         for (int i = 0; i < dummyData.users.size(); i++) {
             dummyData.users.get(i).setFollowers(null);
             dummyData.users.get(i).setFollowing(null);
@@ -63,7 +66,7 @@ public class Init {
                 if (!users.get(i).equals(users.get(j))) {
                     userDao.follow(users.get(i).getId(), users.get(j).getId());
                 }
-            } 
+            }
         }
     }
 
@@ -73,4 +76,8 @@ public class Init {
             postDao.createNewPost(users.get(i).getId(), "PSA " + users.get(i).getUsername());
         }
     }
+
+      private void createGroups() {
+          groupDao.createGroup(new Group("regulars"));
+      }
 }

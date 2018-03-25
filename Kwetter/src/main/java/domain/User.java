@@ -66,6 +66,9 @@ public class User implements Serializable {
     @NotNull
     @Size(min = 1, max = 32)
     private String password;
+     
+    @ManyToMany(mappedBy = "users")
+    private List<Group> groups; 
 
     @Size(min = 1, max = 255)
     private String bio;
