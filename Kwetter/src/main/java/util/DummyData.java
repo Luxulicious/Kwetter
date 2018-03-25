@@ -41,7 +41,7 @@ public class DummyData {
     private void giveRoles() {
         roles.set(0, users.get(0).setRole(roles.get(0)));
         roles.set(1, users.get(1).setRole(roles.get(1)));
-        for (int i = 2; i < 10; i++) {
+        for (int i = 2; i < users.size(); i++) {
             roles.set(2, users.get(i).setRole(roles.get(2)));
         }
     }

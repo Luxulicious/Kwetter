@@ -11,6 +11,7 @@ import dao.RoleDao;
 import dao.UserDao;
 import domain.Group;
 import domain.User;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +30,7 @@ import javax.validation.ConstraintViolationException;
 @Startup
 @Singleton
 public class Init {
-
+    
     @Inject
     UserDao userDao;
     @Inject
@@ -38,9 +39,9 @@ public class Init {
     PostDao postDao;
     @Inject
     GroupDao groupDao;
-
+    
     private DummyData dummyData;
-
+    
     @PostConstruct
     public void init() {
         System.out.println("Initializing...");
@@ -51,7 +52,7 @@ public class Init {
         createGroups();
         System.out.println("Done initializing");
     }
-
+    
     private void createUsersAndRoles() {
         for (int i = 0; i < dummyData.users.size(); i++) {
             dummyData.users.get(i).setFollowers(null);
@@ -61,7 +62,7 @@ public class Init {
             userDao.createUser(dummyData.users.get(i));
         }
     }
-
+    
     private void followEachother() {
         List<User> users = userDao.getAllUsers();
         for (int i = 0; i < users.size(); i++) {
@@ -72,18 +73,20 @@ public class Init {
             }
         }
     }
-
+    
     private void createPosts() {
         List<User> users = userDao.getAllUsers();
         for (int i = 0; i < users.size(); i++) {
             postDao.createNewPost(users.get(i).getId(), "PSA " + users.get(i).getUsername());
         }
     }
-
+    
     private void createGroups() {
-        userDao.createUser(new User(10, "steve",
-                "f148389d080cfe85952998a8a367e2f7"
-                + "eaf35f2d72d2599a5b0412fe4094d65c"));
-        groupDao.createGroup(new Group("regulars"));
+        
+        Group regulars = new Group("regulars");
+        List<User> regularsUsers = new ArrayList<>();        
+        regularsUsers.add(userDao.getUserByUsername("steve"));
+        regulars.setUsers(regularsUsers);
+        groupDao.createGroup(regulars);     
     }
 }

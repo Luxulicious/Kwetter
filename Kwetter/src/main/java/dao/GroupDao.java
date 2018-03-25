@@ -24,12 +24,16 @@ public class GroupDao {
 
     public GroupDao() {
     }
-    
+
     public void createGroup(Group group) {
         em.persist(group);
     }
-    
+
     public void updateGroup(Group group) {
         em.merge(group);
+    }
+
+    public Group getGroup(String groupName) {
+        return em.find(Group.class, groupName);
     }
 }
