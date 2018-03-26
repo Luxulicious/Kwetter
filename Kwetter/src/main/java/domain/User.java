@@ -63,9 +63,12 @@ public class User implements Serializable {
     @Size(min = 1, max = 32)
     private String username;
 
+    @Size(min = 1, max = 9999999)
     @NotNull
-    @Size(min = 1, max = 32)
     private String password;
+
+    @ManyToMany(mappedBy = "users")
+    private List<Group> groups;
 
     @Size(min = 1, max = 255)
     private String bio;
@@ -129,6 +132,14 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
     }
 
     public String getBio() {

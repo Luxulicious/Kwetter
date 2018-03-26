@@ -11,6 +11,7 @@ import domain.User;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  *
  * @author Tom
@@ -29,18 +30,18 @@ public class DummyData {
         followEachother();
         giveRoles();
         createPosts();
-    } 
+    }
 
     private void createPosts() {
-        for (int i = 0; i < users.size(); i++) { 
+        for (int i = 0; i < users.size(); i++) {
             posts.add(users.get(i).post(new Post(i, "PSA " + users.get(i).getUsername(), new Timestamp(2018, 2, 26, 13, 22, 19 + i, 0), users.get(i))));
         }
-    } 
- 
+    }
+
     private void giveRoles() {
         roles.set(0, users.get(0).setRole(roles.get(0)));
         roles.set(1, users.get(1).setRole(roles.get(1)));
-        for (int i = 2; i < 10; i++) {
+        for (int i = 2; i < users.size(); i++) {
             roles.set(2, users.get(i).setRole(roles.get(2)));
         }
     }
@@ -70,6 +71,9 @@ public class DummyData {
         users.add(new User(7, "Daan", "password"));
         users.add(new User(8, "Donald", "password"));
         users.add(new User(9, "Maria", "password"));
+        users.add(new User(10, "steve",
+                "f148389d080cfe85952998a8a367e2f7"
+                + "eaf35f2d72d2599a5b0412fe4094d65c"));
     }
 
     public List<User> getUsers() {
@@ -85,26 +89,3 @@ public class DummyData {
     }
 
 }
-
-//<editor-fold defaultstate="collapsed" desc="Old code">
-//        posts.add(users.get(0).post(new Post(0, "PSA admin", new Timestamp(2018, 2, 26, 13, 22, 19, 0), users.get(0))));
-//        posts.add(users.get(1).post(new Post(1, "PSA mod", new Timestamp(2018, 2, 26, 13, 22, 44, 0), users.get(1))));
-//        posts.add(users.get(2).post(new Post(2, "PSA Piet", new Timestamp(2018, 2, 27, 13, 22, 44, 0), users.get(2))));
-//        posts.add(users.get(3).post(new Post(3, "PSA Tom", new Timestamp(2018, 2, 27, 27, 22, 44, 0), users.get(3))));
-//        posts.add(users.get(4).post(new Post(4, "PSA Mark", new Timestamp(2018, 2, 27, 10, 22, 44, 0), users.get(4))));
-//        posts.add(users.get(5).post(new Post(5, "PSA Bram", new Timestamp(2018, 2, 27, 6, 22, 44, 0), users.get(5))));
-//        posts.add(users.get(6).post(new Post(6, "PSA Sanne", new Timestamp(2018, 2, 27, 5, 22, 12, 0), users.get(6))));
-//        posts.add(users.get(7).post(new Post(7, "PSA Daan", new Timestamp(2018, 2, 27, 1, 22, 32, 0), users.get(7))));
-//        posts.add(users.get(8).post(new Post(8, "PSA Donald", new Timestamp(2018, 2, 27, 13, 22, 42, 0), users.get(8))));
-//        posts.add(users.get(9).post(new Post(9, "PSA Maria", new Timestamp(2018, 2, 27, 19, 22, 5, 0), users.get(9))));
-//        posts.add(new Post(0, "PSA admin", new Timestamp(2018, 2, 26, 13, 22, 19, 0), users.get(0)));
-//        posts.add(new Post(1, "PSA mod", new Timestamp(2018, 2, 26, 13, 22, 44, 0), users.get(1)));
-//        posts.add(new Post(2, "PSA Piet", new Timestamp(2018, 2, 27, 13, 22, 44, 0), users.get(2)));
-//        posts.add(new Post(3, "PSA Tom", new Timestamp(2018, 2, 27, 27, 22, 44, 0), users.get(3)));
-//        posts.add(new Post(4, "PSA Mark", new Timestamp(2018, 2, 27, 10, 22, 44, 0), users.get(4)));
-//        posts.add(new Post(5, "PSA Bram", new Timestamp(2018, 2, 27, 6, 22, 44, 0), users.get(5)));
-//        posts.add(new Post(6, "PSA Sanne", new Timestamp(2018, 2, 27, 5, 22, 12, 0), users.get(6)));
-//        posts.add(new Post(7, "PSA Daan", new Timestamp(2018, 2, 27, 1, 22, 32, 0), users.get(7)));
-//        posts.add(new Post(8, "PSA Donald", new Timestamp(2018, 2, 27, 13, 22, 42, 0), users.get(8)));
-//        posts.add(new Post(9, "PSA Maria", new Timestamp(2018, 2, 27, 19, 22, 5, 0), users.get(9)));
-//</editor-fold>
