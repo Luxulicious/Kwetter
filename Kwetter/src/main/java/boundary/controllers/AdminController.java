@@ -11,7 +11,6 @@ import domain.User;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;

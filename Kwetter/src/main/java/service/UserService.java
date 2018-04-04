@@ -65,6 +65,10 @@ public class UserService {
         return userDao.getFollowingCount(userId);
     }
 
+    public User getUserByUsername(String username) throws NonExistingUserException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     //TODO Add unique check
     public void registerUser(RegistrationDTO reg) throws ExistingUserException, UnknownRoleError {
         exh.CheckExisingUser(reg);
