@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
-import { ProfilePageComponent } from './profile-page/profile-page.component';
-import { HomePageComponent } from './home-page/home-page.component';
+import { ProfileComponent } from './profile/profile.component';
+import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { ProfileNameComponent } from './profile-name/profile-name.component';
 
@@ -12,9 +12,9 @@ import { ProfileNameComponent } from './profile-name/profile-name.component';
 @NgModule({
   declarations: [
     AppComponent,
-    ProfilePageComponent,
-    HomePageComponent,
-    ProfileNameComponent, 
+    ProfileComponent,
+    HomeComponent,
+    ProfileNameComponent,
   ],
   imports: [
     BrowserModule,
