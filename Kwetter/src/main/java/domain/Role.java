@@ -26,11 +26,9 @@ import javax.persistence.*;
 })
 public class Role implements Serializable {
 
-    @Expose(serialize = true)
     @Id
     private String roleName;
 
-    @JsonbTransient
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     private List<User> userRoles = new ArrayList<>();
 
