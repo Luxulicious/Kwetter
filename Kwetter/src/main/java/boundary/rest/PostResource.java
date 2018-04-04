@@ -1,11 +1,11 @@
 package boundary.rest;
 
-import dto.PostDTO;
 import boundary.rest.response.CreateResponse;
 import boundary.rest.response.GetMultipleResponse;
 import boundary.rest.response.GetSingleResponse;
 import com.google.gson.Gson;
 import domain.Post;
+import dto.PostDTO;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -16,6 +16,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import service.PostService;
 import service.exceptions.NonExistingUserException;
 
@@ -37,11 +38,12 @@ public class PostResource {
 
     @Inject
     PostService postService;
+    private final Gson gson = new Gson();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getAllPosts")
-    public String getAllPosts() {
+    public Response getAllPosts() {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         List<PostDTO> records = new ArrayList<>();
         List<Post> posts = postService.getAllPosts();
@@ -50,13 +52,13 @@ public class PostResource {
         }
         response.setRecords(records);
         response.setSucces(true);
-        return new Gson().toJson(response);
+        return Response.ok(gson.toJson(response)).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getPostsByPoster/{userId}")
-    public String getPostsByPoster(@PathParam("userId") long userId) {
+    public Response getPostsByPoster(@PathParam("userId") long userId) {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         try {
             List<PostDTO> records = new ArrayList<>();
@@ -68,14 +70,15 @@ public class PostResource {
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
+            return Response.status(Response.Status.NOT_FOUND).entity(response).build();
         }
-        return new Gson().toJson(response);
+        return Response.ok(gson.toJson(response)).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getRecentPostsByPoster/{userId}/{limit}")
-    public String getRecentPostsByPoster(@PathParam("userId") long userId, @PathParam("limit") int limit) {
+    public Response getRecentPostsByPoster(@PathParam("userId") long userId, @PathParam("limit") int limit) {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         try {
             List<PostDTO> records = new ArrayList<>();
@@ -87,28 +90,30 @@ public class PostResource {
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
+            return Response.status(Response.Status.NOT_FOUND).entity(response).build();
         }
-        return new Gson().toJson(response);
+        return Response.ok(gson.toJson(response)).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getPostCountByPoster/{userId}")
-    public String getPostCountByPoster(@PathParam("userId") long userId) {
+    public Response getPostCountByPoster(@PathParam("userId") long userId) {
         GetSingleResponse<Long> response = new GetSingleResponse<>();
         try {
             response.setRecord(postService.getPostCountByPoster(userId));
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
+            return Response.status(Response.Status.NOT_FOUND).entity(response).build();
         }
-        return new Gson().toJson(response);
+        return Response.ok(gson.toJson(response)).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("searchPost/{input}")
-    public String searchPost(@PathParam("input") String input) {
+    public Response searchPost(@PathParam("input") String input) {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         List<PostDTO> records = new ArrayList<>();
         List<Post> posts = postService.searchPosts(input);
@@ -117,13 +122,13 @@ public class PostResource {
         }
         response.setRecords(records);
         response.setSucces(true);
-        return new Gson().toJson(response);
+        return Response.ok(gson.toJson(response)).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getTimeLine/{userId}/{limit}")
-    public String getTimeline(@PathParam("userId") long userId, @PathParam("limit") int limit) {
+    public Response getTimeline(@PathParam("userId") long userId, @PathParam("limit") int limit) {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         try {
             List<PostDTO> records = new ArrayList<>();
@@ -136,23 +141,24 @@ public class PostResource {
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
+            return Response.status(Response.Status.NOT_FOUND).entity(response).build();
         }
-        return new Gson().toJson(response);
-
+        return Response.ok(gson.toJson(response)).build();
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("createNewPost/{userId}/{content}")
-    public String createNewPost(@PathParam("userId") long userId, @PathParam("content") String content) {
+    public Response createNewPost(@PathParam("userId") long userId, @PathParam("content") String content) {
         CreateResponse<PostDTO> response = new CreateResponse<>();
         try {
             postService.createNewPost(userId, content);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
+            return Response.status(Response.Status.NOT_FOUND).entity(response).build();
         }
-        return new Gson().toJson(response);
+        return Response.status(Response.Status.CREATED).entity(response).build();
     }
 
 }
