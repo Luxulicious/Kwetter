@@ -1,6 +1,5 @@
 package boundary.rest;
 
-import dto.UserDTO;
 import boundary.rest.response.CreateResponse;
 import boundary.rest.response.DeleteResponse;
 import boundary.rest.response.GetMultipleResponse;
@@ -9,6 +8,7 @@ import boundary.rest.response.UpdateResponse;
 import com.google.gson.Gson;
 import domain.User;
 import dto.RegistrationDTO;
+import dto.UserDTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
