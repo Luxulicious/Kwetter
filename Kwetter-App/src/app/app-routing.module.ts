@@ -12,14 +12,14 @@ const routes: Routes = [
     {path: 'profile', component: ProfileComponent},
     {path: 'home', component: HomeComponent},
     {
-        path: 'sign-up', component: AuthenticationComponent,
-        children: [{path: '', component: SignUpComponent}]
+        path: 'auth', component: AuthenticationComponent,
+        children: [{path: 'sign-up', component: SignUpComponent}]
     },
     {
-        path: 'sign-in', component: AuthenticationComponent,
-        children: [{path: '', component: SignInComponent}]
+        path: 'auth', component: AuthenticationComponent,
+        children: [{path: 'sign-in', component: SignInComponent}]
     },
-    { path: '', redirectTo:'/sign-in', pathMatch: 'full'}
+    {path: '', redirectTo: '/auth/sign-in', pathMatch: 'full'}
 
 ];
 
