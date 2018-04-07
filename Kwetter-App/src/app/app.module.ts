@@ -1,5 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
+import {MaterialModule} from './material.module';
 
 import {AppComponent} from './app.component';
 import {ProfileComponent} from './profile/profile.component';
@@ -22,8 +24,10 @@ import {SignUpComponent} from './authentication/sign-up/sign-up.component';
         SignUpComponent,
     ],
     imports: [
-        [BrowserModule],
-        [AppRoutingModule]
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MaterialModule
     ],
     providers: [],
     bootstrap: [AppComponent]
