@@ -6,11 +6,11 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
-
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
-    imports: [MatDialogModule, MatInputModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatFormFieldModule],
-    exports: [MatDialogModule, MatInputModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatFormFieldModule]
+    imports: [MatTabsModule, MatDialogModule, MatInputModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatFormFieldModule],
+    exports: [MatTabsModule, MatDialogModule, MatInputModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatFormFieldModule]
 })
 
 export class MaterialModule {}
