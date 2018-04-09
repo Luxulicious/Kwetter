@@ -1,17 +1,25 @@
-<form>
-    <div class="container">
-        <h1>Sign-up</h1>
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter Email" name="email" required>
-
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required>
-        
-        <label for="passwordConfirm"><b>Confirm Password</b></label>
-        <input type="password" placeholder="Confirm Password" name="passwordConfirm" required>
-    </div>
-
-    <div class="clearfix">
-        <button type="submit" class="signupbtn">Sign Up</button>
-    </div>
-</form>
+<mat-toolbar>
+    <form>
+        <mat-toolbar-row>
+            <h3>Sign-up</h3>
+        </mat-toolbar-row>
+        <mat-toolbar-row>
+            <mat-form-field>
+                <input matInput placeholder="E-mail adress" type="email" required>
+            </mat-form-field>
+        </mat-toolbar-row>
+        <mat-toolbar-row>
+            <mat-form-field>
+                <input matInput placeholder="Password" type="password" required>
+            </mat-form-field>
+        </mat-toolbar-row>
+        <mat-toolbar-row>
+            <mat-form-field>
+                <input matInput placeholder="Confirm password"  type="password" required>
+            </mat-form-field>
+        </mat-toolbar-row>
+        <mat-toolbar-row>
+            <button mat-raised-button type="submit">Sign-up</button>
+        </mat-toolbar-row>
+    </form> 
+</mat-toolbar>
