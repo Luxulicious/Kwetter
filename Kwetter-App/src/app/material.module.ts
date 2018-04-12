@@ -7,10 +7,11 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
-    imports: [MatTabsModule, MatDialogModule, MatInputModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatFormFieldModule],
-    exports: [MatTabsModule, MatDialogModule, MatInputModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatFormFieldModule]
+    imports: [MatCardModule, MatTabsModule, MatDialogModule, MatInputModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatFormFieldModule],
+    exports: [MatCardModule, MatTabsModule, MatDialogModule, MatInputModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatFormFieldModule]
 })
 
 export class MaterialModule {}
