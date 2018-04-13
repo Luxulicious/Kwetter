@@ -25,6 +25,15 @@
         <auth-method>BASIC</auth-method>
         <realm-name>security_realm</realm-name>
     </login-config>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>app</web-resource-name>
+            <url-pattern>/api/*</url-pattern>
+        </web-resource-collection>
+        <!-- OMIT auth-constraint -->
+    </security-constraint>
+    
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Secure Page</web-resource-name>
@@ -34,7 +43,7 @@
         <auth-constraint>
             <role-name>regular_role</role-name>
         </auth-constraint>
-    </security-constraint>
+    </security-constraint>    
 </web-app>
 
 
