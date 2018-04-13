@@ -235,4 +235,13 @@ public class UserResource {
         }
         return Response.ok(gson.toJson(response)).build();
     }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("signin")
+    public Response signin() {
+        //TODO Implement...
+        return Response.status(501).build();
+    }
 }
