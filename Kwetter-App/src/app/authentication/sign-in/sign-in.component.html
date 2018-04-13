@@ -1,36 +1,24 @@
-<mat-toolbar>
+<!--TODO Remove mat toolbar rows if not required-->
+<mat-card>
+    <mat-card-title>
+        <h3>Sign-in</h3>
+    </mat-card-title>
     <form>
         <mat-toolbar-row>
-            <h3>Sign-in</h3>
-        </mat-toolbar-row>
-        <mat-toolbar-row>
             <mat-form-field>
-                <input matInput placeholder="E-mail adress" type="email" required>
+                <input [(ngModel)]="email" name="email" placeholder="E-mail adress" type="email" matInput required  >
             </mat-form-field>
         </mat-toolbar-row>
+        <br/>
         <mat-toolbar-row>
             <mat-form-field>
-                <input matInput placeholder="Password" type="password" required>
+                <input [(ngModel)]="password" name="password" placeholder="Password" type="password" matInput required >
             </mat-form-field>
         </mat-toolbar-row>
+        <br/>
         <mat-toolbar-row>
-            <button mat-raised-button type="submit">Sign-in</button>
+            <button mat-raised-button (click)="signIn()">Sign-in</button>
         </mat-toolbar-row>
     </form> 
-</mat-toolbar>
+</mat-card>
 
-<!--
-<form>
-    <div class="container">
-        <h1>Sign-in</h1>
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter Email" name="email" required>
-
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required>
-    </div>
-    <div class="clearfix">
-        <button type="button" class="signinbtn">Sign in</button>
-    </div>
-</form>
--->

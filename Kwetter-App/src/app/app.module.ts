@@ -16,6 +16,8 @@ import {AuthenticationService} from './services/authentication/authentication.se
 import {UserService} from './services/user/user.service';
 import {ApiService} from './services/api/api.service';
 import {HttpClientModule} from '@angular/common/http';
+import {FormsModule} from '@angular/forms';
+
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import {HttpClientModule} from '@angular/common/http';
         AppRoutingModule,
         HttpClientModule,
         BrowserAnimationsModule,
-        MaterialModule
+        MaterialModule,
+        FormsModule
     ],
     providers: [UserService, AuthenticationService, ApiService],
     bootstrap: [AppComponent]
