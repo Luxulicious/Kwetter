@@ -14,6 +14,8 @@ import {SignUpComponent} from './authentication/sign-up/sign-up.component';
 import {ProfileNameComponent} from './profile/profile-name/profile-name.component';
 import {AuthenticationService} from './services/authentication/authentication.service';
 import {UserService} from './services/user/user.service';
+import {ApiService} from './services/api/api.service';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -29,10 +31,11 @@ import {UserService} from './services/user/user.service';
     imports: [
         BrowserModule,
         AppRoutingModule,
+        HttpClientModule,
         BrowserAnimationsModule,
         MaterialModule
     ],
-    providers: [UserService, AuthenticationService],
+    providers: [UserService, AuthenticationService, ApiService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

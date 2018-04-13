@@ -1,21 +1,17 @@
 import {Injectable} from '@angular/core';
 import {User} from '../../models/user';
+import {ApiService} from '../api/api.service';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class UserService {
+    userUrl = 'user';
 
-    constructor() {}
+    constructor(private apiService: ApiService) {}
 
-    public fetchUser(): User {
-        //TODO Return proper user and whatever
-        console.log("TODO Return proper user during UserService.fetchUser");
-        let user: User = new User();
-        user.username = "Luxulicious";
-        user.bio = "I'm Lux.";
-        user.location = "Veghel";
-        user.website = "google.com";
-        user.icon = "Luxulicious.png"
-        return user;
+    public getUser(userId: number): any {
+        let url: string = this.userUrl + "/getUser/" + userId
+        return this.apiService.apiGetRequest<User>(url);     
     }
 
 }

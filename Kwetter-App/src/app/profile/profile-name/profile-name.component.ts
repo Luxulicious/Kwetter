@@ -13,13 +13,14 @@ export class ProfileNameComponent implements OnInit {
     @Input() user: User = null;
 
     constructor(private userService: UserService,
-        private authService: AuthenticationService) {}
+        private authService: AuthenticationService) {
+    }
 
     ngOnInit() {
         if (this.user == null) {
             let userId = this.authService.getCurrentUserId();
             if (userId) {
-                this.user = this.fetchUser(userId);
+                this.fetchUser(userId);
             } else {
                 //TODO Go to log-in page
             }
@@ -28,22 +29,22 @@ export class ProfileNameComponent implements OnInit {
 
     //TODO Make the user displayed changable via URL parameter
     changeUser(userId: number) {
-        if(userId) {
-            this.user = this.fetchUser(userId);
+        if (userId) {
+            this.fetchUser(userId);
         }
     }
 
-    fetchUser(userId: number): User {
-        return this.userService.fetchUser();
-//        this.userService.fetchUser(userId)
-//            .subscribe(response => {
-//                this.user = response;
-//            },
-//                error => {
-//                    //TODO Handle this error properly
-//                    console.log(error);
-//                });
-//                
+    fetchUser(userId: number): void {
+        this.userService.getUser(userId)
+            .subscribe(response => {
+                console.log(response);
+                let user: User = response["Record"];
+                this.user = user;
+            },
+                error => {
+                    //TODO Handle this error properly
+                    console.log(error);
+                });
     }
 }
 
