@@ -67,7 +67,7 @@ public class UserService {
     }
 
     public User getUserByUsername(String username) throws NonExistingUserException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return userDao.getUserByUsername(username);
     }
 
     //TODO Add unique check
