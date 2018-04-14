@@ -3,6 +3,7 @@ package boundary.rest;
 import boundary.rest.response.*;
 import com.google.gson.Gson;
 import domain.User;
+import dto.LogInDTO;
 import dto.RegistrationDTO;
 import dto.UserDTO;
 import java.util.*;
@@ -135,7 +136,7 @@ public class UserResource {
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    //@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("registerUser")
     public Response registerUser(RegistrationDTO reg) {
@@ -223,17 +224,34 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("signIn")
-    public Response signIn(UserDTO userDTO) {
+    public Response signIn(LogInDTO logInDTO) {
+        System.out.println("Hit");
         GetSingleResponse<String> response = new GetSingleResponse<>();
         try {
-            String token = userService.signIn(userDTO.username, userDTO.password);
+            String token = userService.signIn(logInDTO.username, logInDTO.password);
             response.setRecord(token);
             response.setSucces(true);
+            System.out.println("Success");
         } catch (NonExistingUserException e) {
             //TODO Proper exception throwing
             response.addMessage("De ingevulde gegevens zijn niet geldig.");
-            return Response.status(Response.Status.FORBIDDEN).entity(response).build();
+            System.out.println("Fail");
+            return Response
+                    .status(Response.Status.FORBIDDEN)
+                    .header("Access-Control-Allow-Credentials", "true")
+                    .header("Access-Control-Allow-Headers",
+                            "origin, content-type, accept, authorization")
+                    .header("Access-Control-Allow-Methods",
+                            "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                    .entity(gson.toJson(response)).build();
         }
-        return Response.ok(response).build();
+        return Response.ok(response)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Credentials", "true")
+                .header("Access-Control-Allow-Headers",
+                        "origin, content-type, accept, authorization")
+                .header("Access-Control-Allow-Methods",
+                        "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                .entity(gson.toJson(response)).build();
     }
 }

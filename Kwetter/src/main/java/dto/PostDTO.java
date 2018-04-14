@@ -26,17 +26,20 @@ import javax.validation.constraints.Size;
  * @version 0.0.1
  */
 public class PostDTO {
-    
+
     public long id;
     public String content;
     public Date date;
     public UserDTO poster;
-    
+
     public PostDTO(Post post) {
         this.id = post.getId();
         this.content = post.getContent();
         this.date = post.getDate();
         this.poster = new UserDTO(post.getPoster());
     }
-    
+
+    public PostDTO() {
+    }
+
 }

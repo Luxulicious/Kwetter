@@ -8,7 +8,7 @@ import {AuthenticationService} from '../../services/authentication/authenticatio
 })
 export class SignInComponent implements OnInit {
 
-    email: string = "";
+    username: string = "";
     password: string = "";
 
     constructor(private authenticationService: AuthenticationService) {}
@@ -18,6 +18,6 @@ export class SignInComponent implements OnInit {
     }
 
     signIn(): any {
-        this.authenticationService.signIn(this.email, this.password);
+        this.authenticationService.signIn(this.username, this.password);
     }
 }

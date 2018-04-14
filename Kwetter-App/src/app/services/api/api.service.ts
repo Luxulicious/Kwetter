@@ -19,7 +19,9 @@ export class ApiService {
     public post<T>(postPlain: string, content: any, isJson: boolean): Observable<T> {
         //TODO Append token here
 
-        let headers: HttpHeaders = new HttpHeaders().append("", "");
+        let headers: HttpHeaders = new HttpHeaders()
+            .append("Content-type", "application/json");
+
         let url = this.baseUrl + postPlain;
         if (!isJson) {
             return this.httpClient.post<T>(url, content, {headers: headers});

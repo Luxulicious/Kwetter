@@ -14,11 +14,13 @@ export class AuthenticationService {
         return 1;
     }
 
-    public signIn(email: string, password: string): any {
-        this.apiService.post<any>(this.authenticationUrl + "signIn", {"email": email, "password": password}, true)
+    public signIn(username: string, password: string): any {
+        this.apiService.post<any>(this.authenticationUrl + "/signIn", {"username": username, "password": password}, true)
             .subscribe(response => {
-                console.log("TODO Implement token sheninigans here...");
-                console.log(response);
+                console.log(response["Record"]);
+                if (response["Record"] && response["succes"]) {
+                    localStorage.setItem("token", response["Record"]);
+                }
             },
                 error => {
                     console.log(error);
