@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -239,9 +238,18 @@ public class UserResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("signin")
-    public Response signin() {
-        //TODO Implement...
-        return Response.status(501).build();
+    @Path("signIn")
+    public Response signIn(UserDTO userDTO) {
+        GetSingleResponse<String> response = new GetSingleResponse<>();
+        try {
+            String token = userService.signIn(userDTO.username, userDTO.password);
+            response.setRecord(token);
+            response.setSucces(true);
+        } catch (NonExistingUserException e) {
+            //TODO Proper exception throwing
+            response.addMessage("De ingevulde gegevens zijn niet geldig.");
+            return Response.status(Response.Status.FORBIDDEN).entity(response).build();
+        }
+        return Response.ok(response).build();
     }
 }

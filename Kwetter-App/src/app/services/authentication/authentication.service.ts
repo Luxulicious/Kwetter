@@ -15,7 +15,7 @@ export class AuthenticationService {
     }
 
     public signIn(email: string, password: string): any {
-        this.apiService.post<any>(this.authenticationUrl + "signin", {"email": email, "password": password}, true)
+        this.apiService.post<any>(this.authenticationUrl + "signIn", {"email": email, "password": password}, true)
             .subscribe(response => {
                 console.log("TODO Implement token sheninigans here...");
                 console.log(response);
