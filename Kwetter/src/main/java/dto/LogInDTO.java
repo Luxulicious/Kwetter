@@ -5,23 +5,25 @@
  */
 package dto;
 
+import domain.User;
+
 /**
  *
  * @author Tom
  * @email
  * @version 0.0.1
  */
-public class RegistrationDTO {
+public class LogInDTO {
 
     public String username;
     public String password;
 
-    public RegistrationDTO(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public LogInDTO(User user) {
+        this.username = user.getUsername();
+        this.password = user.getPassword();
     }
 
-    public RegistrationDTO() {
+    public LogInDTO() {
     }
 
 }

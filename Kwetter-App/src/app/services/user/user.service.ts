@@ -11,7 +11,7 @@ export class UserService {
 
     public getUser(userId: number): any {
         let url: string = this.userUrl + "/getUser/" + userId
-        return this.apiService.apiGetRequest<User>(url);     
+        return this.apiService.get<User>(url);     
     }
 
 }
