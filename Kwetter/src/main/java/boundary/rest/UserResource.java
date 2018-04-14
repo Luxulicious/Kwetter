@@ -233,7 +233,6 @@ public class UserResource {
             response.setSucces(true);
             System.out.println("Success");
         } catch (NonExistingUserException e) {
-            //TODO Proper exception throwing
             response.addMessage("De ingevulde gegevens zijn niet geldig.");
             System.out.println("Fail");
             return Response
