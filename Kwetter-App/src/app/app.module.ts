@@ -17,8 +17,7 @@ import {UserService} from './services/user/user.service';
 import {ApiService} from './services/api/api.service';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
-
-
+import {ProfileDetailComponent} from './profile/profile-detail/profile-detail.component';
 
 @NgModule({
     declarations: [
@@ -29,6 +28,7 @@ import {FormsModule} from '@angular/forms';
         AuthenticationComponent,
         SignInComponent,
         SignUpComponent,
+        ProfileDetailComponent,
     ],
     imports: [
         BrowserModule,
