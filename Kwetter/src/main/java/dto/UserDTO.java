@@ -51,4 +51,8 @@ public class UserDTO {
         this.icon = user.getIcon();
         this.role = new RoleDTO(user.getRole());
     }
+
+    public UserDTO() {
+    }
+
 }

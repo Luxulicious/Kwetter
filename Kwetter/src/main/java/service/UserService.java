@@ -5,18 +5,19 @@
  */
 package service;
 
-import service.exceptions.UnknownRoleError;
 import dao.RoleDao;
-import dto.UserDTO;
-import service.exceptions.NonExistingUserException;
 import dao.UserDao;
 import domain.Role;
 import domain.User;
 import dto.RegistrationDTO;
+import io.jsonwebtoken.*;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import service.exceptions.ExistingUserException;
+import service.exceptions.NonExistingUserException;
+import service.exceptions.UnknownRoleError;
 
 /**
  *
@@ -66,7 +67,7 @@ public class UserService {
     }
 
     public User getUserByUsername(String username) throws NonExistingUserException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return userDao.getUserByUsername(username);
     }
 
     //TODO Add unique check
@@ -84,7 +85,28 @@ public class UserService {
         }
         user.setRole(role);
         userDao.createUser(user);
+    }
 
+    public String signIn(String username, String password) throws NonExistingUserException {
+        User user = checkSignIn(username, password);
+        return createToken(user);
+    }
+
+    private String createToken(User user) {
+        return Jwts.builder()
+                .setSubject(user.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000000000))
+                .signWith(SignatureAlgorithm.HS256, "SuperSecretKeyOwow")
+                .compact();
+    }
+
+    private User checkSignIn(String username, String password) throws NonExistingUserException {
+        User user = getUserByUsername(username);
+        if (!user.getPassword().equals(password)) {
+            throw new NonExistingUserException();
+        }
+        return user;
     }
 
     public void updateUser(User user) throws NonExistingUserException {
