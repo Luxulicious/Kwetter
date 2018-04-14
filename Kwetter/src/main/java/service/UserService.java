@@ -10,13 +10,13 @@ import dao.UserDao;
 import domain.Role;
 import domain.User;
 import dto.RegistrationDTO;
+import io.jsonwebtoken.*;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import service.exceptions.ExistingUserException;
 import service.exceptions.NonExistingUserException;
-import io.jsonwebtoken.*;
-import java.util.Date;
 import service.exceptions.UnknownRoleError;
 
 /**

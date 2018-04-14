@@ -1,34 +1,18 @@
 package boundary.rest;
 
-import boundary.rest.response.CreateResponse;
-import boundary.rest.response.DeleteResponse;
-import boundary.rest.response.GetMultipleResponse;
-import boundary.rest.response.GetSingleResponse;
-import boundary.rest.response.UpdateResponse;
+import boundary.rest.response.*;
 import com.google.gson.Gson;
 import domain.User;
 import dto.RegistrationDTO;
 import dto.UserDTO;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
+import java.util.logging.*;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import service.UserService;
-import service.exceptions.ExistingUserException;
-import service.exceptions.NonExistingUserException;
-import service.exceptions.UnknownRoleError;
+import service.exceptions.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
