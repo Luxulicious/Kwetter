@@ -4,13 +4,13 @@ import {UserService} from '../../services/user/user.service';
 import {AuthenticationService} from '../../services/authentication/authentication.service';
 
 @Component({
-    selector: 'app-profile-name',
-    templateUrl: './profile-name.component.html',
-    styleUrls: ['./profile-name.component.css']
+    selector: 'app-profile-detail',
+    templateUrl: './profile-detail.component.html',
+    styleUrls: ['./profile-detail.component.css']
 })
-export class ProfileNameComponent implements OnInit {
+export class ProfileDetailComponent implements OnInit {
 
-    @Input() user: User = null;
+        @Input() user: User = null;
 
     constructor(private userService: UserService,
         private authService: AuthenticationService) {
@@ -50,4 +50,3 @@ export class ProfileNameComponent implements OnInit {
                 });
     }
 }
-

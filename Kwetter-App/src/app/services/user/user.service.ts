@@ -1,17 +1,27 @@
 import {Injectable} from '@angular/core';
 import {User} from '../../models/user';
 import {ApiService} from '../api/api.service';
-import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class UserService {
-    userUrl = 'user';
+
+    userUrl = "user";
 
     constructor(private apiService: ApiService) {}
 
     public getUser(userId: number): any {
-        let url: string = this.userUrl + "/getUser/" + userId
-        return this.apiService.get<User>(url);     
+        let url: string = this.userUrl + "/getUser/" + userId;
+        return this.apiService.get<any>(url);
+    }
+
+    public getFollowers(userId: number): any {
+        let url: string = this.userUrl + "/getFollowers/" + userId;
+        return this.apiService.get<any>(url);
+    }
+
+    public getFollowing(userId: number): any {
+        let url: string = this.userUrl + "/getFollowing/" + userId;
+        return this.apiService.get<any>(url);
     }
 
 }

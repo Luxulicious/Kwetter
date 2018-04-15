@@ -10,7 +10,6 @@ export class AuthenticationService {
 
     public getCurrentUserId(): number {
         //TODO Return proper id and whatever
-        console.log("TODO Return proper id during AuthenticationService.getCurrentUserId");
         return 1;
     }
 

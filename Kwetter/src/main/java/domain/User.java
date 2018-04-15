@@ -25,13 +25,13 @@ import javax.validation.constraints.Size;
             query = "SELECT u FROM User u")
     ,
 @NamedQuery(name = "User.getFollowers", query
-            = "SELECT u "
+            = "SELECT DISTINCT u "
             + "FROM User u "
             + "LEFT JOIN u.followers f "
             + "WHERE u.following = :following")
     ,
 @NamedQuery(name = "User.getFollowing",
-            query = "SELECT u "
+            query = "SELECT DISTINCT u "
             + "FROM User u "
             + "LEFT JOIN u.following f "
             + "WHERE u.followers = :follower")

@@ -1,10 +1,33 @@
 <div class="profile-container">
-    <div class="left-component">
-        <div class="component-item">
-            <mat-card>
-                <app-profile-name></app-profile-name>
-            </mat-card>
-        </div>
+    <div class="component-item">
+        <mat-card>
+            <app-profile-name></app-profile-name>
+        </mat-card>
+    </div>
+    
+    <div class="component-item">
+        <mat-card>
+            <app-profile-posts></app-profile-posts>
+        </mat-card>
+    </div>
+    
+    <div class="component-item">
+        <mat-card>
+            <app-profile-detail></app-profile-detail>
+        </mat-card>
+    </div>
+    
+    <div class="component-item">
+        <mat-card>
+            <mat-tab-group>
+                <mat-tab label="Following">
+                   <app-profile-following></app-profile-following>
+                </mat-tab>
+                <mat-tab label="Followers">
+                    <app-profile-followers></app-profile-followers>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card>
     </div>
 </div>
 
