@@ -103,14 +103,14 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowing/{userId}")
     public Response getFollowing(@PathParam("userId") long userId) {
-        GetMultipleResponse<User> response = new GetMultipleResponse<>();
+        GetMultipleResponse<UserDTO> response = new GetMultipleResponse<>();
         try {
             List<UserDTO> records = new ArrayList<>();
             List<User> users = userService.getFollowing(userId);
             for (int i = 0; i < users.size(); i++) {
                 records.add(new UserDTO(users.get(i)));
             }
-            response.setRecords(users);
+            response.setRecords(records);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");

@@ -1,20 +1,20 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {User} from '../../models/user';
-import {UserService} from '../../services/user/user.service';
 import {AuthenticationService} from '../../services/authentication/authentication.service';
+import {UserService} from '../../services/user/user.service';
 
 @Component({
-    selector: 'app-profile-name',
-    templateUrl: './profile-name.component.html',
-    styleUrls: ['./profile-name.component.css']
+    selector: 'app-profile-following',
+    templateUrl: './profile-following.component.html',
+    styleUrls: ['./profile-following.component.css']
 })
-export class ProfileNameComponent implements OnInit {
+export class ProfileFollowingComponent implements OnInit {
 
     @Input() user: User = null;
+    followings: User[] = null;
 
     constructor(private userService: UserService,
-        private authService: AuthenticationService) {
-    }
+        private authService: AuthenticationService) {}
 
     ngOnInit() {
         //TODO Refactor this to parent component
@@ -22,6 +22,7 @@ export class ProfileNameComponent implements OnInit {
             let userId = this.authService.getCurrentUserId();
             if (userId) {
                 this.fetchUser(userId);
+                this.fetchFollowing(userId);
             } else {
                 //TODO Go to log-in page
             }
@@ -49,5 +50,18 @@ export class ProfileNameComponent implements OnInit {
                     console.log(error);
                 });
     }
-}
 
+    fetchFollowing(userId: number): void {
+        this.userService.getFollowing(userId)
+            .subscribe(response => {
+                console.log("Following:  " + response);
+                let following: User[] = response["Records"];
+                this.followings = following;
+            },
+                error => {
+                    //TODO Handle this error properly
+                    console.log(error);
+                });
+    }
+
+}

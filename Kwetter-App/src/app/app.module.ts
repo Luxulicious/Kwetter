@@ -17,8 +17,14 @@ import {UserService} from './services/user/user.service';
 import {ApiService} from './services/api/api.service';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
-
-
+import {ProfileDetailComponent} from './profile/profile-detail/profile-detail.component';
+import {ProfilePostsComponent} from './profile/profile-posts/profile-posts.component';
+import {PostService} from './services/post/post.service';
+import { ProfileFollowersComponent } from './profile/profile-followers/profile-followers.component';
+import { ProfileFollowingComponent } from './profile/profile-following/profile-following.component';
+import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
+import { CreatePostComponent } from './home/create-post/create-post.component';
+import { TimelineComponent } from './home/timeline/timeline.component';
 
 @NgModule({
     declarations: [
@@ -29,6 +35,13 @@ import {FormsModule} from '@angular/forms';
         AuthenticationComponent,
         SignInComponent,
         SignUpComponent,
+        ProfileDetailComponent,
+        ProfilePostsComponent,
+        ProfileFollowersComponent,
+        ProfileFollowingComponent,
+        NavigationBarComponent,
+        CreatePostComponent,
+        TimelineComponent,
     ],
     imports: [
         BrowserModule,
@@ -38,7 +51,7 @@ import {FormsModule} from '@angular/forms';
         MaterialModule,
         FormsModule
     ],
-    providers: [UserService, AuthenticationService, ApiService],
+    providers: [UserService, AuthenticationService, ApiService, PostService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

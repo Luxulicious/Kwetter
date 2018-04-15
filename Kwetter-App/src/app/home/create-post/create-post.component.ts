@@ -1,20 +1,22 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {User} from '../../models/user';
-import {UserService} from '../../services/user/user.service';
 import {AuthenticationService} from '../../services/authentication/authentication.service';
+import {PostService} from '../../services/post/post.service';
+import {UserService} from '../../services/user/user.service';
 
 @Component({
-    selector: 'app-profile-name',
-    templateUrl: './profile-name.component.html',
-    styleUrls: ['./profile-name.component.css']
+    selector: 'app-create-post',
+    templateUrl: './create-post.component.html',
+    styleUrls: ['./create-post.component.css']
 })
-export class ProfileNameComponent implements OnInit {
+export class CreatePostComponent implements OnInit {
 
     @Input() user: User = null;
+    postContent: string;
 
     constructor(private userService: UserService,
-        private authService: AuthenticationService) {
-    }
+        private authService: AuthenticationService,
+        private postService: PostService) {}
 
     ngOnInit() {
         //TODO Refactor this to parent component
@@ -28,12 +30,18 @@ export class ProfileNameComponent implements OnInit {
         }
     }
 
-    //TODO Refactor this to parent component
-    //TODO Make the user displayed changable via URL parameter
-    changeUser(userId: number) {
-        if (userId) {
-            this.fetchUser(userId);
-        }
+
+    writePost(): void {
+        let userId = this.authService.getCurrentUserId();
+        this.postService.createNewPost(userId, this.postContent)
+            .subscribe(response => {
+                console.log(response);
+                this.postContent = "";
+            },
+                error => {
+                    //TODO Handle this error properly
+                    console.log(error);
+                });
     }
 
     //TODO Refactor this to parent component
@@ -49,5 +57,5 @@ export class ProfileNameComponent implements OnInit {
                     console.log(error);
                 });
     }
-}
 
+}

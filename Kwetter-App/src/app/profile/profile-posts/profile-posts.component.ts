@@ -1,19 +1,24 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {User} from '../../models/user';
-import {UserService} from '../../services/user/user.service';
 import {AuthenticationService} from '../../services/authentication/authentication.service';
+import {UserService} from '../../services/user/user.service';
+import {PostService} from '../../services/post/post.service';
+import {Post} from '../../models/post';
 
 @Component({
-    selector: 'app-profile-name',
-    templateUrl: './profile-name.component.html',
-    styleUrls: ['./profile-name.component.css']
+    selector: 'app-profile-posts',
+    templateUrl: './profile-posts.component.html',
+    styleUrls: ['./profile-posts.component.css']
 })
-export class ProfileNameComponent implements OnInit {
+export class ProfilePostsComponent implements OnInit {
 
     @Input() user: User = null;
+    posts: Post[] = null;
+    postLimit: number = 100;
 
     constructor(private userService: UserService,
-        private authService: AuthenticationService) {
+        private authService: AuthenticationService,
+        private postService: PostService) {
     }
 
     ngOnInit() {
@@ -22,6 +27,7 @@ export class ProfileNameComponent implements OnInit {
             let userId = this.authService.getCurrentUserId();
             if (userId) {
                 this.fetchUser(userId);
+                this.fetchRecentPostsByUser(userId, this.postLimit);
             } else {
                 //TODO Go to log-in page
             }
@@ -43,6 +49,19 @@ export class ProfileNameComponent implements OnInit {
                 console.log(response);
                 let user: User = response["Record"];
                 this.user = user;
+            },
+                error => {
+                    //TODO Handle this error properly
+                    console.log(error);
+                });
+    }
+
+    fetchRecentPostsByUser(userId: number, limit: number): void {
+        this.postService.getRecentPostsByUser(userId, limit)
+            .subscribe(response => {
+                console.log(response);
+                let posts: Post[] = response["Records"];
+                this.posts = posts;
             },
                 error => {
                     //TODO Handle this error properly
