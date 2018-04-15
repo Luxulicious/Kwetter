@@ -18,6 +18,8 @@ import {ApiService} from './services/api/api.service';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {ProfileDetailComponent} from './profile/profile-detail/profile-detail.component';
+import {ProfilePostsComponent} from './profile/profile-posts/profile-posts.component';
+import {PostService} from './services/post/post.service';
 
 @NgModule({
     declarations: [
@@ -29,6 +31,7 @@ import {ProfileDetailComponent} from './profile/profile-detail/profile-detail.co
         SignInComponent,
         SignUpComponent,
         ProfileDetailComponent,
+        ProfilePostsComponent,
     ],
     imports: [
         BrowserModule,
@@ -38,7 +41,7 @@ import {ProfileDetailComponent} from './profile/profile-detail/profile-detail.co
         MaterialModule,
         FormsModule
     ],
-    providers: [UserService, AuthenticationService, ApiService],
+    providers: [UserService, AuthenticationService, ApiService, PostService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

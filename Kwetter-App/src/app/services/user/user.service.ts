@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {User} from '../../models/user';
 import {ApiService} from '../api/api.service';
-import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class UserService {
-    userUrl = 'user';
+    
+    userUrl = "user";
 
     constructor(private apiService: ApiService) {}
 
