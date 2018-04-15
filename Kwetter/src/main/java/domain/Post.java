@@ -49,7 +49,7 @@ import javax.validation.constraints.Size;
     ,
 @NamedQuery(name = "Post.getTimeline",
             query
-            = "SELECT DISTINCT(p.id) "
+            = "SELECT DISTINCT p "
             + "FROM Post p, User u "
             + "WHERE  u.followers = :user_id "
             + "OR p.poster = :user_id "
