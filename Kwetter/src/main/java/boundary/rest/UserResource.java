@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import domain.User;
 import dto.LogInDTO;
 import dto.RegistrationDTO;
+import dto.TokenDTO;
 import dto.UserDTO;
 import java.util.*;
 import java.util.logging.*;
@@ -225,16 +226,16 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("signIn")
     public Response signIn(LogInDTO logInDTO) {
-        System.out.println("Hit");
-        GetSingleResponse<String> response = new GetSingleResponse<>();
+        GetSingleResponse<TokenDTO> response = new GetSingleResponse<>();
         try {
             String token = userService.signIn(logInDTO.username, logInDTO.password);
-            response.setRecord(token);
+            TokenDTO tokenDTO = new TokenDTO();
+            tokenDTO.token = token;
+            tokenDTO.userId = userService.getUserByUsername(logInDTO.username).getId();
+            response.setRecord(tokenDTO);
             response.setSucces(true);
-            System.out.println("Success");
         } catch (NonExistingUserException e) {
             response.addMessage("De ingevulde gegevens zijn niet geldig.");
-            System.out.println("Fail");
             return Response
                     .status(Response.Status.FORBIDDEN)
                     .entity(gson.toJson(response)).build();

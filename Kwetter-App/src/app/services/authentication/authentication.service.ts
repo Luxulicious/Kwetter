@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../api/api.service';
+import {UserToken} from '../../models/userToken';
 
 @Injectable()
 export class AuthenticationService {
@@ -10,7 +11,8 @@ export class AuthenticationService {
 
     public getCurrentUserId(): number {
         //TODO Return proper id and whatever
-        return 1;
+        //return 1;
+        return Number(localStorage.getItem('userId'));;
     }
 
     public signIn(username: string, password: string): any {
@@ -18,12 +20,13 @@ export class AuthenticationService {
             .subscribe(response => {
                 console.log(response["Record"]);
                 if (response["Record"] && response["succes"]) {
-                    localStorage.setItem("token", response["Record"]);
+                    let userToken: UserToken = response["Record"];
+                    localStorage.setItem("token", userToken.token);
+                    localStorage.setItem("userId", (userToken.userId).toString());
                 }
             },
                 error => {
                     console.log(error);
-                    console.log("TODO Implement proper error handling..")
                 });
     }
 }
