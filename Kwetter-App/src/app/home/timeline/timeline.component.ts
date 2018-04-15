@@ -15,6 +15,8 @@ export class TimelineComponent implements OnInit {
     @Input() user: User = null;
     posts: Post[] = null;
     postLimit: number = 100;
+    title: string = "Timeline";
+    userId: number;
 
     constructor(private userService: UserService,
         private authService: AuthenticationService,
@@ -22,16 +24,29 @@ export class TimelineComponent implements OnInit {
     }
 
     ngOnInit() {
-        //TODO Refactor this to parent component
         if (this.user == null) {
             let userId = this.authService.getCurrentUserId();
             if (userId) {
+                this.userId = userId;
                 this.fetchUser(userId);
                 this.fetchTimeline(userId, this.postLimit);
+                this.title = "Timeline";
             } else {
                 //TODO Go to log-in page
             }
         }
+    }
+
+    refreshTimeline() {
+        //TODO Refactor this to parent component
+        if (this.userId) {
+            this.fetchUser(this.userId);
+            this.fetchTimeline(this.userId, this.postLimit);
+            this.title = "Timeline";
+        } else {
+            //TODO Go to log-in page
+        }
+
     }
 
     //TODO Refactor this to parent component
@@ -67,6 +82,11 @@ export class TimelineComponent implements OnInit {
                     //TODO Handle this error properly
                     console.log(error);
                 });
+    }
+
+    setTimelineToMatchSearch(posts: Post[]) {
+        this.posts = posts;
+        this.title = "Results"
     }
 
 }

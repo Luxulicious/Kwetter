@@ -23,4 +23,9 @@ export class PostService {
         let url: string = this.postUrl + "/getTimeline/" + userId + "/" + limit;
         return this.apiService.get<any>(url);
     }
+
+    searchPosts(searchCriteria: string): any {
+        let url: string = this.postUrl + "/searchPosts/" + searchCriteria;
+        return this.apiService.get<any>(url);
+    }
 }

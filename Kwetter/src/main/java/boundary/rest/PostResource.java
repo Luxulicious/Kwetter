@@ -114,7 +114,7 @@ public class PostResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("searchPost/{input}")
+    @Path("searchPosts/{input}")
     public Response searchPost(@PathParam("input") String input) {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         List<PostDTO> records = new ArrayList<>();
