@@ -1,3 +1,16 @@
-<p>
-  profile-followers works!
-</p>
+<div class="profile-followers-component">
+    <div class="profile-follower-container">
+        <!--Refactor this to a template-->
+        <mat-list>
+            <div class ="profile-folower" *ngFor="let follower of followers">
+                 <mat-list-item>
+                    <div class="profile-follower-username">
+                        <a href="TODO Link to profile page of this particular user">
+                            {{follower.username}} 
+                        </a>
+                    </div>  
+                </mat-list-item>
+            </div>
+        </mat-list>
+    </div>
+</div>

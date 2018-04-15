@@ -1,15 +1,66 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
+import {User} from '../../models/user';
+import {AuthenticationService} from '../../services/authentication/authentication.service';
+import {UserService} from '../../services/user/user.service';
 
 @Component({
-  selector: 'app-profile-followers',
-  templateUrl: './profile-followers.component.html',
-  styleUrls: ['./profile-followers.component.css']
+    selector: 'app-profile-followers',
+    templateUrl: './profile-followers.component.html',
+    styleUrls: ['./profile-followers.component.css']
 })
 export class ProfileFollowersComponent implements OnInit {
 
-  constructor() { }
+    @Input() user: User = null;
+    followers: User[] = null;
 
-  ngOnInit() {
-  }
+    constructor(private userService: UserService,
+        private authService: AuthenticationService) {}
 
+    ngOnInit() {
+        //TODO Refactor this to parent component
+        if (this.user == null) {
+            let userId = this.authService.getCurrentUserId();
+            if (userId) {
+                this.fetchUser(userId);
+                this.fetchFollowers(userId);
+            } else {
+                //TODO Go to log-in page
+            }
+        }
+    }
+
+    //TODO Refactor this to parent component
+    //TODO Make the user displayed changable via URL parameter
+    changeUser(userId: number) {
+        if (userId) {
+            this.fetchUser(userId);
+        }
+    }
+
+    //TODO Refactor this to parent component
+    fetchUser(userId: number): void {
+        this.userService.getUser(userId)
+            .subscribe(response => {
+                console.log(response);
+                let user: User = response["Record"];
+                this.user = user;
+            },
+                error => {
+                    //TODO Handle this error properly
+                    console.log(error);
+                });
+    }
+
+    fetchFollowers(userId: number): void {
+        this.userService.getFollowers(userId)
+            .subscribe(response => {
+                console.log(response);
+                let followers: User[] = response["Records"];
+                this.followers = followers;
+            },
+                error => {
+                    //TODO Handle this error properly
+                    console.log(error);
+                });
+    }
 }
