@@ -22,6 +22,7 @@ import {ProfilePostsComponent} from './profile/profile-posts/profile-posts.compo
 import {PostService} from './services/post/post.service';
 import { ProfileFollowersComponent } from './profile/profile-followers/profile-followers.component';
 import { ProfileFollowingComponent } from './profile/profile-following/profile-following.component';
+import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 
 @NgModule({
     declarations: [
@@ -36,6 +37,7 @@ import { ProfileFollowingComponent } from './profile/profile-following/profile-f
         ProfilePostsComponent,
         ProfileFollowersComponent,
         ProfileFollowingComponent,
+        NavigationBarComponent,
     ],
     imports: [
         BrowserModule,
