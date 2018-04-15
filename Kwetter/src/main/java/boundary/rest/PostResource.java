@@ -129,7 +129,7 @@ public class PostResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("getTimeLine/{userId}/{limit}")
+    @Path("getTimeline/{userId}/{limit}")
     public Response getTimeline(@PathParam("userId") long userId, @PathParam("limit") int limit) {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         try {

@@ -24,6 +24,7 @@ import { ProfileFollowersComponent } from './profile/profile-followers/profile-f
 import { ProfileFollowingComponent } from './profile/profile-following/profile-following.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { CreatePostComponent } from './home/create-post/create-post.component';
+import { TimelineComponent } from './home/timeline/timeline.component';
 
 @NgModule({
     declarations: [
@@ -40,6 +41,7 @@ import { CreatePostComponent } from './home/create-post/create-post.component';
         ProfileFollowingComponent,
         NavigationBarComponent,
         CreatePostComponent,
+        TimelineComponent,
     ],
     imports: [
         BrowserModule,
