@@ -20,6 +20,8 @@ import {FormsModule} from '@angular/forms';
 import {ProfileDetailComponent} from './profile/profile-detail/profile-detail.component';
 import {ProfilePostsComponent} from './profile/profile-posts/profile-posts.component';
 import {PostService} from './services/post/post.service';
+import { ProfileFollowersComponent } from './profile/profile-followers/profile-followers.component';
+import { ProfileFollowingComponent } from './profile/profile-following/profile-following.component';
 
 @NgModule({
     declarations: [
@@ -32,6 +34,8 @@ import {PostService} from './services/post/post.service';
         SignUpComponent,
         ProfileDetailComponent,
         ProfilePostsComponent,
+        ProfileFollowersComponent,
+        ProfileFollowingComponent,
     ],
     imports: [
         BrowserModule,
