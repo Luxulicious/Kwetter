@@ -2,6 +2,7 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {User} from '../../models/user';
 import {AuthenticationService} from '../../services/authentication/authentication.service';
 import {UserService} from '../../services/user/user.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-profile-followers',
@@ -13,7 +14,7 @@ export class ProfileFollowersComponent implements OnInit {
     @Input() user: User = null;
     followers: User[] = null;
 
-    constructor(private userService: UserService,
+    constructor(private router: Router, private userService: UserService,
         private authService: AuthenticationService) {}
 
     ngOnInit() {
@@ -67,8 +68,8 @@ export class ProfileFollowersComponent implements OnInit {
     }
 
     @Output() goToProfileEvent = new EventEmitter<number>();
-
     goToProfile(userId: number): void {
         this.goToProfileEvent.emit(userId);
+        this.router.navigate(["profile/" + userId]);
     }
 }

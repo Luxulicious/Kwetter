@@ -7,6 +7,8 @@ import {User} from '../models/user';
 import {UserService} from '../services/user/user.service';
 import {ProfileFollowingComponent} from './profile-following/profile-following.component';
 import {ProfileFollowersComponent} from './profile-followers/profile-followers.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
     selector: 'app-profile',
@@ -29,13 +31,16 @@ export class ProfileComponent implements OnInit {
     @ViewChild(ProfileFollowersComponent)
     private profileFollowersChild: ProfileFollowersComponent;
 
-    constructor(private authenticationService: AuthenticationService, private userService: UserService) {}
+    constructor(private router: Router, private authenticationService: AuthenticationService, private userService: UserService) {
+
+    }
 
     ngOnInit() {
-        if (!this.authenticationService.getSignedInUserId()) {
-            this.authenticationService.redirectToSignIn();
-        }
+        let route: string = this.router.routerState.snapshot.url;
+        let param: number = +route.substring(route.lastIndexOf('/') + 1);
+        this.goToProfile(param);
     }
+
 
     ngAfterViewInit() {
         //TEST TODO Remove this later
