@@ -1,0 +1,9 @@
+.following-links {
+    text-decoration : underline;
+    cursor: pointer;
+}
+
+.hide-button-background {
+    border: none;
+    background: none;
+}

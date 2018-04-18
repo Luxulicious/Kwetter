@@ -1,0 +1,11 @@
+.followers-links {
+    text-decoration : underline;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.hide-button-background {
+    border: none;
+    background: none;
+}

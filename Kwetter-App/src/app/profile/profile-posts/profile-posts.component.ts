@@ -39,6 +39,8 @@ export class ProfilePostsComponent implements OnInit {
     changeUser(userId: number) {
         if (userId) {
             this.fetchUser(userId);
+            this.posts = null;
+            this.fetchRecentPostsByUser(userId, this.postLimit)
         }
     }
 
