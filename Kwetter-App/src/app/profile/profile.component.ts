@@ -3,6 +3,10 @@ import {ProfileNameComponent} from './profile-name/profile-name.component';
 import {ProfilePostsComponent} from './profile-posts/profile-posts.component';
 import {ProfileDetailComponent} from './profile-detail/profile-detail.component';
 import {AuthenticationService} from '../services/authentication/authentication.service';
+import {User} from '../models/user';
+import {UserService} from '../services/user/user.service';
+import {ProfileFollowingComponent} from './profile-following/profile-following.component';
+import {ProfileFollowersComponent} from './profile-followers/profile-followers.component';
 
 @Component({
     selector: 'app-profile',
@@ -11,16 +15,21 @@ import {AuthenticationService} from '../services/authentication/authentication.s
 })
 export class ProfileComponent implements OnInit {
 
+    userProfile: User;
+
     //TODO Other children
-    @ViewChild('profile-name')
+    @ViewChild(ProfileNameComponent)
     private profileNameChild: ProfileNameComponent;
-    @ViewChild('profile-detail')
+    @ViewChild(ProfileDetailComponent)
     private profileDetailChild: ProfileDetailComponent;
-    @ViewChild('profile-posts')
+    @ViewChild(ProfilePostsComponent)
     private profilePostsChild: ProfilePostsComponent;
+    @ViewChild(ProfileFollowingComponent)
+    private profileFollowingChild: ProfileFollowingComponent;
+    @ViewChild(ProfileFollowersComponent)
+    private profileFollowersChild: ProfileFollowersComponent;
 
-
-    constructor(private authenticationService: AuthenticationService) {}
+    constructor(private authenticationService: AuthenticationService, private userService: UserService) {}
 
     ngOnInit() {
         if (!this.authenticationService.getSignedInUserId()) {
@@ -28,4 +37,42 @@ export class ProfileComponent implements OnInit {
         }
     }
 
+    ngAfterViewInit() {
+        //TEST TODO Remove this later
+        //this.changeUser(8);
+    }
+
+    changeUser(userId: number) {
+        this.userService.getUser(userId)
+            .subscribe(response => {
+                console.log(response);
+                let user: User = response["Record"];
+                this.userProfile = user;
+                this.profileNameChild.changeUser(userId);
+                this.profileDetailChild.changeUser(userId);
+                this.profilePostsChild.changeUser(userId);
+                this.profileFollowingChild.changeUser(userId);
+                this.profileFollowersChild.changeUser(userId);
+            },
+                error => {
+                    //TODO Handle this error properly
+                    console.log(error);
+                });
+    }
+
+    isMyProfile() {
+        if (this.authenticationService.isSignedIn()) {
+            this.userService.getUser(this.authenticationService.getSignedInUserId())
+                .subscribe(response => {
+                    console.log(response);
+                    let currentSignedInUser: User = response["Record"];
+                    return this.userProfile.username == currentSignedInUser.username;
+                },
+                    error => {
+                        //TODO Handle this error properly
+                        console.log(error);
+                    });
+        }
+
+    }
 }

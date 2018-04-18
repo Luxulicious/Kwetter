@@ -34,6 +34,8 @@ export class ProfileFollowersComponent implements OnInit {
     changeUser(userId: number) {
         if (userId) {
             this.fetchUser(userId);
+            this.followers = null;
+            this.fetchFollowers(userId);
         }
     }
 
