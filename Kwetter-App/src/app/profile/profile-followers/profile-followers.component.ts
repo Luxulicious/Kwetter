@@ -70,6 +70,5 @@ export class ProfileFollowersComponent implements OnInit {
 
     goToProfile(userId: number): void {
         this.goToProfileEvent.emit(userId);
-        //TODO Switch to profile page of this user id
     }
 }
