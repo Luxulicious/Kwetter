@@ -25,7 +25,7 @@ export class TimelineComponent implements OnInit {
 
     ngOnInit() {
         if (this.user == null) {
-            let userId = this.authService.getCurrentUserId();
+            let userId = this.authService.getSignedInUserId();
             if (userId) {
                 this.userId = userId;
                 this.fetchUser(userId);

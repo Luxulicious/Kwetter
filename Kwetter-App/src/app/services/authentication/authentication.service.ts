@@ -7,14 +7,23 @@ import {HttpErrorResponse} from '@angular/common/http';
 @Injectable()
 export class AuthenticationService {
 
-    authenticationUrl = "user";
+
+    private tokenKey: string = "token";
+    private userIdKey: string = "userId";
+    private authenticationUrl = "user";
 
     constructor(private apiService: ApiService, private router: Router) {}
 
-    public getCurrentUserId(): number {
+    public getSignedInUserId(): number {
         //TODO Return proper id and whatever
         //return 1;
         return Number(localStorage.getItem('userId'));;
+    }
+
+    public signOut() {
+        localStorage.removeItem(this.tokenKey);
+        localStorage.removeItem(this.userIdKey);
+        this.redirectToSignIn();
     }
 
     public signIn(username: string, password: string): any {
@@ -23,8 +32,8 @@ export class AuthenticationService {
                 console.log(response["Record"]);
                 if (response["Record"] && response["succes"]) {
                     let userToken: UserToken = response["Record"];
-                    localStorage.setItem("token", userToken.token);
-                    localStorage.setItem("userId", (userToken.userId).toString());
+                    localStorage.setItem(this.tokenKey, userToken.token);
+                    localStorage.setItem(this.userIdKey, (userToken.userId).toString());
                     this.redirectToHome();
                 }
                 else if (!response["success"]) {
@@ -39,7 +48,21 @@ export class AuthenticationService {
                 });
     }
 
-    redirectToHome() {
-        this.router.navigate(['home']);
+    //TODO Move this to another service for routing and extract the route to a field
+    public redirectToHome() {
+        this.router.navigate(["home"]);
+    }
+
+    //TODO Move this to another service for routing and extract the route to a field
+    public redirectToSignIn() {
+        this.router.navigate(["auth/sign-in"]);
+    }
+
+    isSignedIn() {
+        if (this.getSignedInUserId())
+            return true;
+        else {
+            return false;
+        }
     }
 }

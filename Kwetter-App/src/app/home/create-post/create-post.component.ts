@@ -21,7 +21,7 @@ export class CreatePostComponent implements OnInit {
     ngOnInit() {
         //TODO Refactor this to parent component
         if (this.user == null) {
-            let userId = this.authService.getCurrentUserId();
+            let userId = this.authService.getSignedInUserId();
             if (userId) {
                 this.fetchUser(userId);
             } else {
@@ -32,7 +32,7 @@ export class CreatePostComponent implements OnInit {
 
 
     writePost(): void {
-        let userId = this.authService.getCurrentUserId();
+        let userId = this.authService.getSignedInUserId();
         this.postService.createNewPost(userId, this.postContent)
             .subscribe(response => {
                 console.log(response);

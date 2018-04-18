@@ -3,6 +3,7 @@ import {PostService} from '../services/post/post.service';
 import {Post} from '../models/post';
 import {CreatePostComponent} from './create-post/create-post.component';
 import {TimelineComponent} from './timeline/timeline.component';
+import {AuthenticationService} from '../services/authentication/authentication.service';
 
 @Component({
     selector: 'app-home',
@@ -18,9 +19,12 @@ export class HomeComponent implements OnInit {
     searchCriteria: string = null;
     searchedPosts: Post[];
 
-    constructor(private postService: PostService) {}
+    constructor(private postService: PostService, private authenticationService: AuthenticationService) {}
 
     ngOnInit() {
+        if (!this.authenticationService.getSignedInUserId()) {
+            this.authenticationService.redirectToSignIn();
+        }
     }
 
     ngAfterViewInit() {
