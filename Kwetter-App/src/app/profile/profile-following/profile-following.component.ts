@@ -19,7 +19,7 @@ export class ProfileFollowingComponent implements OnInit {
     ngOnInit() {
         //TODO Refactor this to parent component
         if (this.user == null) {
-            let userId = this.authService.getCurrentUserId();
+            let userId = this.authService.getSignedInUserId();
             if (userId) {
                 this.fetchUser(userId);
                 this.fetchFollowing(userId);

@@ -21,4 +21,12 @@ export class NavigationBarComponent implements OnInit {
     redirectToProfile() {
         this.router.navigate(['profile']);
     }
+
+    isSignedIn() {
+        return this.authenticationService.isSignedIn();
+    }
+
+    signOut() {
+        this.authenticationService.signOut();
+    }
 }

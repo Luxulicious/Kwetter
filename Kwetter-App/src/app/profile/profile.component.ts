@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ProfileNameComponent} from './profile-name/profile-name.component';
 import {ProfilePostsComponent} from './profile-posts/profile-posts.component';
 import {ProfileDetailComponent} from './profile-detail/profile-detail.component';
+import {AuthenticationService} from '../services/authentication/authentication.service';
 
 @Component({
     selector: 'app-profile',
@@ -19,9 +20,12 @@ export class ProfileComponent implements OnInit {
     private profilePostsChild: ProfilePostsComponent;
 
 
-    constructor() {}
+    constructor(private authenticationService: AuthenticationService) {}
 
     ngOnInit() {
+        if (!this.authenticationService.getSignedInUserId()) {
+            this.authenticationService.redirectToSignIn();
+        }
     }
 
 }
