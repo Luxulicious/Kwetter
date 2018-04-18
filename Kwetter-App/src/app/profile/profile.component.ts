@@ -42,7 +42,7 @@ export class ProfileComponent implements OnInit {
         //this.changeUser(8);
     }
 
-    changeUser(userId: number) {
+    goToProfile(userId: number) {
         this.userService.getUser(userId)
             .subscribe(response => {
                 console.log(response);
