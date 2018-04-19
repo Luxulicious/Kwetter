@@ -10,22 +10,19 @@ export class ApiService {
 
     constructor(private httpClient: HttpClient) {}
 
-    public get<T>(path: string, requiresAuthenticationToken?: boolean): Observable<T> {
+    public get<T>(path: string): Observable<T> {
         let headers: HttpHeaders = new HttpHeaders()
-        if (requiresAuthenticationToken == true) {
-            headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-        }
+            .append("Content-type", "application/json")
+            .append('Authorization', 'Bearer ' + localStorage.getItem('token'));
 
         let url = this.baseUrl + path;
         return this.httpClient.get<T>(url);
     }
 
-    public post<T>(postPlain: string, content: any, isJson: boolean, requiresAuthenticationToken?: boolean): Observable<T> {
+    public post<T>(postPlain: string, content: any, isJson: boolean): Observable<T> {
         let headers: HttpHeaders = new HttpHeaders()
-            .append("Content-type", "application/json");
-        if (requiresAuthenticationToken == true) {
-            headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-        }
+            .append("Content-type", "application/json")
+            .append('Authorization', 'Bearer ' + localStorage.getItem('token'));
 
         let url = this.baseUrl + postPlain;
         if (!isJson) {
@@ -35,12 +32,10 @@ export class ApiService {
         }
     }
 
-    public put<T>(putPlain: string, content: any, isJson: boolean, requiresAuthenticationToken?: boolean): Observable<T> {
+    public put<T>(putPlain: string, content: any, isJson: boolean): Observable<T> {
         let headers: HttpHeaders = new HttpHeaders()
-            .append("Content-type", "application/json");
-        if (requiresAuthenticationToken == true) {
-            headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-        }
+            .append("Content-type", "application/json")
+            .append('Authorization', 'Bearer ' + localStorage.getItem('token'));
 
         let url = this.baseUrl + putPlain;
         if (!isJson) {

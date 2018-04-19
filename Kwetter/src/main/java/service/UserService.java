@@ -100,7 +100,7 @@ public class UserService {
                     .withSubject(user.getUsername())
                     .withIssuer("Tom")
                     .withIssuedAt(new Date(System.currentTimeMillis()))
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 1000000000))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 900000))
                     .withClaim("id", user.getId())
                     .sign(Algorithm.HMAC512("SuperSecretKeyOwow"));
         } catch (UnsupportedEncodingException ex) {

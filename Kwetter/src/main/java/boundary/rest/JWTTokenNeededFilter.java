@@ -23,15 +23,14 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         log.info("Executing TOKEN response filter");
-        for (int i = 0; i < requestContext.getHeaders().size(); i++) {
-            System.out.println(requestContext.getHeaders().entrySet());
-        }
+
         String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+        System.out.println("AuthHeader: " + authorizationHeader);
 
         String token = authorizationHeader.substring("Bearer".length()).trim();
 
         try {
-            JWTVerifier verifier = JWT.require(Algorithm.HMAC256("SuperSecretKeyOwow")).build();
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC512("SuperSecretKeyOwow")).build();
             verifier.verify(token);
         } catch (Exception ex) {
             System.out.println("invalid token : " + token);
