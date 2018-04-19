@@ -5,9 +5,11 @@
             <div class ="profile-following" *ngFor="let following of followings">
                  <mat-list-item>
                     <div class="profile-following-username">
-                        <a href="TODO Link to profile page of this particular user">
-                            {{following.username}} 
-                        </a>
+                        <button class="hide-button-background" (click)="goToProfile(following.id)"> 
+                            <div class="following-links">
+                                {{following.username}}
+                            </div> 
+                        </button>
                     </div>  
                 </mat-list-item>
             </div>

@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {User} from '../../models/user';
 import {AuthenticationService} from '../../services/authentication/authentication.service';
 import {UserService} from '../../services/user/user.service';
@@ -89,4 +89,9 @@ export class TimelineComponent implements OnInit {
         this.title = "Results"
     }
 
+    @Output() goToProfileEvent = new EventEmitter<number>();
+
+    goToProfile(userId: number): void {
+        this.goToProfileEvent.emit(userId);
+    }
 }

@@ -4,6 +4,7 @@ import {Post} from '../models/post';
 import {CreatePostComponent} from './create-post/create-post.component';
 import {TimelineComponent} from './timeline/timeline.component';
 import {AuthenticationService} from '../services/authentication/authentication.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-home',
@@ -19,7 +20,7 @@ export class HomeComponent implements OnInit {
     searchCriteria: string = null;
     searchedPosts: Post[];
 
-    constructor(private postService: PostService, private authenticationService: AuthenticationService) {}
+    constructor(private router: Router, private postService: PostService, private authenticationService: AuthenticationService) {}
 
     ngOnInit() {
         if (!this.authenticationService.getSignedInUserId()) {
@@ -52,6 +53,10 @@ export class HomeComponent implements OnInit {
 
     setTimelineToMatchSearch(posts: Post[]): void {
         this.timelineChild.setTimelineToMatchSearch(posts);
+    }
+
+    goToProfile(userId: number) {
+        this.router.navigate(["profile/" + userId]);
     }
 
 

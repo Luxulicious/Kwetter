@@ -1,8 +1,15 @@
 <!--TODO Move mat cards inside of templates--> 
-<div class="profile-container">
+<div class="profile-container">  
     <div class="component-item">
         <mat-card>
             <app-profile-name></app-profile-name>
+        </mat-card>
+    </div>
+    
+       <div class="component-item">
+        <mat-card *ngIf="!isMyProfile">
+            <button mat-raised-button (click)="followUser()" *ngIf="!isAlreadyFollowing">Follow</button>
+            <button mat-raised-button (click)="unfollowUser()" *ngIf="isAlreadyFollowing">Unfollow</button>
         </mat-card>
     </div>
 
@@ -22,10 +29,10 @@
         <mat-card>
             <mat-tab-group>
                 <mat-tab label="Following">
-                    <app-profile-following></app-profile-following>
+                    <app-profile-following (goToProfileEvent)="goToProfile($event)"></app-profile-following>
                 </mat-tab>
                 <mat-tab label="Followers">
-                    <app-profile-followers></app-profile-followers>
+                    <app-profile-followers (goToProfileEvent)="goToProfile($event)"></app-profile-followers>
                 </mat-tab>
             </mat-tab-group>
         </mat-card>

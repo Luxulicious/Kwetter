@@ -3,6 +3,7 @@ package boundary.rest;
 import boundary.rest.response.*;
 import com.google.gson.Gson;
 import domain.User;
+import dto.FollowRequestDTO;
 import dto.LogInDTO;
 import dto.RegistrationDTO;
 import dto.TokenDTO;
@@ -188,14 +189,14 @@ public class UserResource {
     }
 
     @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("follow/{userIdFollower}/{userIdFollowing}")
+    @Path("follow")
     public Response follow(
-            @PathParam("userIdFollower") long userIdFollower,
-            @PathParam("userIdFollowing") long userIdFollowing) {
+            FollowRequestDTO followRequestDTO) {
         UpdateResponse<UserDTO> response = new UpdateResponse<>();
         try {
-            userService.follow(userIdFollower, userIdFollowing);
+            userService.follow(followRequestDTO.userIdFollower, followRequestDTO.userIdFollowing);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker(s) bestaat(/n) niet.");
@@ -205,14 +206,14 @@ public class UserResource {
     }
 
     @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("unfollow/{userIdFollower}/{userIdFollowing}")
+    @Path("unfollow")
     public Response unfollow(
-            @PathParam("userIdFollower") long userIdFollower,
-            @PathParam("userIdFollowing") long userIdFollowing) {
+            FollowRequestDTO followRequestDTO) {
         UpdateResponse<User> response = new UpdateResponse<>();
         try {
-            userService.unfollow(userIdFollower, userIdFollowing);
+            userService.unfollow(followRequestDTO.userIdFollower, followRequestDTO.userIdFollowing);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker(s) bestaat(/n) niet.");

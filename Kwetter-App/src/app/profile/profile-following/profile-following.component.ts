@@ -1,7 +1,10 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {User} from '../../models/user';
 import {AuthenticationService} from '../../services/authentication/authentication.service';
 import {UserService} from '../../services/user/user.service';
+import {Observable} from 'rxjs/Observable';
+import {ProfileComponent} from '../profile.component';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-profile-following',
@@ -13,7 +16,7 @@ export class ProfileFollowingComponent implements OnInit {
     @Input() user: User = null;
     followings: User[] = null;
 
-    constructor(private userService: UserService,
+    constructor(private router: Router, private userService: UserService,
         private authService: AuthenticationService) {}
 
     ngOnInit() {
@@ -34,6 +37,8 @@ export class ProfileFollowingComponent implements OnInit {
     changeUser(userId: number) {
         if (userId) {
             this.fetchUser(userId);
+            this.followings = null;
+            this.fetchFollowing(userId);
         }
     }
 
@@ -64,4 +69,10 @@ export class ProfileFollowingComponent implements OnInit {
                 });
     }
 
+
+    @Output() goToProfileEvent = new EventEmitter<number>();
+    goToProfile(userId: number): void {
+        this.goToProfileEvent.emit(userId);
+        this.router.navigate(["profile/" + userId]);
+    }
 }

@@ -10,6 +10,7 @@ import {SignUpComponent} from './authentication/sign-up/sign-up.component';
 
 const routes: Routes = [
     {path: 'profile', component: ProfileComponent},
+    {path: 'profile/:id', component: ProfileComponent},
     {path: 'home', component: HomeComponent},
     {
         path: 'auth', component: AuthenticationComponent,
@@ -19,7 +20,7 @@ const routes: Routes = [
         path: 'auth', component: AuthenticationComponent,
         children: [{path: 'sign-in', component: SignInComponent}]
     },
-    {path: '', redirectTo: '/auth/sign-in', pathMatch: 'full'}
+    {path: '', redirectTo: '/auth/sign-in', pathMatch: 'full'},
 
 ];
 
