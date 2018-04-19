@@ -10,9 +10,9 @@ export class ApiService {
 
     constructor(private httpClient: HttpClient) {}
 
-    public get<T>(path: string, authenticationToken?: string): Observable<T> {
+    public get<T>(path: string, requiresAuthenticationToken?: boolean): Observable<T> {
         let headers: HttpHeaders = new HttpHeaders()
-        if (authenticationToken) {
+        if (requiresAuthenticationToken) {
             headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
         }
 
@@ -20,10 +20,10 @@ export class ApiService {
         return this.httpClient.get<T>(url);
     }
 
-    public post<T>(postPlain: string, content: any, isJson: boolean, authenticationToken?: string): Observable<T> {
+    public post<T>(postPlain: string, content: any, isJson: boolean, requiresAuthenticationToken?: boolean): Observable<T> {
         let headers: HttpHeaders = new HttpHeaders()
             .append("Content-type", "application/json");
-        if (authenticationToken) {
+        if (requiresAuthenticationToken) {
             headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
         }
 
@@ -35,10 +35,10 @@ export class ApiService {
         }
     }
 
-    public put<T>(putPlain: string, content: any, isJson: boolean, authenticationToken?: string): Observable<T> {
+    public put<T>(putPlain: string, content: any, isJson: boolean, requiresAuthenticationToken?: boolean): Observable<T> {
         let headers: HttpHeaders = new HttpHeaders()
             .append("Content-type", "application/json");
-        if (authenticationToken) {
+        if (requiresAuthenticationToken) {
             headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
         }
 
