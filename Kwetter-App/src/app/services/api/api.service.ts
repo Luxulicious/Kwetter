@@ -3,7 +3,6 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 
 
-
 @Injectable()
 export class ApiService {
 
@@ -11,16 +10,22 @@ export class ApiService {
 
     constructor(private httpClient: HttpClient) {}
 
-    public get<T>(path: string): Observable<T> {
+    public get<T>(path: string, authenticationToken?: string): Observable<T> {
+        let headers: HttpHeaders = new HttpHeaders()
+        if (authenticationToken) {
+            headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        }
+
         let url = this.baseUrl + path;
         return this.httpClient.get<T>(url);
     }
 
-    public post<T>(postPlain: string, content: any, isJson: boolean): Observable<T> {
-        //TODO Append token here
-
+    public post<T>(postPlain: string, content: any, isJson: boolean, authenticationToken?: string): Observable<T> {
         let headers: HttpHeaders = new HttpHeaders()
             .append("Content-type", "application/json");
+        if (authenticationToken) {
+            headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        }
 
         let url = this.baseUrl + postPlain;
         if (!isJson) {
@@ -30,9 +35,12 @@ export class ApiService {
         }
     }
 
-    public put<T>(putPlain: string, content: any, isJson: boolean): Observable<T> {
+    public put<T>(putPlain: string, content: any, isJson: boolean, authenticationToken?: string): Observable<T> {
         let headers: HttpHeaders = new HttpHeaders()
             .append("Content-type", "application/json");
+        if (authenticationToken) {
+            headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        }
 
         let url = this.baseUrl + putPlain;
         if (!isJson) {

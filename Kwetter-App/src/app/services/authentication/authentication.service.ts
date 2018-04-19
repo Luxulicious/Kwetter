@@ -8,9 +8,9 @@ import {HttpErrorResponse} from '@angular/common/http';
 export class AuthenticationService {
 
 
-    private tokenKey: string = "token";
-    private userIdKey: string = "userId";
-    private authenticationUrl = "user";
+    public static tokenKey: string = "token";
+    public static userIdKey: string = "userId";
+    public static authenticationUrl = "user";
 
     constructor(private apiService: ApiService, private router: Router) {}
 
@@ -21,19 +21,19 @@ export class AuthenticationService {
     }
 
     public signOut() {
-        localStorage.removeItem(this.tokenKey);
-        localStorage.removeItem(this.userIdKey);
+        localStorage.removeItem(AuthenticationService.tokenKey);
+        localStorage.removeItem(AuthenticationService.userIdKey);
         this.redirectToSignIn();
     }
 
     public signIn(username: string, password: string): any {
-        this.apiService.post<any>(this.authenticationUrl + "/signIn", {"username": username, "password": password}, true)
+        this.apiService.post<any>(AuthenticationService.authenticationUrl + "/signIn", {"username": username, "password": password}, true)
             .subscribe(response => {
                 console.log(response["Record"]);
                 if (response["Record"] && response["succes"]) {
                     let userToken: UserToken = response["Record"];
-                    localStorage.setItem(this.tokenKey, userToken.token);
-                    localStorage.setItem(this.userIdKey, (userToken.userId).toString());
+                    localStorage.setItem(AuthenticationService.tokenKey, userToken.token);
+                    localStorage.setItem(AuthenticationService.userIdKey, (userToken.userId).toString());
                     this.redirectToHome();
                 }
                 else if (!response["success"]) {
