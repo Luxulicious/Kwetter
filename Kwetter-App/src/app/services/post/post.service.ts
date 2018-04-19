@@ -16,7 +16,7 @@ export class PostService {
 
     createNewPost(userId: number, content: string): any {
         let url: string = this.postUrl + "/createNewPost/"
-        return this.apiService.post<any>(url, {"posterId": userId, "content": content}, true);
+        return this.apiService.post<any>(url, {"posterId": userId, "content": content}, true, true);
     }
 
     getTimeline(userId: number, limit: number): any {

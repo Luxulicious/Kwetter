@@ -12,7 +12,7 @@ export class ApiService {
 
     public get<T>(path: string, requiresAuthenticationToken?: boolean): Observable<T> {
         let headers: HttpHeaders = new HttpHeaders()
-        if (requiresAuthenticationToken) {
+        if (requiresAuthenticationToken == true) {
             headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
         }
 
@@ -23,7 +23,7 @@ export class ApiService {
     public post<T>(postPlain: string, content: any, isJson: boolean, requiresAuthenticationToken?: boolean): Observable<T> {
         let headers: HttpHeaders = new HttpHeaders()
             .append("Content-type", "application/json");
-        if (requiresAuthenticationToken) {
+        if (requiresAuthenticationToken == true) {
             headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
         }
 
@@ -38,7 +38,7 @@ export class ApiService {
     public put<T>(putPlain: string, content: any, isJson: boolean, requiresAuthenticationToken?: boolean): Observable<T> {
         let headers: HttpHeaders = new HttpHeaders()
             .append("Content-type", "application/json");
-        if (requiresAuthenticationToken) {
+        if (requiresAuthenticationToken == true) {
             headers.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
         }
 

@@ -5,12 +5,14 @@
  */
 package service;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import dao.RoleDao;
 import dao.UserDao;
 import domain.Role;
 import domain.User;
 import dto.RegistrationDTO;
-import io.jsonwebtoken.*;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -87,18 +89,33 @@ public class UserService {
         userDao.createUser(user);
     }
 
-    public String signIn(String username, String password) throws NonExistingUserException {
+    public String signIn(String username, String password) throws NonExistingUserException, UnsupportedEncodingException {
         User user = checkSignIn(username, password);
         return createToken(user);
     }
 
-    private String createToken(User user) {
+    private String createToken(User user) throws UnsupportedEncodingException {
+        try {
+            return JWT.create()
+                    .withSubject(user.getUsername())
+                    .withIssuer("Tom")
+                    .withIssuedAt(new Date(System.currentTimeMillis()))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 1000000000))
+                    .withClaim("id", user.getId())
+                    .sign(Algorithm.HMAC512("SuperSecretKeyOwow"));
+        } catch (UnsupportedEncodingException ex) {
+            throw new UnsupportedEncodingException();
+        }
+
+        /*
+        //Old version
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000000000))
                 .signWith(SignatureAlgorithm.HS256, "SuperSecretKeyOwow")
                 .compact();
+         */
     }
 
     private User checkSignIn(String username, String password) throws NonExistingUserException {
