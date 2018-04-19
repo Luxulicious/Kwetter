@@ -8,6 +8,7 @@ import dto.LogInDTO;
 import dto.RegistrationDTO;
 import dto.TokenDTO;
 import dto.UserDTO;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.logging.*;
 import javax.ejb.Stateless;
@@ -239,6 +240,11 @@ public class UserResource {
             response.addMessage("De ingevulde gegevens zijn niet geldig.");
             return Response
                     .status(Response.Status.FORBIDDEN)
+                    .entity(gson.toJson(response)).build();
+        } catch (UnsupportedEncodingException ex) {
+            response.addMessage("Er ging iets mis tijdens de encoding van de authenticatie.");
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(gson.toJson(response)).build();
         }
         return Response.ok(response)

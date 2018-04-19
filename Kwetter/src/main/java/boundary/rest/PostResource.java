@@ -149,6 +149,7 @@ public class PostResource {
     }
 
     @POST
+    @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     @Path("createNewPostByParams/{userId}/{content}")
     public Response createNewPost(@PathParam("userId") long userId, @PathParam("content") String content) {
@@ -164,6 +165,7 @@ public class PostResource {
     }
 
     @POST
+    @JWTTokenNeeded
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("createNewPost")

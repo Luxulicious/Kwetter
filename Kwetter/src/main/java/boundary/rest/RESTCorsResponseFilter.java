@@ -1,3 +1,4 @@
+package boundary.rest;
 
 import java.io.IOException;
 import java.util.logging.Logger;
