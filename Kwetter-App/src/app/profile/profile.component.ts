@@ -18,6 +18,8 @@ import {Subscription} from 'rxjs/Subscription';
 export class ProfileComponent implements OnInit {
 
     userProfile: User;
+    isMyProfile: boolean;
+    isAlreadyFollowing: boolean;
 
     //TODO Other children
     @ViewChild(ProfileNameComponent)
@@ -32,19 +34,22 @@ export class ProfileComponent implements OnInit {
     private profileFollowersChild: ProfileFollowersComponent;
 
     constructor(private router: Router, private authenticationService: AuthenticationService, private userService: UserService) {
-
     }
 
     ngOnInit() {
+        //TODO Change this to an active route
         let route: string = this.router.routerState.snapshot.url;
         let param: number = +route.substring(route.lastIndexOf('/') + 1);
-        this.goToProfile(param);
+        if (param) {
+            this.goToProfile(param);
+        }
+        else {
+            this.fetchUser(this.authenticationService.getSignedInUserId());
+            this.fetchIsMyProfile();
+        }
     }
 
-
     ngAfterViewInit() {
-        //TEST TODO Remove this later
-        //this.changeUser(8);
     }
 
     goToProfile(userId: number) {
@@ -58,6 +63,7 @@ export class ProfileComponent implements OnInit {
                 this.profilePostsChild.changeUser(userId);
                 this.profileFollowingChild.changeUser(userId);
                 this.profileFollowersChild.changeUser(userId);
+                this.fetchIsMyProfile();
             },
                 error => {
                     //TODO Handle this error properly
@@ -65,19 +71,93 @@ export class ProfileComponent implements OnInit {
                 });
     }
 
-    isMyProfile() {
+    fetchIsAlreadyFollowing() {
         if (this.authenticationService.isSignedIn()) {
-            this.userService.getUser(this.authenticationService.getSignedInUserId())
+            this.userService.getFollowing(this.authenticationService.getSignedInUserId())
                 .subscribe(response => {
-                    console.log(response);
-                    let currentSignedInUser: User = response["Record"];
-                    return this.userProfile.username == currentSignedInUser.username;
+                    let users: User[] = response["Records"];
+                    console.log(users);
+                    this.isAlreadyFollowing = false;
+                    for (let i = 0; i < users.length; i++) {
+                        console.log(users[i].id + "   " + this.userProfile.id)
+                        if (users[i].id == this.userProfile.id) {
+                            this.isAlreadyFollowing = true;
+                            break;
+                        }
+                    }
                 },
                     error => {
                         //TODO Handle this error properly
                         console.log(error);
                     });
         }
+        else {this.authenticationService.redirectToHome()}
+    }
 
+    fetchIsMyProfile(): void {
+        if (this.authenticationService.isSignedIn()) {
+            this.userService.getUser(this.authenticationService.getSignedInUserId())
+                .subscribe(response => {
+                    let currentSignedInUser: User = response["Record"];
+                    console.log(currentSignedInUser.id + "     " + this.userProfile.id);
+                    this.isMyProfile = this.userProfile.id == currentSignedInUser.id;
+
+                    this.fetchIsAlreadyFollowing();
+                },
+                    error => {
+                        //TODO Handle this error properly
+                        console.log(error);
+                    });
+        }
+        else {this.authenticationService.redirectToHome()}
+    }
+
+    fetchUser(userId: number): void {
+        this.userService.getUser(userId)
+            .subscribe(response => {
+                console.log(response);
+                let user: User = response["Record"];
+                this.userProfile = user;
+            },
+                error => {
+                    //TODO Handle this error properly
+                    console.log(error);
+                });
+    }
+
+    followUser() {
+        this.userService.follow(this.authenticationService.getSignedInUserId(),
+            this.userProfile.id)
+            .subscribe(response => {
+                let succes: boolean = response["succes"];
+                if (succes) {
+                    this.fetchIsAlreadyFollowing();
+                }
+                else {
+                    console.log("Could not follow.")
+                }
+            },
+                error => {
+                    //TODO Handle this error properly
+                    console.log(error);
+                });
+    }
+
+    unfollowUser() {
+        this.userService.unfollow(this.authenticationService.getSignedInUserId(),
+            this.userProfile.id)
+            .subscribe(response => {
+                let succes: boolean = response["succes"];
+                if (succes) {
+                    this.fetchIsAlreadyFollowing();
+                }
+                else {
+                    console.log("Could not unfollow.")
+                }
+            },
+                error => {
+                    //TODO Handle this error properly
+                    console.log(error);
+                });
     }
 }
