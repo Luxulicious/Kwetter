@@ -125,9 +125,27 @@ export class ProfileComponent implements OnInit {
                 });
     }
 
+    followUser() {
+        this.userService.follow(this.authenticationService.getSignedInUserId(),
+            this.userProfile.id)
+            .subscribe(response => {
+                let succes: boolean = response["succes"];
+                if (succes) {
+                    this.fetchIsAlreadyFollowing();
+                }
+                else {
+                    console.log("Could not follow.")
+                }
+            },
+                error => {
+                    //TODO Handle this error properly
+                    console.log(error);
+                });
+    }
+
     unfollowUser() {
-        this.userService.unfollow(this.authenticationService.getSignedInUserId()
-        , this.userProfile.id)
+        this.userService.unfollow(this.authenticationService.getSignedInUserId(),
+            this.userProfile.id)
             .subscribe(response => {
                 let succes: boolean = response["succes"];
                 if (succes) {
