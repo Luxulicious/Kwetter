@@ -24,4 +24,13 @@ export class UserService {
         return this.apiService.get<any>(url);
     }
 
+    public unfollow(userIdFollower: number, userIdFollowing): any {
+        let url: string = this.userUrl + "/unfollow/"
+        return this.apiService.put<any>(
+            url,
+            {"userIdFollower": userIdFollower, "userIdFollowing": userIdFollowing},
+            true
+        );
+    }
+
 }

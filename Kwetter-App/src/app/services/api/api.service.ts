@@ -30,4 +30,16 @@ export class ApiService {
         }
     }
 
+    public put<T>(putPlain: string, content: any, isJson: boolean): Observable<T> {
+        let headers: HttpHeaders = new HttpHeaders()
+            .append("Content-type", "application/json");
+
+        let url = this.baseUrl + putPlain;
+        if (!isJson) {
+            return this.httpClient.put<T>(url, content, {headers: headers});
+        } else {
+            return this.httpClient.put<T>(url, JSON.stringify(content), {headers: headers});
+        }
+    }
+
 }

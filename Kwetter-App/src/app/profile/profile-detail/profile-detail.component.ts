@@ -10,7 +10,7 @@ import {AuthenticationService} from '../../services/authentication/authenticatio
 })
 export class ProfileDetailComponent implements OnInit {
 
-        @Input() user: User = null;
+    @Input() user: User = null;
 
     constructor(private userService: UserService,
         private authService: AuthenticationService) {

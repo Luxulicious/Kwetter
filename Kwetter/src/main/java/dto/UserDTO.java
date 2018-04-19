@@ -34,6 +34,7 @@ public class UserDTO {
 
     public long id;
     public String username;
+    //TODO Remove password
     public String password;
     public String bio;
     public String location;

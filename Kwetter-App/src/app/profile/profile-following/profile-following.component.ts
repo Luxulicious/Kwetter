@@ -73,7 +73,6 @@ export class ProfileFollowingComponent implements OnInit {
     @Output() goToProfileEvent = new EventEmitter<number>();
     goToProfile(userId: number): void {
         this.goToProfileEvent.emit(userId);
-
         this.router.navigate(["profile/" + userId]);
     }
 }
