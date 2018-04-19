@@ -1,0 +1,7 @@
+.sign-container {
+    display: flex;
+    flex-direction: column;
+}
+.sign-container > * {
+  width: 100%;
+}

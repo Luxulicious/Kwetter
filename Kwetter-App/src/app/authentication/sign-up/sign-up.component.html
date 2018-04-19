@@ -1,0 +1,30 @@
+<!--TODO Remove mat toolbar rows if not required-->
+<!--TODO Sign up stuff...-->
+<mat-card>    
+    <mat-card-title>
+        <h3>Sign-up</h3>
+    </mat-card-title>
+    <form>
+        <mat-toolbar-row>
+            <mat-form-field>
+                <input matInput placeholder="E-mail adress" type="email" required>
+            </mat-form-field>
+        </mat-toolbar-row>
+        <br/>
+        <mat-toolbar-row>
+            <mat-form-field>
+                <input matInput placeholder="Password" type="password" required>
+            </mat-form-field>
+        </mat-toolbar-row>
+        <br/>
+        <mat-toolbar-row>
+            <mat-form-field>
+                <input matInput placeholder="Confirm password"  type="password" required>
+            </mat-form-field>
+        </mat-toolbar-row>
+        <br/>
+        <mat-toolbar-row>
+            <button mat-raised-button type="submit">Sign-up</button>
+        </mat-toolbar-row>
+    </form> 
+</mat-card>

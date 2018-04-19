@@ -1,0 +1,24 @@
+<!--TODO Remove mat toolbar rows if not required-->
+<mat-card>
+    <mat-card-title>
+        <h3>Sign-in</h3>
+    </mat-card-title>
+    <form>
+        <mat-toolbar-row>
+            <mat-form-field>
+                <input [(ngModel)]="username" name="username" placeholder="Username" type="text" matInput required  >
+            </mat-form-field>
+        </mat-toolbar-row>
+        <br/>
+        <mat-toolbar-row>
+            <mat-form-field>
+                <input [(ngModel)]="password" name="password" placeholder="Password" type="password" matInput required >
+            </mat-form-field>
+        </mat-toolbar-row>
+        <br/>
+        <mat-toolbar-row>
+            <button mat-raised-button (click)="signIn()">Sign-in</button>
+        </mat-toolbar-row>
+    </form> 
+</mat-card>
+

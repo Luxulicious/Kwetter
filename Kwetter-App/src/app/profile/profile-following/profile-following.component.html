@@ -1,0 +1,18 @@
+<div class="profile-followings-component">
+    <div class="profile-following-container">
+        <!--Refactor this to a template-->
+        <mat-list>
+            <div class ="profile-following" *ngFor="let following of followings">
+                 <mat-list-item>
+                    <div class="profile-following-username">
+                        <button class="hide-button-background" (click)="goToProfile(following.id)"> 
+                            <div class="following-links">
+                                {{following.username}}
+                            </div> 
+                        </button>
+                    </div>  
+                </mat-list-item>
+            </div>
+        </mat-list>
+    </div>
+</div>

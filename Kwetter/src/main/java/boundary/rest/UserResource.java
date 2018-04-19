@@ -1,34 +1,22 @@
 package boundary.rest;
 
-import boundary.rest.response.CreateResponse;
-import boundary.rest.response.DeleteResponse;
-import boundary.rest.response.GetMultipleResponse;
-import boundary.rest.response.GetSingleResponse;
-import boundary.rest.response.UpdateResponse;
+import boundary.rest.response.*;
 import com.google.gson.Gson;
 import domain.User;
+import dto.FollowRequestDTO;
+import dto.LogInDTO;
 import dto.RegistrationDTO;
+import dto.TokenDTO;
 import dto.UserDTO;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
+import java.util.logging.*;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import service.UserService;
-import service.exceptions.ExistingUserException;
-import service.exceptions.NonExistingUserException;
-import service.exceptions.UnknownRoleError;
+import service.exceptions.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -118,14 +106,14 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowing/{userId}")
     public Response getFollowing(@PathParam("userId") long userId) {
-        GetMultipleResponse<User> response = new GetMultipleResponse<>();
+        GetMultipleResponse<UserDTO> response = new GetMultipleResponse<>();
         try {
             List<UserDTO> records = new ArrayList<>();
             List<User> users = userService.getFollowing(userId);
             for (int i = 0; i < users.size(); i++) {
                 records.add(new UserDTO(users.get(i)));
             }
-            response.setRecords(users);
+            response.setRecords(records);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
@@ -151,7 +139,7 @@ public class UserResource {
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    //@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("registerUser")
     public Response registerUser(RegistrationDTO reg) {
@@ -202,14 +190,14 @@ public class UserResource {
     }
 
     @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("follow/{userIdFollower}/{userIdFollowing}")
+    @Path("follow")
     public Response follow(
-            @PathParam("userIdFollower") long userIdFollower,
-            @PathParam("userIdFollowing") long userIdFollowing) {
+            FollowRequestDTO followRequestDTO) {
         UpdateResponse<UserDTO> response = new UpdateResponse<>();
         try {
-            userService.follow(userIdFollower, userIdFollowing);
+            userService.follow(followRequestDTO.userIdFollower, followRequestDTO.userIdFollowing);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker(s) bestaat(/n) niet.");
@@ -219,19 +207,47 @@ public class UserResource {
     }
 
     @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("unfollow/{userIdFollower}/{userIdFollowing}")
+    @Path("unfollow")
     public Response unfollow(
-            @PathParam("userIdFollower") long userIdFollower,
-            @PathParam("userIdFollowing") long userIdFollowing) {
+            FollowRequestDTO followRequestDTO) {
         UpdateResponse<User> response = new UpdateResponse<>();
         try {
-            userService.unfollow(userIdFollower, userIdFollowing);
+            userService.unfollow(followRequestDTO.userIdFollower, followRequestDTO.userIdFollowing);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker(s) bestaat(/n) niet.");
             return Response.status(Response.Status.NOT_FOUND).entity(response).build();
         }
         return Response.ok(gson.toJson(response)).build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("signIn")
+    public Response signIn(LogInDTO logInDTO) {
+        GetSingleResponse<TokenDTO> response = new GetSingleResponse<>();
+        try {
+            String token = userService.signIn(logInDTO.username, logInDTO.password);
+            TokenDTO tokenDTO = new TokenDTO();
+            tokenDTO.token = token;
+            tokenDTO.userId = userService.getUserByUsername(logInDTO.username).getId();
+            response.setRecord(tokenDTO);
+            response.setSucces(true);
+        } catch (NonExistingUserException e) {
+            response.addMessage("De ingevulde gegevens zijn niet geldig.");
+            return Response
+                    .status(Response.Status.FORBIDDEN)
+                    .entity(gson.toJson(response)).build();
+        } catch (UnsupportedEncodingException ex) {
+            response.addMessage("Er ging iets mis tijdens de encoding van de authenticatie.");
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(gson.toJson(response)).build();
+        }
+        return Response.ok(response)
+                .entity(gson.toJson(response)).build();
     }
 }

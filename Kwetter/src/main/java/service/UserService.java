@@ -5,18 +5,21 @@
  */
 package service;
 
-import service.exceptions.UnknownRoleError;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import dao.RoleDao;
-import dto.UserDTO;
-import service.exceptions.NonExistingUserException;
 import dao.UserDao;
 import domain.Role;
 import domain.User;
 import dto.RegistrationDTO;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import service.exceptions.ExistingUserException;
+import service.exceptions.NonExistingUserException;
+import service.exceptions.UnknownRoleError;
 
 /**
  *
@@ -66,7 +69,7 @@ public class UserService {
     }
 
     public User getUserByUsername(String username) throws NonExistingUserException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return userDao.getUserByUsername(username);
     }
 
     //TODO Add unique check
@@ -84,7 +87,43 @@ public class UserService {
         }
         user.setRole(role);
         userDao.createUser(user);
+    }
 
+    public String signIn(String username, String password) throws NonExistingUserException, UnsupportedEncodingException {
+        User user = checkSignIn(username, password);
+        return createToken(user);
+    }
+
+    private String createToken(User user) throws UnsupportedEncodingException {
+        try {
+            return JWT.create()
+                    .withSubject(user.getUsername())
+                    .withIssuer("Tom")
+                    .withIssuedAt(new Date(System.currentTimeMillis()))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 900000))
+                    .withClaim("id", user.getId())
+                    .sign(Algorithm.HMAC512("SuperSecretKeyOwow"));
+        } catch (UnsupportedEncodingException ex) {
+            throw new UnsupportedEncodingException();
+        }
+
+        /*
+        //Old version
+        return Jwts.builder()
+                .setSubject(user.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000000000))
+                .signWith(SignatureAlgorithm.HS256, "SuperSecretKeyOwow")
+                .compact();
+         */
+    }
+
+    private User checkSignIn(String username, String password) throws NonExistingUserException {
+        User user = getUserByUsername(username);
+        if (!user.getPassword().equals(password)) {
+            throw new NonExistingUserException();
+        }
+        return user;
     }
 
     public void updateUser(User user) throws NonExistingUserException {

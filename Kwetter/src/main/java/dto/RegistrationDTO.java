@@ -14,12 +14,14 @@ package dto;
 public class RegistrationDTO {
 
     public String username;
-    public String password; 
-    
+    public String password;
+
     public RegistrationDTO(String username, String password) {
         this.username = username;
         this.password = password;
     }
-    
-    
+
+    public RegistrationDTO() {
+    }
+
 }

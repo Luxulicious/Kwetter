@@ -1,0 +1,23 @@
+<!--TODO Move mat cards inside of templates--> 
+<div class="home-container">
+    <div class="component-item">
+        <mat-card>
+            <form>
+                <mat-form-field>
+                    <input matInput name="search" placeholder="Search..." type="text" [(ngModel)]="searchCriteria"/>
+                </mat-form-field>
+                <button mat-raised-button (click)="searchPosts()">Search kweets</button>
+            </form>
+        </mat-card>
+    </div>
+    <div class="component-item">
+        <mat-card>
+            <app-create-post></app-create-post>
+        </mat-card> 
+    </div>
+    <div class="component-item">
+        <mat-card>
+            <app-timeline (goToProfileEvent)="goToProfile($event)"></app-timeline>
+        </mat-card> 
+    </div>
+</div>

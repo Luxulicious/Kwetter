@@ -1,0 +1,26 @@
+<div class="home-timeline-component">
+    <div class="home-timeline-container">
+        <mat-card-title>{{title}}</mat-card-title>
+        <!--Refactor this to a template-->
+        <!--Remove &nbsp sheninigans--> 
+        <mat-list>
+            <div class ="home-timeline-post" *ngFor="let post of posts">
+                 <mat-list-item>
+                    <div class="home-timeline-title">
+                        <button class="hide-button-background" (click)="goToProfile(post.poster.id)"> 
+                            <b>{{post.poster.username}} kweets: &nbsp;</b> 
+                        </button>
+                    </div> 
+
+                    <div class="home-timeline-content">
+                        {{post.content}} &nbsp;
+                    </div>    
+
+                    <div class="home-timeline-date">
+                        {{post.date}} &nbsp;
+                    </div>
+                </mat-list-item>
+            </div>
+        </mat-list>
+    </div>
+</div>

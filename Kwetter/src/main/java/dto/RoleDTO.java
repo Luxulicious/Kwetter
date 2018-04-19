@@ -21,4 +21,7 @@ public class RoleDTO {
         this.roleName = role.getRoleName();
     }
 
+    public RoleDTO() {
+    }
+
 }
