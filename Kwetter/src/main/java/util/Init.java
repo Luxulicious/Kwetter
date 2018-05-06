@@ -11,8 +11,13 @@ import dao.RoleDao;
 import dao.UserDao;
 import domain.Group;
 import domain.User;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -30,7 +35,7 @@ import javax.validation.ConstraintViolationException;
 @Startup
 @Singleton
 public class Init {
-    
+
     @Inject
     UserDao userDao;
     @Inject
@@ -39,9 +44,9 @@ public class Init {
     PostDao postDao;
     @Inject
     GroupDao groupDao;
-    
+
     private DummyData dummyData;
-    
+
     @PostConstruct
     public void init() {
         System.out.println("Initializing...");
@@ -52,7 +57,7 @@ public class Init {
         createGroups();
         System.out.println("Done initializing");
     }
-    
+
     private void createUsersAndRoles() {
         for (int i = 0; i < dummyData.users.size(); i++) {
             dummyData.users.get(i).setFollowers(null);
@@ -62,7 +67,7 @@ public class Init {
             userDao.createUser(dummyData.users.get(i));
         }
     }
-    
+
     private void followEachother() {
         List<User> users = userDao.getAllUsers();
         for (int i = 0; i < users.size(); i++) {
@@ -73,20 +78,26 @@ public class Init {
             }
         }
     }
-    
+
     private void createPosts() {
         List<User> users = userDao.getAllUsers();
         for (int i = 0; i < users.size(); i++) {
-            postDao.createNewPost(users.get(i).getId(), "PSA " + users.get(i).getUsername());
+            //postDao.createNewPost(users.get(i).getId(), "PSA " + users.get(i).getUsername());
+            Date currentDate = new Date();
+            Calendar c = Calendar.getInstance();
+            c.setTime(currentDate);
+            Random rnd = new Random();
+            c.add(Calendar.HOUR, rnd.nextInt(40));
+            postDao.createPost(users.get(i).getId(), "PSA " + users.get(i).getUsername(), c.getTime());
         }
     }
-    
+
     private void createGroups() {
-        
+
         Group regulars = new Group("regulars");
-        List<User> regularsUsers = new ArrayList<>();        
+        List<User> regularsUsers = new ArrayList<>();
         regularsUsers.add(userDao.getUserByUsername("steve"));
         regulars.setUsers(regularsUsers);
-        groupDao.createGroup(regulars);     
+        groupDao.createGroup(regulars);
     }
 }

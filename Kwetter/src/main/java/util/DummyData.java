@@ -34,7 +34,7 @@ public class DummyData {
 
     private void createPosts() {
         for (int i = 0; i < users.size(); i++) {
-            posts.add(users.get(i).post(new Post(i, "PSA " + users.get(i).getUsername(), new Timestamp(2018, 2, 26, 13, 22, 19 + i, 0), users.get(i))));
+            posts.add(users.get(i).post(new Post(i, "PSA " + users.get(i).getUsername(), new Timestamp(2018, 2, 3 + i, 13, 22, 19 + i, 0), users.get(i))));
         }
     }
 
