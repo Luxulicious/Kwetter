@@ -59,8 +59,10 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique = true)
-    @Size(min = 1, max = 32)
+    //Can't use both @Size and @Column so it has to be done this way, 
+    //since the unique constraint needs to be retained
+    //@Size(min = 1, max = 32)
+    @Column(unique = true, length = 32)
     private String username;
 
     @Size(min = 1, max = 9999999)
