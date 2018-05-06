@@ -9,7 +9,11 @@ import dto.NewPostDTO;
 import dto.PostDTO;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -49,7 +53,7 @@ public class PostResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("")
-    public Response getAllPosts(@Context UriInfo uriInfo, @QueryParam("posterId") Long posterId, @QueryParam("orderBy") List<String> orderBy) {
+    public Response getAllPosts(@Context UriInfo uriInfo, @QueryParam("query") String query, @QueryParam("posterId") Long posterId, @QueryParam("orderBy") List<String> orderBy) {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         List<PostDTO> records = new ArrayList<>();
         List<Post> posts = new ArrayList<>();
@@ -59,10 +63,31 @@ public class PostResource {
             posts = postService.getAllPosts();
         }
 
+        //Search query
+        if (query != null || !query.equals("")) {
+            posts = postService.searchPosts(query);
+        }
+
         //Poster
-        if (posterId != null & posts == null) {
+        if (posterId != null) {
             try {
-                posts = postService.getPostsByPoster(posterId);
+                if (posts == null && posts.size() <= 0) {
+                    //Get posts by poster
+                    posts = postService.getPostsByPoster(posterId);
+                } else if (posts.size() > 0) {
+                    //Compare and filter posts from query and poster
+                    Set<Post> combinedPosts = new HashSet<>();
+                    List<Post> posterPosts = postService.getPostsByPoster(posterId);
+                    for (int i = 0; i < posterPosts.size(); i++) {
+                        for (int j = 0; j < posts.size(); j++) {
+                            if (posterPosts.get(i).equals(posts.get(j))) {
+                                combinedPosts.add(posterPosts.get(i));
+                            }
+                        }
+                    }
+                    posts = new ArrayList<>();
+                    posts.addAll(combinedPosts);
+                }
             } catch (NonExistingUserException ex) {
                 response.addMessage("De meegegeven poster bestaat niet.");
                 return Response.status(Response.Status.NOT_FOUND).entity(response).build();
@@ -107,12 +132,12 @@ public class PostResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("getRecentPostsByPoster/{userId}/{limit}")
-    public Response getRecentPostsByPoster(@PathParam("userId") long userId, @PathParam("limit") int limit) {
+    @Path("getRecentPostsByPoster/{posterId}/{limit}")
+    public Response getRecentPostsByPoster(@PathParam("posterId") long posterId, @PathParam("limit") int limit) {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         try {
             List<PostDTO> records = new ArrayList<>();
-            List<Post> posts = postService.getRecentPostsByPoster(userId, limit);
+            List<Post> posts = postService.getRecentPostsByPoster(posterId, limit);
             for (int i = 0; i < posts.size(); i++) {
                 records.add(new PostDTO(posts.get(i)));
             }
@@ -157,13 +182,13 @@ public class PostResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("getTimeline/{userId}/{limit}")
-    public Response getTimeline(@PathParam("userId") long userId, @PathParam("limit") int limit) {
+    @Path("getTimeline/{posterId}/{limit}")
+    public Response getTimeline(@PathParam("posterId") long posterId, @PathParam("limit") int limit) {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         try {
             List<PostDTO> records = new ArrayList<>();
             List<Post> posts;
-            posts = postService.getTimeline(userId, limit);
+            posts = postService.getTimeline(posterId, limit);
             for (int i = 0; i < posts.size(); i++) {
                 records.add(new PostDTO(posts.get(i)));
             }
@@ -179,11 +204,11 @@ public class PostResource {
     @POST
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("createNewPostByParams/{userId}/{content}")
-    public Response createNewPost(@PathParam("userId") long userId, @PathParam("content") String content) {
+    @Path("createNewPostByParams/{posterId}/{content}")
+    public Response createNewPost(@PathParam("posterId") long posterId, @PathParam("content") String content) {
         CreateResponse<PostDTO> response = new CreateResponse<>();
         try {
-            postService.createNewPost(userId, content);
+            postService.createNewPost(posterId, content);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
