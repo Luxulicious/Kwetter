@@ -1,30 +1,14 @@
 package boundary.rest;
 
-import boundary.rest.response.CreateResponse;
-import boundary.rest.response.GetMultipleResponse;
-import boundary.rest.response.GetSingleResponse;
+import boundary.rest.response.*;
 import com.google.gson.Gson;
 import domain.Post;
-import dto.NewPostDTO;
-import dto.PostDTO;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import dto.*;
+import java.util.*;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import service.PostService;
 import service.exceptions.NonExistingUserException;
 
