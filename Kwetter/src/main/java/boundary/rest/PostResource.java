@@ -12,8 +12,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -58,6 +56,8 @@ public class PostResource {
         List<PostDTO> records = new ArrayList<>();
         List<Post> posts = new ArrayList<>();
 
+        //TODO Refactor this to service
+        //<editor-fold defaultstate="collapsed" desc="Queryparams">
         //Parameterless
         if (uriInfo.getQueryParameters() != null || uriInfo.getQueryParameters().size() <= 0) {
             posts = postService.getAllPosts();
@@ -102,6 +102,7 @@ public class PostResource {
                 }
             }
         }
+        //</editor-fold>
 
         //Populate records and return response
         for (int i = 0; i < posts.size(); i++) {
@@ -152,11 +153,11 @@ public class PostResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("getPostCountByPoster/{userId}")
-    public Response getPostCountByPoster(@PathParam("userId") long userId) {
+    @Path("getPostCountByPoster/{posterId}")
+    public Response getPostCountByPoster(@PathParam("posterId") long posterId) {
         GetSingleResponse<Long> response = new GetSingleResponse<>();
         try {
-            response.setRecord(postService.getPostCountByPoster(userId));
+            response.setRecord(postService.getPostCountByPoster(posterId));
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
