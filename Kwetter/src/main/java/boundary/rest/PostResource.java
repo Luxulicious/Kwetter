@@ -1,7 +1,8 @@
 package boundary.rest;
 
-import boundary.rest.dto.PostDTO;
+import boundary.rest.dto.LinkDTO;
 import boundary.rest.dto.NewPostDTO;
+import boundary.rest.dto.PostDTO;
 import boundary.rest.response.*;
 import com.google.gson.Gson;
 import domain.Post;
@@ -33,15 +34,38 @@ public class PostResource {
     PostService postService;
     private final Gson gson = new Gson();
 
+    //TODO Move this to another package/file(?)
+    /**
+     * Enriches a list of posts with uri resources
+     *
+     * @param posts posts to enrich
+     * @param uriInfo uriInfo context required for determing the path
+     * @throws UriBuilderException
+     * @throws IllegalArgumentException
+     */
+    private List<PostDTO> enrichPostDTOs(List<PostDTO> records, UriInfo uriInfo) throws UriBuilderException, IllegalArgumentException {
+        for (int i = 0; i < records.size(); i++) {
+            String uri = uriInfo.getBaseUriBuilder()
+                    .path(UserResource.class)
+                    .path(Long.toString(records.get(i).id))
+                    .build()
+                    .toString();
+            System.out.println(uri);
+            LinkDTO posterLink = new LinkDTO(uri, "poster");
+            records.get(i).posterUri = posterLink;
+        }
+        return records;
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("")
+    //@Path("")
     public Response getAllPosts(@Context UriInfo uriInfo, @QueryParam("query") String query, @QueryParam("posterId") Long posterId, @QueryParam("orderBy") List<String> orderBy) {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         List<PostDTO> records = new ArrayList<>();
         List<Post> posts = new ArrayList<>();
 
-        //TODO Refactor this to service
+        //TODO Move this to another package/file(?) and use it in the rest of the methods
         //<editor-fold defaultstate="collapsed" desc="Queryparams">
         //Parameterless
         if (uriInfo.getQueryParameters() != null || uriInfo.getQueryParameters().size() <= 0) {
@@ -49,7 +73,7 @@ public class PostResource {
         }
 
         //Search query
-        if (query != null || !query.equals("")) {
+        if (query != null) {
             posts = postService.searchPosts(query);
         }
 
@@ -93,13 +117,16 @@ public class PostResource {
         for (int i = 0; i < posts.size(); i++) {
             records.add(new PostDTO(posts.get(i)));
         }
+        records = enrichPostDTOs(records, uriInfo);
         response.setRecords(records);
         response.setSucces(true);
         return Response.ok(gson.toJson(response)).build();
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("getPostsByPoster/{posterId}")
-    public Response getPostsByPoster(@PathParam("posterId") long posterId) {
+    public Response getPostsByPoster(@Context UriInfo uriInfo, @PathParam("posterId") long posterId) {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         try {
             List<PostDTO> records = new ArrayList<>();
@@ -107,6 +134,7 @@ public class PostResource {
             for (int i = 0; i < posts.size(); i++) {
                 records.add(new PostDTO(posts.get(i)));
             }
+            records = enrichPostDTOs(records, uriInfo);
             response.setRecords(records);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
@@ -119,7 +147,7 @@ public class PostResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getRecentPostsByPoster/{posterId}/{limit}")
-    public Response getRecentPostsByPoster(@PathParam("posterId") long posterId, @PathParam("limit") int limit) {
+    public Response getRecentPostsByPoster(@Context UriInfo uriInfo, @PathParam("posterId") long posterId, @PathParam("limit") int limit) {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         try {
             List<PostDTO> records = new ArrayList<>();
@@ -127,6 +155,7 @@ public class PostResource {
             for (int i = 0; i < posts.size(); i++) {
                 records.add(new PostDTO(posts.get(i)));
             }
+            records = enrichPostDTOs(records, uriInfo);
             response.setRecords(records);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
@@ -139,7 +168,7 @@ public class PostResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getPostCountByPoster/{posterId}")
-    public Response getPostCountByPoster(@PathParam("posterId") long posterId) {
+    public Response getPostCountByPoster(@Context UriInfo uriInfo, @PathParam("posterId") long posterId) {
         GetSingleResponse<Long> response = new GetSingleResponse<>();
         try {
             response.setRecord(postService.getPostCountByPoster(posterId));
@@ -154,13 +183,14 @@ public class PostResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("searchPosts/{input}")
-    public Response searchPost(@PathParam("input") String input) {
+    public Response searchPost(@Context UriInfo uriInfo, @PathParam("input") String input) {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         List<PostDTO> records = new ArrayList<>();
         List<Post> posts = postService.searchPosts(input);
         for (int i = 0; i < posts.size(); i++) {
             records.add(new PostDTO(posts.get(i)));
         }
+        records = enrichPostDTOs(records, uriInfo);
         response.setRecords(records);
         response.setSucces(true);
         return Response.ok(gson.toJson(response)).build();
@@ -169,7 +199,7 @@ public class PostResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getTimeline/{posterId}/{limit}")
-    public Response getTimeline(@PathParam("posterId") long posterId, @PathParam("limit") int limit) {
+    public Response getTimeline(@Context UriInfo uriInfo, @PathParam("posterId") long posterId, @PathParam("limit") int limit) {
         GetMultipleResponse<PostDTO> response = new GetMultipleResponse<>();
         try {
             List<PostDTO> records = new ArrayList<>();
@@ -178,6 +208,7 @@ public class PostResource {
             for (int i = 0; i < posts.size(); i++) {
                 records.add(new PostDTO(posts.get(i)));
             }
+            records = enrichPostDTOs(records, uriInfo);
             response.setRecords(records);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
@@ -187,6 +218,7 @@ public class PostResource {
         return Response.ok(gson.toJson(response)).build();
     }
 
+    //TODO Maybe add a reference to the original post(?)
     @POST
     @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
@@ -203,6 +235,7 @@ public class PostResource {
         return Response.status(Response.Status.CREATED).entity(response).build();
     }
 
+    //TODO Maybe add a reference to the original post(?)
     @POST
     @JWTTokenNeeded
     @Consumes(MediaType.APPLICATION_JSON)
