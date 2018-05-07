@@ -29,7 +29,7 @@ import service.exceptions.*;
  * @email
  * @version 0.0.1
  */
-@Path("user")
+@Path("users")
 @Stateless
 public class UserResource {
 
@@ -39,7 +39,7 @@ public class UserResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("getAllUsers")
+    @Path("")
     public Response getAllUsers() {
         GetMultipleResponse<UserDTO> response = new GetMultipleResponse<>();
         List<UserDTO> records = new ArrayList<>();
@@ -54,7 +54,7 @@ public class UserResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("getUser/{userId}")
+    @Path("{userId}")
     public Response getUser(@PathParam("userId") long userId) {
         GetSingleResponse<UserDTO> response = new GetSingleResponse<>();
         try {
@@ -141,7 +141,7 @@ public class UserResource {
     @POST
     //@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("registerUser")
+    @Path("register")
     public Response registerUser(RegistrationDTO reg) {
         CreateResponse<RegistrationDTO> response = new CreateResponse<>();
         try {
@@ -161,7 +161,7 @@ public class UserResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("updateUser")
+    @Path("update")
     public Response updateUser(User user) {
         UpdateResponse<UserDTO> response = new UpdateResponse<>();
         try {
@@ -176,7 +176,7 @@ public class UserResource {
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("deleteResponse/{userId}")
+    @Path("delete/{userId}")
     public Response deleteResponse(@PathParam("userId") long userId) {
         DeleteResponse<UserDTO> response = new DeleteResponse<>();
         try {
