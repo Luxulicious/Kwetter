@@ -1,9 +1,10 @@
 package boundary.rest;
 
+import boundary.rest.dto.PostDTO;
+import boundary.rest.dto.NewPostDTO;
 import boundary.rest.response.*;
 import com.google.gson.Gson;
 import domain.Post;
-import dto.*;
 import java.util.*;
 import javax.ejb.Stateless;
 import javax.inject.Inject;

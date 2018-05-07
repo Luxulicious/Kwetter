@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dto;
+package boundary.rest.dto;
+
+import domain.Role;
 
 /**
  *
@@ -11,11 +13,15 @@ package dto;
  * @email
  * @version 0.0.1
  */
-public class FollowRequestDTO {
+public class RoleDTO {
 
-    public long userIdFollower;
-    public long userIdFollowing;
+    public String roleName;
 
-    public FollowRequestDTO() {
+    public RoleDTO(Role role) {
+        this.roleName = role.getRoleName();
     }
+
+    public RoleDTO() {
+    }
+
 }

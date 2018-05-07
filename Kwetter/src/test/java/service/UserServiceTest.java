@@ -9,7 +9,7 @@ import dao.RoleDao;
 import dao.UserDao;
 import domain.Role;
 import domain.User;
-import dto.RegistrationDTO;
+import boundary.rest.dto.RegistrationDTO;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;

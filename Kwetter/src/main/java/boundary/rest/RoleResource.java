@@ -9,7 +9,7 @@ import boundary.rest.response.GetMultipleResponse;
 import boundary.rest.response.UpdateResponse;
 import com.google.gson.Gson;
 import domain.Role;
-import dto.RoleDTO;
+import boundary.rest.dto.RoleDTO;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;

@@ -3,21 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dto;
+package boundary.rest.dto;
 
-import com.google.gson.annotations.Expose;
 import domain.Post;
-import domain.User;
 import java.util.Date;
-import javax.persistence.CascadeType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -31,6 +20,8 @@ public class PostDTO {
     public String content;
     public Date date;
     public UserDTO poster;
+
+    public LinkDTO posterUri;
 
     public PostDTO(Post post) {
         this.id = post.getId();

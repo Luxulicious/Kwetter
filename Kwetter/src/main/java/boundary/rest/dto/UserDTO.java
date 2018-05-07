@@ -3,26 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dto;
+package boundary.rest.dto;
 
-import com.google.gson.annotations.Expose;
-import domain.Post;
-import domain.Role;
 import domain.User;
-import java.util.ArrayList;
 import java.util.List;
-import javax.json.bind.annotation.JsonbTransient;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -34,18 +18,26 @@ public class UserDTO {
 
     public long id;
     public String username;
-    //TODO Remove password
-    public String password;
+    //TODO Remove password(?)
+    //public String password;
     public String bio;
     public String location;
     public String website;
     public String icon;
     public RoleDTO role;
 
+    public LinkDTO postsUri;
+    public List<LinkDTO> postUris;
+    public LinkDTO followersUri;
+    public List<LinkDTO> followerUris;
+    public LinkDTO followingsUri;
+    public List<LinkDTO> followingUris;
+    public LinkDTO roleUri;
+
     public UserDTO(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
-        this.password = user.getPassword();
+        //this.password = user.getPassword();
         this.bio = user.getBio();
         this.location = user.getLocation();
         this.website = user.getWebsite();

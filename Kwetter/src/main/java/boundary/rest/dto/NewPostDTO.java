@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dto;
+package boundary.rest.dto;
 
-import domain.Role;
+import domain.Post;
+import java.util.Date;
 
 /**
  *
@@ -13,15 +14,11 @@ import domain.Role;
  * @email
  * @version 0.0.1
  */
-public class RoleDTO {
+public class NewPostDTO {
 
-    public String roleName;
+    public String content;
+    public long posterId;
 
-    public RoleDTO(Role role) {
-        this.roleName = role.getRoleName();
+    public NewPostDTO() {
     }
-
-    public RoleDTO() {
-    }
-
 }

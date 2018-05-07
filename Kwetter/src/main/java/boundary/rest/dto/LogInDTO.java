@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dto;
+package boundary.rest.dto;
+
+import domain.User;
 
 /**
  *
@@ -11,17 +13,17 @@ package dto;
  * @email
  * @version 0.0.1
  */
-public class RegistrationDTO {
+public class LogInDTO {
 
     public String username;
     public String password;
 
-    public RegistrationDTO(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public LogInDTO(User user) {
+        this.username = user.getUsername();
+        this.password = user.getPassword();
     }
 
-    public RegistrationDTO() {
+    public LogInDTO() {
     }
 
 }

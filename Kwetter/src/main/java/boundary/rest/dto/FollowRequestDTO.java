@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dto;
+package boundary.rest.dto;
 
 /**
  *
@@ -11,11 +11,11 @@ package dto;
  * @email
  * @version 0.0.1
  */
-public class TokenDTO {
+public class FollowRequestDTO {
 
-    public String token;
-    public long userId;
+    public long userIdFollower;
+    public long userIdFollowing;
 
-    public TokenDTO() {
+    public FollowRequestDTO() {
     }
 }

@@ -11,7 +11,7 @@ import dao.RoleDao;
 import dao.UserDao;
 import domain.Role;
 import domain.User;
-import dto.RegistrationDTO;
+import boundary.rest.dto.RegistrationDTO;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
