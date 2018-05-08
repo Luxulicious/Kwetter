@@ -4,6 +4,7 @@ import boundary.rest.response.*;
 import com.google.gson.Gson;
 import domain.User;
 import boundary.rest.dto.FollowRequestDTO;
+import boundary.rest.dto.LinkDTO;
 import boundary.rest.dto.LogInDTO;
 import boundary.rest.dto.RegistrationDTO;
 import boundary.rest.dto.TokenDTO;
@@ -37,16 +38,61 @@ public class UserResource {
     UserService userService;
     private final Gson gson = new Gson();
 
+    //TODO Move this to another package/file(?)
+    /**
+     * Enriches a list of users with uri resources
+     *
+     * @param records userDTOs to enrich
+     * @param uriInfo uriInfo context required for determing the path
+     * @throws UriBuilderException
+     * @throws IllegalArgumentException
+     */
+    private List<UserDTO> enrichUserDTOs(List<UserDTO> records, UriInfo uriInfo) throws UriBuilderException, IllegalArgumentException {
+        List<UserDTO> newRecords = new ArrayList();
+        for (int i = 0; i < records.size(); i++) {
+            newRecords.add(enrichUserDTO(records.get(i), uriInfo));
+        }
+        return newRecords;
+    }
+
+    private UserDTO enrichUserDTO(UserDTO record, UriInfo uriInfo) {
+        //Get postsUri
+        String postsUri = uriInfo.getBaseUriBuilder()
+                .path(PostResource.class)
+                .path("getPostsByPoster")
+                .path(Long.toString(record.id))
+                .build()
+                .toString();
+        record.postsUri = new LinkDTO(postsUri, "post");
+        //Get followersUri
+        String followersUri = uriInfo.getBaseUriBuilder()
+                .path(UserResource.class)
+                .path("getFollowers")
+                .path(Long.toString(record.id))
+                .build()
+                .toString();
+        record.followersUri = new LinkDTO(followersUri, "follower");
+        //Get followingUri
+        String followingUri = uriInfo.getBaseUriBuilder()
+                .path(UserResource.class)
+                .path("getFollowing")
+                .path(Long.toString(record.id))
+                .build()
+                .toString();
+        record.followingsUri = new LinkDTO(followingUri, "following");
+        return record;
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("")
-    public Response getAllUsers() {
+    public Response getAllUsers(@Context UriInfo uriInfo) {
         GetMultipleResponse<UserDTO> response = new GetMultipleResponse<>();
         List<UserDTO> records = new ArrayList<>();
         List<User> users = userService.getAllUsers();
         for (int i = 0; i < users.size(); i++) {
             records.add(new UserDTO(users.get(i)));
         }
+        records = enrichUserDTOs(records, uriInfo);
         response.setRecords(records);
         response.setSucces(true);
         return Response.ok(gson.toJson(response)).build();
@@ -55,10 +101,12 @@ public class UserResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{userId}")
-    public Response getUser(@PathParam("userId") long userId) {
+    public Response getUser(@Context UriInfo uriInfo, @PathParam("userId") long userId) {
         GetSingleResponse<UserDTO> response = new GetSingleResponse<>();
         try {
-            response.setRecord(new UserDTO(userService.getUser(userId)));
+            UserDTO record = new UserDTO(userService.getUser(userId));
+            record = enrichUserDTO(record, uriInfo);
+            response.setRecord(record);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
@@ -70,7 +118,7 @@ public class UserResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowers/{userId}")
-    public Response getFollowers(@PathParam("userId") long userId) {
+    public Response getFollowers(@Context UriInfo uriInfo, @PathParam("userId") long userId) {
         GetMultipleResponse<UserDTO> response = new GetMultipleResponse<>();
         try {
             List<UserDTO> records = new ArrayList<>();
@@ -78,6 +126,7 @@ public class UserResource {
             for (int i = 0; i < users.size(); i++) {
                 records.add(new UserDTO(users.get(i)));
             }
+            records = enrichUserDTOs(records, uriInfo);
             response.setRecords(records);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
@@ -105,7 +154,7 @@ public class UserResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getFollowing/{userId}")
-    public Response getFollowing(@PathParam("userId") long userId) {
+    public Response getFollowing(@Context UriInfo uriInfo, @PathParam("userId") long userId) {
         GetMultipleResponse<UserDTO> response = new GetMultipleResponse<>();
         try {
             List<UserDTO> records = new ArrayList<>();
@@ -113,12 +162,12 @@ public class UserResource {
             for (int i = 0; i < users.size(); i++) {
                 records.add(new UserDTO(users.get(i)));
             }
+            records = enrichUserDTOs(records, uriInfo);
             response.setRecords(records);
             response.setSucces(true);
         } catch (NonExistingUserException ex) {
             response.addMessage("Deze gebruiker bestaat niet.");
             return Response.status(Response.Status.NOT_FOUND).entity(response).build();
-
         }
         return Response.ok(gson.toJson(response)).build();
     }

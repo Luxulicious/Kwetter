@@ -38,20 +38,19 @@ public class PostResource {
     /**
      * Enriches a list of posts with uri resources
      *
-     * @param posts posts to enrich
+     * @param records postDTOs to enrich
      * @param uriInfo uriInfo context required for determing the path
      * @throws UriBuilderException
      * @throws IllegalArgumentException
      */
     private List<PostDTO> enrichPostDTOs(List<PostDTO> records, UriInfo uriInfo) throws UriBuilderException, IllegalArgumentException {
         for (int i = 0; i < records.size(); i++) {
-            String uri = uriInfo.getBaseUriBuilder()
+            String posterUri = uriInfo.getBaseUriBuilder()
                     .path(UserResource.class)
                     .path(Long.toString(records.get(i).id))
                     .build()
                     .toString();
-            System.out.println(uri);
-            LinkDTO posterLink = new LinkDTO(uri, "poster");
+            LinkDTO posterLink = new LinkDTO(posterUri, "poster");
             records.get(i).posterUri = posterLink;
         }
         return records;
