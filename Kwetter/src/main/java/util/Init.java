@@ -52,7 +52,7 @@ public class Init {
         System.out.println("Initializing...");
         dummyData = new DummyData();
         createUsersAndRoles();
-        followEachother();
+        //followEachother();
         createPosts();
         createGroups();
         System.out.println("Done initializing");

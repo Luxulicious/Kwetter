@@ -67,6 +67,7 @@ public class PostDao {
         Query query = em.createNamedQuery("Post.getTimeline");
         query.setParameter("user_id", userDao.getUser(userId));
         query.setMaxResults(limit);
+        List<Post> result = query.getResultList();
         return query.getResultList();
     }
 

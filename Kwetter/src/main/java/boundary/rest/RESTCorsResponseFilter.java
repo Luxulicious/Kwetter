@@ -12,11 +12,10 @@ import javax.ws.rs.ext.Provider;
 @PreMatching
 public class RESTCorsResponseFilter implements ContainerResponseFilter {
 
-    private final static Logger log = Logger.getLogger(RESTCorsResponseFilter.class.getName());
-
+    //private final static Logger log = Logger.getLogger(RESTCorsResponseFilter.class.getName());
     @Override
     public void filter(ContainerRequestContext requestCtx, ContainerResponseContext responseCtx) throws IOException {
-        log.info("Executing REST response filter");
+        //log.info("Executing REST response filter");
 
         responseCtx.getHeaders().add("Access-Control-Allow-Origin", "*");
         responseCtx.getHeaders().add("Access-Control-Allow-Credentials", "true");
