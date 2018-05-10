@@ -1,35 +1,16 @@
 package boundary.socket;
 
-import boundary.rest.dto.PostDTO;
-import domain.Post;
-import domain.User;
+import boundary.rest.dto.*;
+import domain.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.ejb.ConcurrencyManagement;
-import javax.ejb.ConcurrencyManagementType;
-import javax.ejb.Singleton;
+import java.util.*;
+import java.util.logging.*;
+import javax.ejb.*;
 import javax.inject.Inject;
-import javax.websocket.CloseReason;
-import javax.websocket.DecodeException;
-import javax.websocket.EncodeException;
-import javax.websocket.EndpointConfig;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.server.PathParam;
-import javax.websocket.server.ServerEndpoint;
-import service.PostService;
-import service.UserService;
-import service.exceptions.NonExistingUserException;
-import sun.awt.PeerEvent;
+import javax.websocket.*;
+import javax.websocket.server.*;
+import service.*;
+import service.exceptions.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
