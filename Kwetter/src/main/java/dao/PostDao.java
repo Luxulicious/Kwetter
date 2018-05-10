@@ -70,9 +70,10 @@ public class PostDao {
         return query.getResultList();
     }
 
-    public void createNewPost(long userId, String content) {
+    public Post createNewPost(long userId, String content) {
         Post post = new Post(content, new Date(), userDao.getUser(userId));
         em.persist(post);
+        return post;
     }
 
     public void createPost(long userId, String content, Date date) {
