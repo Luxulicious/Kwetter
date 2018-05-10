@@ -10,7 +10,7 @@ export class AuthenticationService {
 
     public static tokenKey: string = "token";
     public static userIdKey: string = "userId";
-    public static authenticationUrl = "user";
+    public static authenticationUrl = "users";
 
     constructor(private apiService: ApiService, private router: Router) {}
 
