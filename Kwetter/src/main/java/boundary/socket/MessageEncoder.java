@@ -19,9 +19,9 @@ import javax.websocket.EndpointConfig;
  * @email
  * @version 0.0.1
  */
-public class PostMessageDecoder implements Decoder.Text<PostDTO> {
+public class MessageEncoder implements Decoder.Text<PostDTO> {
 
-    private static final Logger LOG = Logger.getLogger(PostMessageEncoder.class.getName());
+    private static final Logger LOG = Logger.getLogger(MessageDecoder.class.getName());
     private Gson gson = new Gson();
 
     @Override

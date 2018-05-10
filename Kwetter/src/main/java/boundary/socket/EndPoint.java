@@ -44,18 +44,18 @@ import sun.awt.PeerEvent;
  */
 @ServerEndpoint(
         value = "/KwetterServerEndPoint/{username}",
-        encoders = {PostMessageEncoder.class},
-        decoders = {PostMessageDecoder.class},
+        encoders = {MessageDecoder.class},
+        decoders = {MessageEncoder.class},
         configurator = Configurator.class
 )
 @ConcurrencyManagement(ConcurrencyManagementType.BEAN)
 @Singleton
-public class PostEndPoint {
+public class EndPoint {
 
-    private static final Logger LOG = Logger.getLogger(PostEndPoint.class.getName());
+    private static final Logger LOG = Logger.getLogger(EndPoint.class.getName());
     private Map<Session, String> activeSessions;
-    private PostMessageEncoder encoder;
-    private PostMessageDecoder decoder;
+    private MessageDecoder encoder;
+    private MessageEncoder decoder;
 
     @Inject
     private UserService userService;
@@ -63,10 +63,10 @@ public class PostEndPoint {
     @Inject
     private PostService postService;
 
-    public PostEndPoint() {
+    public EndPoint() {
         this.activeSessions = Collections.synchronizedMap(new HashMap<>());
-        this.encoder = new PostMessageEncoder();
-        this.decoder = new PostMessageDecoder();
+        this.encoder = new MessageDecoder();
+        this.decoder = new MessageEncoder();
     }
 
     @OnOpen
