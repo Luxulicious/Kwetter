@@ -5,7 +5,7 @@ import {Post} from '../../models/post';
 @Injectable()
 export class PostService {
 
-    postUrl = "post";
+    postUrl = "posts";
 
     constructor(private apiService: ApiService) {}
 

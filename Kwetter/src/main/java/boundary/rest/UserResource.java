@@ -38,51 +38,6 @@ public class UserResource {
     UserService userService;
     private final Gson gson = new Gson();
 
-    //TODO Move this to another package/file(?)
-    /**
-     * Enriches a list of users with uri resources
-     *
-     * @param records userDTOs to enrich
-     * @param uriInfo uriInfo context required for determing the path
-     * @throws UriBuilderException
-     * @throws IllegalArgumentException
-     */
-    private List<UserDTO> enrichUserDTOs(List<UserDTO> records, UriInfo uriInfo) throws UriBuilderException, IllegalArgumentException {
-        List<UserDTO> newRecords = new ArrayList();
-        for (int i = 0; i < records.size(); i++) {
-            newRecords.add(enrichUserDTO(records.get(i), uriInfo));
-        }
-        return newRecords;
-    }
-
-    private UserDTO enrichUserDTO(UserDTO record, UriInfo uriInfo) {
-        //Get postsUri
-        String postsUri = uriInfo.getBaseUriBuilder()
-                .path(PostResource.class)
-                .path("getPostsByPoster")
-                .path(Long.toString(record.id))
-                .build()
-                .toString();
-        record.postsUri = new LinkDTO(postsUri, "post");
-        //Get followersUri
-        String followersUri = uriInfo.getBaseUriBuilder()
-                .path(UserResource.class)
-                .path("getFollowers")
-                .path(Long.toString(record.id))
-                .build()
-                .toString();
-        record.followersUri = new LinkDTO(followersUri, "follower");
-        //Get followingUri
-        String followingUri = uriInfo.getBaseUriBuilder()
-                .path(UserResource.class)
-                .path("getFollowing")
-                .path(Long.toString(record.id))
-                .build()
-                .toString();
-        record.followingsUri = new LinkDTO(followingUri, "following");
-        return record;
-    }
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers(@Context UriInfo uriInfo) {
@@ -299,4 +254,50 @@ public class UserResource {
         return Response.ok(response)
                 .entity(gson.toJson(response)).build();
     }
+
+    //TODO Move this to another package/file(?)
+    /**
+     * Enriches a list of users with uri resources
+     *
+     * @param records userDTOs to enrich
+     * @param uriInfo uriInfo context required for determing the path
+     * @throws UriBuilderException
+     * @throws IllegalArgumentException
+     */
+    private List<UserDTO> enrichUserDTOs(List<UserDTO> records, UriInfo uriInfo) throws UriBuilderException, IllegalArgumentException {
+        List<UserDTO> newRecords = new ArrayList();
+        for (int i = 0; i < records.size(); i++) {
+            newRecords.add(enrichUserDTO(records.get(i), uriInfo));
+        }
+        return newRecords;
+    }
+
+    private UserDTO enrichUserDTO(UserDTO record, UriInfo uriInfo) {
+        //Get postsUri
+        String postsUri = uriInfo.getBaseUriBuilder()
+                .path(PostResource.class)
+                .path("getPostsByPoster")
+                .path(Long.toString(record.id))
+                .build()
+                .toString();
+        record.postsUri = new LinkDTO(postsUri, "post");
+        //Get followersUri
+        String followersUri = uriInfo.getBaseUriBuilder()
+                .path(UserResource.class)
+                .path("getFollowers")
+                .path(Long.toString(record.id))
+                .build()
+                .toString();
+        record.followersUri = new LinkDTO(followersUri, "follower");
+        //Get followingUri
+        String followingUri = uriInfo.getBaseUriBuilder()
+                .path(UserResource.class)
+                .path("getFollowing")
+                .path(Long.toString(record.id))
+                .build()
+                .toString();
+        record.followingsUri = new LinkDTO(followingUri, "following");
+        return record;
+    }
+
 }

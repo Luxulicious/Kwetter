@@ -88,12 +88,12 @@ public class Init {
             c.setTime(currentDate);
             Random rnd = new Random();
             c.add(Calendar.HOUR, rnd.nextInt(40));
+            c.add(Calendar.MONTH, -(rnd.nextInt(40) + 20));
             postDao.createPost(users.get(i).getId(), "PSA " + users.get(i).getUsername(), c.getTime());
         }
     }
 
     private void createGroups() {
-
         Group regulars = new Group("regulars");
         List<User> regularsUsers = new ArrayList<>();
         regularsUsers.add(userDao.getUserByUsername("steve"));
