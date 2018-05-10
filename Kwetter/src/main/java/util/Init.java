@@ -94,7 +94,6 @@ public class Init {
     }
 
     private void createGroups() {
-
         Group regulars = new Group("regulars");
         List<User> regularsUsers = new ArrayList<>();
         regularsUsers.add(userDao.getUserByUsername("steve"));
