@@ -52,7 +52,7 @@ public class Init {
         System.out.println("Initializing...");
         dummyData = new DummyData();
         createUsersAndRoles();
-        followEachother();
+        //followEachother();
         createPosts();
         createGroups();
         System.out.println("Done initializing");
@@ -70,7 +70,7 @@ public class Init {
 
     private void followEachother() {
         List<User> users = userDao.getAllUsers();
-        for (int i = 0; i < users.size() / 2; i++) {
+        for (int i = 0; i < users.size(); i++) {
             for (int j = 0; j < users.size(); j++) {
                 if (!users.get(i).equals(users.get(j))) {
                     userDao.follow(users.get(i).getId(), users.get(j).getId());
