@@ -49,11 +49,25 @@ import javax.validation.constraints.Size;
     ,
 @NamedQuery(name = "Post.getTimeline",
             query
-            = "SELECT DISTINCT p "
+            = "SELECT p "
+            + "FROM Post p "
+            + "WHERE p.poster "
+            + "IN "
+            + "("
+            + "SELECT f "
+            + "FROM User u "
+            + "JOIN u.following f "
+            + "WHERE u = :user_id"
+            + ") "
+            + "OR p.poster = :user_id")
+    /*"SELECT DISTINCT(p) "
             + "FROM Post p, User u "
-            + "WHERE  u.followers = :user_id "
-            + "OR p.poster = :user_id "
+            + "WHERE u.followers = :user_id "
+            + ""
+            //OR "
+            //+ "p.poster = :user_id "
             + "ORDER BY p.date DESC")
+     */
     ,
 @NamedQuery(name = "Post.searchPosts",
             query = "SELECT DISTINCT(p) "

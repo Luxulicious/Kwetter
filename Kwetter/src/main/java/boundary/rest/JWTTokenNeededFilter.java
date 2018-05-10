@@ -22,10 +22,10 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        log.info("Executing TOKEN response filter");
+        //log.info("Executing TOKEN response filter");
 
         String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-        System.out.println("AuthHeader: " + authorizationHeader);
+        //System.out.println("AuthHeader: " + authorizationHeader);
 
         String token = authorizationHeader.substring("Bearer".length()).trim();
 
@@ -37,6 +37,6 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }
 
-        log.info("Executing REST response filter from token filter");
+        //log.info("Executing REST response filter from token filter");
     }
 }
