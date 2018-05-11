@@ -46,7 +46,6 @@ export class TimelineComponent implements OnInit {
         } else {
             //TODO Go to log-in page
         }
-
     }
 
     //TODO Refactor this to parent component

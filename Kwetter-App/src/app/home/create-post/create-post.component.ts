@@ -15,9 +15,9 @@ export class CreatePostComponent implements OnInit {
 
     @Input() user: User = null;
     postContent: string;
-    useSocket: boolean = false;
+    useSocket: boolean = true;
 
-    private webSocket: WebSocket = null;
+    //private webSocket: WebSocket = null;
 
     constructor(private userService: UserService,
         private authService: AuthenticationService,
@@ -59,7 +59,7 @@ export class CreatePostComponent implements OnInit {
     private sendSocketPost(user: User, postContent: string): any {
         console.log("sendSocketPost");
         if (this.user != null) {
-            this.webSocket = this.socketService.createSocket(user.username);
+            let socket: WebSocket = this.socketService.createSocket(user.username);
 
             let post: Post = new Post();
             post.content = postContent;
@@ -67,12 +67,11 @@ export class CreatePostComponent implements OnInit {
             post.poster = this.user;
 
             //this.webSocket.onmessage = function(e){console.log(e.data);};
-            this.webSocket.onopen = () => this.webSocket.send(JSON.stringify(post));
+            socket.onopen = () => socket.send(JSON.stringify(post));
         }
         else {
             this.sendSocketPost(user, postContent);
         }
-        this.refreshTimeline(user.id);
     }
 
     //TODO Refactor this to parent component
