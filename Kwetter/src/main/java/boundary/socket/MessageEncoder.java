@@ -27,7 +27,8 @@ public class MessageEncoder implements Decoder.Text<PostDTO> {
     @Override
     public PostDTO decode(String message) throws DecodeException {
         try {
-            return gson.fromJson(message, PostDTO.class);
+            PostDTO postDTO = gson.fromJson(message, PostDTO.class);
+            return postDTO;
         } catch (JsonSyntaxException e) {
             throw new DecodeException(message, "json decoding error", e);
         }

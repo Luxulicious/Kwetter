@@ -15,6 +15,7 @@ import {ProfileNameComponent} from './profile/profile-name/profile-name.componen
 import {AuthenticationService} from './services/authentication/authentication.service';
 import {UserService} from './services/user/user.service';
 import {ApiService} from './services/api/api.service';
+import {SocketService} from './services/socket/socket.service';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {ProfileDetailComponent} from './profile/profile-detail/profile-detail.component';
@@ -51,7 +52,7 @@ import {TimelineComponent} from './home/timeline/timeline.component';
         MaterialModule,
         FormsModule
     ],
-    providers: [UserService, AuthenticationService, ApiService, PostService],
+    providers: [UserService, AuthenticationService, ApiService, PostService, SocketService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

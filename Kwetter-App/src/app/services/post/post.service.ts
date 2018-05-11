@@ -5,7 +5,7 @@ import {Post} from '../../models/post';
 @Injectable()
 export class PostService {
 
-    postUrl = "posts";
+    postUrl: string = "posts";
 
     constructor(private apiService: ApiService) {}
 
@@ -28,4 +28,6 @@ export class PostService {
         let url: string = this.postUrl + "/searchPosts/" + searchCriteria;
         return this.apiService.get<any>(url);
     }
+    
+    
 }

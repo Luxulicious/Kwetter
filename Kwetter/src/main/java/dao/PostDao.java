@@ -74,6 +74,7 @@ public class PostDao {
     public Post createNewPost(long userId, String content) {
         Post post = new Post(content, new Date(), userDao.getUser(userId));
         em.persist(post);
+        em.flush();
         return post;
     }
 
