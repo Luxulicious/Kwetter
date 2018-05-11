@@ -90,7 +90,6 @@ export class TimelineComponent implements OnInit {
     }
 
     @Output() goToProfileEvent = new EventEmitter<number>();
-
     goToProfile(userId: number): void {
         this.goToProfileEvent.emit(userId);
     }

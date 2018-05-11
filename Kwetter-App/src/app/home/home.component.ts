@@ -13,9 +13,10 @@ import {Router} from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-    //TODO Other children
-    @ViewChild(CreatePostComponent) createPostChild: CreatePostComponent;
-    @ViewChild(TimelineComponent) timelineChild: TimelineComponent;
+    @ViewChild(CreatePostComponent) 
+    private createPostChild: CreatePostComponent;
+    @ViewChild(TimelineComponent) 
+    private timelineChild: TimelineComponent;
 
     searchCriteria: string = null;
     searchedPosts: Post[];
@@ -57,6 +58,11 @@ export class HomeComponent implements OnInit {
 
     goToProfile(userId: number) {
         this.router.navigate(["profile/" + userId]);
+    }
+
+        
+    refreshTimeline(userId: number) {
+        this.timelineChild.refreshTimeline();
     }
 
 

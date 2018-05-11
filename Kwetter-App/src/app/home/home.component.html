@@ -12,12 +12,12 @@
     </div>
     <div class="component-item">
         <mat-card>
-            <app-create-post></app-create-post>
+            <app-create-post (refreshTimelineEvent)="refreshTimeline($event)"></app-create-post>
         </mat-card> 
     </div>
     <div class="component-item">
         <mat-card>
-            <app-timeline (goToProfileEvent)="goToProfile($event)"></app-timeline>
+            <app-timeline (goToProfileEvent)="goToProfile($event)" ></app-timeline>
         </mat-card> 
     </div>
 </div>

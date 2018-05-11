@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
 import {User} from '../../models/user';
 import {AuthenticationService} from '../../services/authentication/authentication.service';
 import {PostService} from '../../services/post/post.service';
@@ -15,7 +15,7 @@ export class CreatePostComponent implements OnInit {
 
     @Input() user: User = null;
     postContent: string;
-    useSocket: boolean = true;
+    useSocket: boolean = false;
 
     private webSocket: WebSocket = null;
 
@@ -43,8 +43,7 @@ export class CreatePostComponent implements OnInit {
                 .subscribe(response => {
                     console.log(response);
                     this.postContent = "";
-                    //TODO Update list external list component
-
+                    this.refreshTimeline(userId);
 
                 },
                     error => {
@@ -73,6 +72,7 @@ export class CreatePostComponent implements OnInit {
         else {
             this.sendSocketPost(user, postContent);
         }
+        this.refreshTimeline(user.id);
     }
 
     //TODO Refactor this to parent component
@@ -87,6 +87,12 @@ export class CreatePostComponent implements OnInit {
                     //TODO Handle this error properly
                     console.log(error);
                 });
+    }
+    
+    @Output() refreshTimelineEvent = new EventEmitter();
+    refreshTimeline(userId: number): void {
+        console.log("refreshTimelineEvent launched from create-post.component.ts");
+        this.refreshTimelineEvent.emit(userId);
     }
 
 }
