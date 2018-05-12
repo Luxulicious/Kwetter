@@ -5,6 +5,7 @@ import {PostService} from '../../services/post/post.service';
 import {UserService} from '../../services/user/user.service';
 import {Post} from '../../models/post';
 import {SocketService} from '../../services/socket/socket.service';
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'app-create-post',
@@ -38,21 +39,32 @@ export class CreatePostComponent implements OnInit {
         }
     }
 
+    subject: Observable<any>;
     initSocket(username: string) {
         if (this.webSocket == null) {
             this.webSocket = this.socketService.instantiateSocket(username);
             this.webSocket.onopen = function (message) {
                 console.log("Socket connected");
             };
-            this.webSocket.onmessage = function (message) {
-                console.log(message.data)
-            };
+
             this.webSocket.onclose = function (message) {
                 console.log("Socket disconnected");
             };
             this.webSocket.onerror = function (message) {
                 console.log("Socket error: " + message)
             };
+            this.subject = Observable.create(observer => {
+                this.webSocket.onmessage = function (message) {
+                    console.log(message.data)
+                    observer.next(message.data);
+                    observer.complete();
+                };
+            });
+            this.subject.subscribe(observer => {
+                if (observer) {
+                    alert("Subscription triggered: " + observer);
+                }
+            });
         }
     }
 

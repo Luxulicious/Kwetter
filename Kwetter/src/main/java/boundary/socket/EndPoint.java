@@ -53,6 +53,13 @@ public class EndPoint {
     @OnOpen
     public void onOpen(@PathParam("username") String username, Session session) {
         LOG.log(Level.FINE, "opened session by {0}", username);
+        for (String name : activeSessions.values()) {
+            if (username.equals(name)) {
+                LOG.log(Level.WARNING, "Duplicate name found in session map: {0}", name);
+                return;
+            }
+
+        }
         this.activeSessions.put(session, username);
     }
 
@@ -83,7 +90,7 @@ public class EndPoint {
             String socketPost = encoder.encode(new PostDTO(post));
             User user = userService.getUser(post.getPoster().getId());
             LOG.log(Level.INFO, "newpost: {0}", socketPost);
-            broadcastToFollowersAndSelf(socketPost, user);
+            broadcast(socketPost, user);
         } catch (NonExistingUserException ex) {
             LOG.log(Level.SEVERE, "failed to create post socket. No such poster exists.", ex);
         } catch (DecodeException ex) {
@@ -93,24 +100,12 @@ public class EndPoint {
         }
     }
 
-    private void broadcastToFollowersAndSelf(String message, User user) {
-        List<User> followersAndSelf = user.getFollowers();
-        followersAndSelf.add(user);
-        for (User follower : followersAndSelf) {
-            if (activeSessions.containsValue(follower.getUsername())) {
-                for (Session session : activeSessions.keySet()) {
-                    sendMessage(session, message);
-                }
-            }
-        }
-    }
-
-    private void broadcastToFollowers(String message, User user) {
+    private void broadcast(String message, User user) {
         List<User> followers = user.getFollowers();
         for (User follower : followers) {
-            if (activeSessions.containsValue(follower.getUsername())) {
-                for (Session session : activeSessions.keySet()) {
-                    sendMessage(session, message);
+            for (Map.Entry<Session, String> entry : activeSessions.entrySet()) {
+                if (entry.getValue().equals(follower.getUsername())) {
+                    sendMessage(entry.getKey(), message);
                 }
             }
         }
@@ -123,7 +118,6 @@ public class EndPoint {
             } catch (EncodeException | IOException ex) {
                 LOG.log(Level.SEVERE, "failed to send message", ex);
             }
-
         }
     }
 
