@@ -10,9 +10,8 @@ export class SocketService {
 
     public createSocket(username: string): any {
         if (!this.webSocket) {
-            this.webSocket = new WebSocket(this.socketUrl + username);
-            return this.webSocket;
+            this.webSocket = new WebSocket(this.socketUrl + username);       
         }
+        return this.webSocket;
     }
-
 }
