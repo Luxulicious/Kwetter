@@ -8,7 +8,7 @@ export class SocketService {
 
     constructor() {}
 
-    public createSocket(username: string): any {
+    public createOrGetSocket(username: string): any {
         if (!this.webSocket) {
             this.webSocket = new WebSocket(this.socketUrl + username);       
         }

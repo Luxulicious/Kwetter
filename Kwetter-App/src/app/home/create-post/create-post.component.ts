@@ -59,14 +59,14 @@ export class CreatePostComponent implements OnInit {
     private sendSocketPost(user: User, postContent: string): any {
         console.log("sendSocketPost");
         if (this.user != null) {
-            let socket: WebSocket = this.socketService.createSocket(user.username);
+            let socket: WebSocket = this.socketService.createOrGetSocket(user.username);
 
             let post: Post = new Post();
             post.content = postContent;
             post.date = new Date();
             post.poster = this.user;
 
-            //this.webSocket.onmessage = function(e){console.log(e.data);};
+            socket.onmessage = function(e){console.log(e.data);};
             socket.onopen = () => socket.send(JSON.stringify(post));
         }
         else {
