@@ -83,7 +83,7 @@ public class EndPoint {
             String socketPost = encoder.encode(new PostDTO(post));
             User user = userService.getUser(post.getPoster().getId());
             LOG.log(Level.INFO, "newpost: {0}", socketPost);
-            broadcast(socketPost, user);
+            broadcastToFollowersAndSelf(socketPost, user);
         } catch (NonExistingUserException ex) {
             LOG.log(Level.SEVERE, "failed to create post socket. No such poster exists.", ex);
         } catch (DecodeException ex) {
@@ -93,7 +93,19 @@ public class EndPoint {
         }
     }
 
-    private void broadcast(String message, User user) {
+    private void broadcastToFollowersAndSelf(String message, User user) {
+        List<User> followersAndSelf = user.getFollowers();
+        followersAndSelf.add(user);
+        for (User follower : followersAndSelf) {
+            if (activeSessions.containsValue(follower.getUsername())) {
+                for (Session session : activeSessions.keySet()) {
+                    sendMessage(session, message);
+                }
+            }
+        }
+    }
+
+    private void broadcastToFollowers(String message, User user) {
         List<User> followers = user.getFollowers();
         for (User follower : followers) {
             if (activeSessions.containsValue(follower.getUsername())) {
