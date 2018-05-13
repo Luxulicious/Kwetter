@@ -47,6 +47,12 @@ export class TimelineComponent implements OnInit {
             //TODO Go to log-in page
         }
     }
+    
+    addPost(post: Post) {
+        console.log("Post: " + post)
+        //this.posts.push(post);
+        this.refreshTimeline();
+    }
 
     //TODO Refactor this to parent component
     //TODO Make the user displayed changable via URL parameter

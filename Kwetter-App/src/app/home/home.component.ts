@@ -59,10 +59,13 @@ export class HomeComponent implements OnInit {
     goToProfile(userId: number) {
         this.router.navigate(["profile/" + userId]);
     }
-
         
     refreshTimeline(userId: number) {
         this.timelineChild.refreshTimeline();
+    }
+    
+    addPostToTimeline(post: Post) {
+        this.timelineChild.addPost(post);
     }
 
 

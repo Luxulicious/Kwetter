@@ -62,7 +62,10 @@ export class CreatePostComponent implements OnInit {
             });
             this.subject.subscribe(observer => {
                 if (observer) {
-                    alert("Subscription triggered: " + observer);
+                    let post: Post = observer;
+                    console.log("Got a new post: " + post);
+                    //this.refreshTimeline(1);
+                    this.addPostToTimeline(post);
                 }
             });
         }
@@ -125,6 +128,12 @@ export class CreatePostComponent implements OnInit {
     refreshTimeline(userId: number): void {
         console.log("refreshTimelineEvent launched from create-post.component.ts");
         this.refreshTimelineEvent.emit(userId);
+    }
+    
+    @Output() addPostToTimelineEvent = new EventEmitter<Post>();
+    addPostToTimeline(post: Post): void {
+       console.log("addPostToTimelineEvent launched from create-post.component.ts"); 
+        this.addPostToTimelineEvent.emit(post);        
     }
 
 }

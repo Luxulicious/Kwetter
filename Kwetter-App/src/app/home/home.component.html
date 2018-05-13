@@ -12,7 +12,7 @@
     </div>
     <div class="component-item">
         <mat-card>
-            <app-create-post (refreshTimelineEvent)="refreshTimeline($event)"></app-create-post>
+            <app-create-post (addPostToTimelineEvent)="addPostToTimeline($event)" (refreshTimelineEvent)="refreshTimeline($event)"></app-create-post>
         </mat-card> 
     </div>
     <div class="component-item">
