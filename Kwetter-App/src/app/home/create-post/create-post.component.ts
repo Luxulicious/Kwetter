@@ -60,17 +60,22 @@ export class CreatePostComponent implements OnInit {
                     observer.complete();
                 };
             });
-            this.subject.subscribe(observer => {
-                if (observer) {
-                    let post: Post = observer;
-                    console.log("Got a new post: " + post);
-                    //this.refreshTimeline(1);
-                    this.addPostToTimeline(post);
-                }
-            });
+            this.subscribe();
+
         }
     }
 
+    subscribe() {
+        this.subject.subscribe(observer => {
+            if (observer) {
+                let post: Post = observer;
+                console.log("Got a new post: " + post);
+                //this.refreshTimeline(1);
+                this.addPostToTimeline(post);
+                this.subscribe();
+            }
+        });
+    }
 
     writePost(): void {
         let userId = this.authService.getSignedInUserId();
@@ -129,11 +134,11 @@ export class CreatePostComponent implements OnInit {
         console.log("refreshTimelineEvent launched from create-post.component.ts");
         this.refreshTimelineEvent.emit(userId);
     }
-    
+
     @Output() addPostToTimelineEvent = new EventEmitter<Post>();
     addPostToTimeline(post: Post): void {
-       console.log("addPostToTimelineEvent launched from create-post.component.ts"); 
-        this.addPostToTimelineEvent.emit(post);        
+        console.log("addPostToTimelineEvent launched from create-post.component.ts");
+        this.addPostToTimelineEvent.emit(post);
     }
 
 }
